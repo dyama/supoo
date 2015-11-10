@@ -16,16 +16,16 @@ bool dump(int n, value val)
   if (!value_is_null(val)) {
     switch (value_type(val)) {
     case AT_NIL:
-      printf("0x%X (type:NIL)\n", val.p);
+      printf("#<NIL:0x%X>\n", (intptr_t)val.p);
       break;
     case AT_FLOAT:
-      printf("0x%X (type:FLOAT,value:%f)\n", val.p, value_f(val));
+      printf("#<FLOAT:0x%X, value:%f>\n", (intptr_t)val.p, value_f(val));
       break;
     case AT_SYMBOL:
-      printf("0x%X (type:SYMBOL,value:%s)\n", val.p, value_s(val));
+      printf("#<SYMBOL:0x%X value:%c>\n", (intptr_t)val.p, *value_s(val));
       break;
     case AT_ATOM:
-      printf("0x%X (type:ATOM,count:%d)\n", val.p, ary_len(val));
+      printf("#<ATOM:0x%X count:%d>\n", (intptr_t)val.p, ary_len(val));
       int i;
       for (i = 0; i < ary_len(val); i++) {
         value cval = ary_ref(val, i);
@@ -38,7 +38,7 @@ bool dump(int n, value val)
       }
       break;
     default:
-      printf("0x%X (type:UNKNOWN)\n", val.p);
+      printf("#<UNKNOWN:0x%X>\n", (intptr_t)val.p);
       break;
     }
   }

@@ -17,10 +17,10 @@ debug: $(PROGRAM)
 	cgdb $(PROGRAM)
 
 $(PROGRAM): $(OBJS)
-	$(CC) -o $@ $^
+	$(CC) $(CFLAGS) -o $@ $^
 
 .c.o:
-	$(CC) -c $<
+	$(CC) $(CFLAGS) -c $<
 
 clean:
 	rm -f *.gch *~ $(PROGRAM) $(OBJS) 2>/dev/null
