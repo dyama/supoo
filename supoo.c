@@ -8,9 +8,6 @@ typedef int bool;
 #include "value.h"
 #include "ary.h"
 
-value arena;
-bool has_arena = 0;
-
 double value_f(value val)
 {
   if (value_is_null(val) || value_type(val) != AT_FLOAT) {
@@ -55,20 +52,6 @@ value value_nil()
 void value_free(value* val)
 {
   int i;
-  int arena_size = ary_len(arena);
-  for (i=0; i<arena_size; i++) {
-    value item = ary_ref(arena, i);
-    if (val->p == item.p) {
-      free(item.p);
-      item.p = NULL;
-      i = -1;
-      break;
-    }
-  }
-//  if (i == arena_size) {
-//    printf("arena resized, size:%d to %d\n", arena_size, arena_size - 1);
-//    ary_resize(arena, arena_size - 1);
-//  }
   if (i >= 0 && !value_is_null(*val)) {
     free(val->p);
   }
@@ -79,7 +62,6 @@ value value_new_f(double val)
 {
   value res = atom_new(AT_FLOAT, sizeof(val));
   res.p->f = val;
-  ary_push(arena, res);
   return res;
 }
 
@@ -87,7 +69,6 @@ value value_new_s(char* const val)
 {
   value res = atom_new(AT_SYMBOL, strlen(val));
   res.p->s = val;
-  ary_push(arena, res);
   return res;
 }
 
@@ -142,26 +123,12 @@ bool dump(int n, value val)
   return 0;
 }
 
-void init_arena()
-{
-  arena = ary_new(0);
-  has_arena = 1;
-}
-
-void free_arena()
-{
-  value_free(&arena);
-  arena.p = NULL;
-  has_arena = 0;
-}
-
 int main(int argc, char const* argv[])
 {
   char* str = "("
     "(= a (* 2 (+ 1 2) 3))"
     "(p a)"
     ")";
-  init_arena();
 
   // 
   char* pp = str;
@@ -190,7 +157,6 @@ int main(int argc, char const* argv[])
   }
 
   //dump(0, curr);
-  free_arena();
   return 0;
 
   value a = value_new_f(1.5);

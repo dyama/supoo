@@ -32,12 +32,6 @@ bool value_is_nil(value val)
   if (value_type(val) == AT_ATOM) {
     return 0;
   }
-  // int i;
-  // for (i=0; i<ary_len(arena); i++) {
-  //   if (val.p == ary_ref(arena, i).p) {
-  //     return 0;
-  //   }
-  // }
   return 1;
 }
 

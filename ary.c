@@ -4,9 +4,6 @@ value ary_new(int size)
 {
   value res = atom_new(AT_ATOM, 0);
   res = ary_resize(res, size);
-  if (has_arena) {
-    ary_push(arena, res);
-  }
   return res;
 }
 
