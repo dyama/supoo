@@ -6,41 +6,8 @@
 #include "atom.h"
 #include "value.h"
 #include "ary.h"
-
-double value_f(value val)
-{
-  if (value_is_null(val) || value_type(val) != AT_FLOAT) {
-    return 0.0;
-  }
-  return val.p->f;
-}
-
-char* value_s(value val)
-{
-  if (value_is_null(val) || value_type(val) != AT_SYMBOL) {
-    return "";
-  }
-  return val.p->s;
-}
-
-value value_a(int index, value val)
-{
-  value res;
-  if (value_is_null(val)) {
-    res.p = NULL;
-    return res;
-  }
-  if (value_type(val) != AT_ATOM) {
-    res.p = NULL;
-    return res;
-  }
-  if (val.p->size <= index) {
-    res.p = NULL;
-    return res;
-  }
-  res.p = val.p->a[index];
-  return res;
-}
+#include "float.h"
+#include "symbol.h"
 
 value value_nil()
 {
@@ -54,13 +21,6 @@ void value_free(value* val)
     free(val->p);
   }
   val->p = NULL;
-}
-
-value value_new_f(double val)
-{
-  value res = atom_new(AT_FLOAT, sizeof(val));
-  res.p->f = val;
-  return res;
 }
 
 value value_new_s(char* const val)
