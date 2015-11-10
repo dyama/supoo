@@ -2,8 +2,7 @@
 #include <math.h>
 #include <stdarg.h>
 
-typedef int bool;
-
+#include "common.h"
 #include "atom.h"
 #include "value.h"
 #include "ary.h"
@@ -48,7 +47,6 @@ value value_nil()
   return atom_new(AT_NIL, 0);
 }
 
-
 void value_free(value* val)
 {
   int i;
@@ -76,7 +74,7 @@ bool dump(int n, value val)
 {
   int i;
   if (n == 0) {
-    puts("dump ----");
+    puts("begin of dump ----");
   }
   else if (n > 10) {
     fprintf(stderr, "object has large nested structures.\n");
@@ -130,24 +128,20 @@ int main(int argc, char const* argv[])
     "(p a)"
     ")";
 
-  // 
+  printf("%s\n", str);
+
   char* pp = str;
-  int nest = 0;
   value stack = ary_new(0);
   value curr = ary_new(0);
   for (; *pp != '\0'; pp++) {
     if (*pp == '(') {
       ary_push(stack, curr);
       curr = ary_new(0);
-      printf("new token %d\n", nest);
-      nest++;
     }
     else if (*pp == ')') {
       value prev = curr;
       curr = ary_pop(stack);
       ary_push(curr, prev);
-      nest--;
-      printf("end token %d\n", nest);
     }
     else {
       if (*pp != ' ') {
@@ -156,20 +150,7 @@ int main(int argc, char const* argv[])
     }
   }
 
-  //dump(0, curr);
-  return 0;
-
-  value a = value_new_f(1.5);
-  value b = value_new_s("foobar");
-  value c = ary_new(3);
-  ary_set(c, 0, a);
-  ary_set(c, 1, b);
-  ary_set(c, 2, a);
-
-//ary_push(c, value_new_f(123.3));
-//ary_push(c, value_new_f(23.3));
-//ary_push(c, value_new_s("hoge"));
-
+  dump(0, curr);
   return 0;
 }
 
