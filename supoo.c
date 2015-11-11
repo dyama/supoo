@@ -1,7 +1,3 @@
-#include <string.h>
-#include <math.h>
-#include <stdarg.h>
-
 #include "common.h"
 #include "atom.h"
 #include "value.h"
@@ -17,18 +13,19 @@ value value_nil()
 
 void value_free(value* val)
 {
-  int i;
-  if (i >= 0 && !value_is_null(*val)) {
-    free(val->p);
+  if (value_is_null(*val)) {
+    return;
   }
+  if (value_type(*val) == AT_ATOM) {
+    int i;
+    for (i = 0; i < ary_len(*val); i++) {
+      value item = ary_ref(*val, i);
+      value_free(&item);
+    }
+    ary_resize(*val, 0);
+  }
+  free(val->p);
   val->p = NULL;
-}
-
-value value_new_s(char* const val)
-{
-  value res = atom_new(AT_SYMBOL, strlen(val));
-  res.p->s = val;
-  return res;
 }
 
 int main(int argc, char const* argv[])
@@ -55,12 +52,20 @@ int main(int argc, char const* argv[])
     }
     else {
       if (*pp != ' ') {
-        ary_push(curr, value_new_s(pp));
+        if (*pp >= '0' && *pp <= '9') {
+          ary_push(curr, value_new_f(*pp - '0'));
+        }
+        else {
+          ary_push(curr, value_new_s(pp));
+        }
       }
     }
   }
 
   dump(0, curr);
+  value_free(&curr);
+  dump(0, curr);
+
   return 0;
 }
 

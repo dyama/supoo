@@ -3,7 +3,9 @@
 value ary_new(int size)
 {
   value res = atom_new(AT_ATOM, 0);
-  res = ary_resize(res, size);
+  if (size) {
+    res = ary_resize(res, size);
+  }
   return res;
 }
 
