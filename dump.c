@@ -22,7 +22,7 @@ bool dump(int n, value val)
       printf("#<FLOAT:0x%X, value:%f>\n", (intptr_t)val.p, value_f(val));
       break;
     case AT_SYMBOL:
-      printf("#<SYMBOL:0x%X value:%c>\n", (intptr_t)val.p, *value_s(val));
+      printf("#<SYMBOL:0x%X value:%s>\n", (intptr_t)val.p, value_s(val));
       break;
     case AT_ATOM:
       printf("#<ATOM:0x%X count:%d>\n", (intptr_t)val.p, ary_len(val));

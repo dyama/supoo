@@ -24,6 +24,11 @@ void value_free(value* val)
     }
     ary_resize(*val, 0);
   }
+  // else if (value_type(*val) == AT_SYMBOL) {
+  //   if (val->p->s) {
+  //     free(val->p->s);
+  //   }
+  // }
   free(val->p);
   val->p = NULL;
 }
@@ -31,8 +36,8 @@ void value_free(value* val)
 int main(int argc, char const* argv[])
 {
   char* str = "("
-    "(= a (* 2 (+ 1 2) 3))"
-    "(p a)"
+    "(= a (* 2.5 (+ 15 2) 30))"
+    "(print a)"
     ")";
 
   printf("%s\n", str);
@@ -40,31 +45,55 @@ int main(int argc, char const* argv[])
   char* pp = str;
   value stack = ary_new(0);
   value curr = ary_new(0);
+
   for (; *pp != '\0'; pp++) {
     if (*pp == '(') {
       ary_push(stack, curr);
       curr = ary_new(0);
+      continue;
     }
-    else if (*pp == ')') {
+    if (*pp == ')') {
       value prev = curr;
       curr = ary_pop(stack);
       ary_push(curr, prev);
+      continue;
     }
-    else {
-      if (*pp != ' ') {
-        if (*pp >= '0' && *pp <= '9') {
-          ary_push(curr, value_new_f(*pp - '0'));
+    if (*pp == ' ') {
+      continue;
+    }
+    char* endptr;
+    double dval;
+    dval = strtod(pp, &endptr);
+    if (errno != ERANGE) {
+      if (pp == endptr) {
+        // sym
+        for (;*endptr != ' ' && *endptr != ')';) {
+          endptr++;
         }
-        else {
-          ary_push(curr, value_new_s(pp));
+        int len = endptr - pp;
+        char* symname = (char*)malloc(sizeof(char) * len + 1);
+        int j;
+        for (j = 0; j < len; j++, pp++) {
+          symname[j] = *pp;
         }
+        symname[j] = '\0';
+        ary_push(curr, value_new_s(symname));
       }
+      else {
+        // float
+        ary_push(curr, value_new_f(dval));
+        pp = endptr;
+      }
+    }
+    else if (dval == HUGE_VAL) {
+      fprintf(stderr, "Too huge value specified.\n");
     }
   }
 
   dump(0, curr);
+
   value_free(&curr);
-  dump(0, curr);
+  value_free(&stack);
 
   return 0;
 }
