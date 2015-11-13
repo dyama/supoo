@@ -33,67 +33,89 @@ void value_free(value* val)
   val->p = NULL;
 }
 
+int parse(const char* s, value* curr)
+{
+  value stack = ary_new(0);
+  *curr = ary_new(0);
+
+  for (; *s != '\0'; s++) {
+    if (*s == '(') {
+      ary_push(stack, *curr);
+      *curr = ary_new(0);
+      continue;
+    }
+    else if (*s == ')') {
+      value prev = *curr;
+      if (ary_len(stack) < 1) {
+        goto PARSE_ERROR;
+      }
+      *curr = ary_pop(stack);
+      ary_push(*curr, prev);
+      continue;
+    }
+    else if (*s == ' ') {
+      continue;
+    }
+    char* ep;
+    double dv;
+    dv = strtod(s, &ep);
+    if (errno != ERANGE) {
+      if (s == ep) {
+        // sym
+        for (;*(ep+1) != ' ' && *(ep+1) != '(' && *(ep+1) != ')';) {
+          ep++;
+        }
+        int len = ep - s;
+        char* sym = (char*)malloc(sizeof(char) * len + 1);
+        int j;
+        for (j = 0; j < len; j++, s++) {
+          sym[j] = *s;
+        }
+        sym[j] = '\0';
+        ary_push(*curr, value_new_s(sym));
+      }
+      else {
+        // float
+        ary_push(*curr, value_new_f(dv));
+        s = --ep;
+      }
+    }
+    else if (dv == HUGE_VAL) {
+      fprintf(stderr, "Too huge value specified.\n");
+    }
+    else {
+      fprintf(stderr, "Parser error.\n");
+    }
+  }
+  if (ary_len(stack)) {
+PARSE_ERROR:
+    fprintf(stderr, "The number of brackets are mismatch.\n");
+    value_free(&stack);
+    return 1;
+  }
+  value_free(&stack);
+  return 0;
+}
+
 int main(int argc, char const* argv[])
 {
   char* str = "("
-    "(= a (* 2.5 (+ 15 2) 30))"
-    "(print a)"
+    "(put a)"
+    "(set a (* 2.5 (+ 1 2) 3))"
+    "(put a)"
     ")";
 
   printf("%s\n", str);
 
-  char* pp = str;
-  value stack = ary_new(0);
-  value curr = ary_new(0);
-
-  for (; *pp != '\0'; pp++) {
-    if (*pp == '(') {
-      ary_push(stack, curr);
-      curr = ary_new(0);
-      continue;
-    }
-    if (*pp == ')') {
-      value prev = curr;
-      curr = ary_pop(stack);
-      ary_push(curr, prev);
-      continue;
-    }
-    if (*pp == ' ') {
-      continue;
-    }
-    char* endptr;
-    double dval;
-    dval = strtod(pp, &endptr);
-    if (errno != ERANGE) {
-      if (pp == endptr) {
-        // sym
-        for (;*endptr != ' ' && *endptr != ')';) {
-          endptr++;
-        }
-        int len = endptr - pp;
-        char* symname = (char*)malloc(sizeof(char) * len + 1);
-        int j;
-        for (j = 0; j < len; j++, pp++) {
-          symname[j] = *pp;
-        }
-        symname[j] = '\0';
-        ary_push(curr, value_new_s(symname));
-      }
-      else {
-        // float
-        ary_push(curr, value_new_f(dval));
-        pp = endptr;
-      }
-    }
-    else if (dval == HUGE_VAL) {
-      fprintf(stderr, "Too huge value specified.\n");
-    }
+  value arena;
+  if (parse(str, &arena)) {
+    value_free(&arena);
+    return 1;
   }
+  dump(0, arena);
 
-  dump(0, curr);
-
-  value_free(&curr);
-  value_free(&stack);
+  value_free(&arena);
+  dump(0, arena);
 
   return 0;
 }
