@@ -53,9 +53,6 @@ value get_value(const char** s)
       if ((ep = strpbrk(*s, "() ")) == NULL) {
         for (; *ep != '\0'; ep++);
       }
-      else {
-        ep -= 1;
-      }
       char* sym = str_copy(*s, ep - *s + 1);
       result = value_new_s(sym);
     }
@@ -101,6 +98,7 @@ int parse(const char* s, value* curr)
       value val = get_value(&s);
       if (!value_is_null(val)) {
         ary_push(*curr, val);
+        s--;
       }
       else {
         fprintf(stderr, "Failed to parse.\n");
@@ -112,7 +110,8 @@ int parse(const char* s, value* curr)
   if (n) {
 PARSE_ERROR:
     fprintf(stderr, "The number of brackets are mismatch. : %d\n", ary_len(stack));
-    printf("n=%d\n", n);
+    printf("n=%d ! stack:\n", n);
+    dump(0, stack);
     value_free(&stack);
     return 1;
   }
@@ -141,7 +140,7 @@ int main(int argc, char const* argv[])
 #else
   char* str = "("
     "  (put a )"
-    "  (set a (* 2.5 (+ 1 2 ) 3 ) )"
+    "  (set a (* 2.5 (+ 1 2) 3) )"
     "  (put a)"
     " )";
 #endif
