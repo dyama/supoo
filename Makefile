@@ -11,7 +11,7 @@ CFLAGS=-Wall -g -lm
 all: $(PROGRAM)
 
 run: $(PROGRAM)
-	./$(PROGRAM)
+	./$(PROGRAM) test.lisp
 
 debug: $(PROGRAM)
 	cgdb $(PROGRAM)

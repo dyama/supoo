@@ -77,7 +77,7 @@ value ary_resize(value ary, int size)
     atom** p;
     if ((p = (atom**)realloc(ary.p->a, sizeof(atom) * size)) == NULL) {
       free(p);
-      fprintf(stderr, "Failed to resize an array.\n");
+      fprintf(stderr, "Failed to resize an array. size=%d\n", size);
       return ary;
     }
     ary.p->a = p;

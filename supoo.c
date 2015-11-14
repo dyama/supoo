@@ -33,6 +33,14 @@ void value_free(value* val)
   val->p = NULL;
 }
 
+char* str_copy(const char* str, int len)
+{
+  char* res = (char*)malloc(sizeof(char) * len + 1);
+  strncpy(res, str, len);
+  res[len] = '\0';
+  return res;
+}
+
 int parse(const char* s, value* curr)
 {
   value stack = ary_new(0);
@@ -42,7 +50,6 @@ int parse(const char* s, value* curr)
     if (*s == '(') {
       ary_push(stack, *curr);
       *curr = ary_new(0);
-      continue;
     }
     else if (*s == ')') {
       value prev = *curr;
@@ -51,59 +58,77 @@ int parse(const char* s, value* curr)
       }
       *curr = ary_pop(stack);
       ary_push(*curr, prev);
-      continue;
     }
     else if (*s == ' ') {
       continue;
     }
-    char* ep;
-    double dv;
-    dv = strtod(s, &ep);
-    if (errno != ERANGE) {
-      if (s == ep) {
-        // sym
-        for (;*(ep+1) != ' ' && *(ep+1) != '(' && *(ep+1) != ')';) {
-          ep++;
+    else {
+      char* ep;
+      double dv;
+      dv = strtod(s, &ep);
+      if (errno != ERANGE) {
+        if (s == ep) {
+          // sym
+          if ((ep = strpbrk(s, "() ")) == NULL) {
+            for (; *ep != '\0'; ep++);
+          }
+          else {
+            ep -= 1;
+          }
+          char* sym = str_copy(s, ep - s + 1);
+          ary_push(*curr, value_new_s(sym));
         }
-        int len = ep - s;
-        char* sym = (char*)malloc(sizeof(char) * len + 1);
-        int j;
-        for (j = 0; j < len; j++, s++) {
-          sym[j] = *s;
+        else {
+          // float
+          ary_push(*curr, value_new_f(dv));
         }
-        sym[j] = '\0';
-        ary_push(*curr, value_new_s(sym));
+        s = ep;
+      }
+      else if (dv == HUGE_VAL) {
+        fprintf(stderr, "Too huge value specified.\n");
       }
       else {
-        // float
-        ary_push(*curr, value_new_f(dv));
-        s = --ep;
+        fprintf(stderr, "Parser error.\n");
       }
     }
-    else if (dv == HUGE_VAL) {
-      fprintf(stderr, "Too huge value specified.\n");
-    }
-    else {
-      fprintf(stderr, "Parser error.\n");
-    }
+    printf("next{%s}\n", s);
   }
+
   if (ary_len(stack)) {
 PARSE_ERROR:
-    fprintf(stderr, "The number of brackets are mismatch.\n");
+    fprintf(stderr, "The number of brackets are mismatch. : %d\n", ary_len(stack));
     value_free(&stack);
     return 1;
   }
   value_free(&stack);
+
   return 0;
 }
 
 int main(int argc, char const* argv[])
 {
-  char* str = "("
-    "(put a)"
-    "(set a (* 2.5 (+ 1 2) 3))"
-    "(put a)"
-    ")";
+  //FILE* f = stdin;
+  //if (argc == 2 && (f = fopen(argv[1], "r")) == NULL) {
+  //  fprintf(stderr, "No such file: %s", argv[1]);
+  //  return 1;
+  //}
+
+#if 0
+  FILE* f = fopen("test.lisp", "r");
+  char str[1024] = {0};
+  int c;
+  int i;
+  for (i = 0; (c = fgetc(f)) != EOF; i++) {
+    str[i] = (char)(c == '\n' ? ' ' : c);
+  }
+  fclose(f);
+#else
+ char* str = "("
+   "  (put a )"
+   "  (set a (* 2.5 (+ 1 2 ) 3) )"
+   "  (put a)"
+   " )";
+#endif
 
   printf("%s\n", str);
 
