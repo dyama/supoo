@@ -16,14 +16,14 @@ void value_free(value* val)
   if (value_is_null(*val)) {
     return;
   }
-  if (value_type(*val) == AT_ATOM) {
-    int i;
-    for (i = 0; i < ary_len(*val); i++) {
-      value item = ary_ref(*val, i);
-      value_free(&item);
-    }
-    ary_resize(*val, 0);
-  }
+  // if (value_type(*val) == AT_ATOM) {
+  //   int i;
+  //   for (i = 0; i < ary_len(*val); i++) {
+  //     value item = ary_ref(*val, i);
+  //     value_free(&item);
+  //   }
+  //   ary_resize(*val, 0);
+  // }
   // else if (value_type(*val) == AT_SYMBOL) {
   //   if (val->p->s) {
   //     free(val->p->s);
@@ -41,15 +41,49 @@ char* str_copy(const char* str, int len)
   return res;
 }
 
+value get_value(const char** s)
+{
+  value result;
+  char* ep;
+  double dv;
+  dv = strtod(*s, &ep);
+  if (errno != ERANGE) {
+    if (*s == ep) {
+      // sym
+      if ((ep = strpbrk(*s, "() ")) == NULL) {
+        for (; *ep != '\0'; ep++);
+      }
+      else {
+        ep -= 1;
+      }
+      char* sym = str_copy(*s, ep - *s + 1);
+      result = value_new_s(sym);
+    }
+    else {
+      // float
+      result = value_new_f(dv);
+    }
+    *s = ep;
+  }
+  else if (dv == HUGE_VAL) {
+    fprintf(stderr, "Too huge value specified.\n");
+  }
+  else {
+    fprintf(stderr, "Parser error.\n");
+  }
+  return result;
+}
+
 int parse(const char* s, value* curr)
 {
   value stack = ary_new(0);
   *curr = ary_new(0);
-
+  int n = 0;
   for (; *s != '\0'; s++) {
     if (*s == '(') {
       ary_push(stack, *curr);
       *curr = ary_new(0);
+      n++;
     }
     else if (*s == ')') {
       value prev = *curr;
@@ -58,45 +92,27 @@ int parse(const char* s, value* curr)
       }
       *curr = ary_pop(stack);
       ary_push(*curr, prev);
+      n--;
     }
     else if (*s == ' ') {
       continue;
     }
     else {
-      char* ep;
-      double dv;
-      dv = strtod(s, &ep);
-      if (errno != ERANGE) {
-        if (s == ep) {
-          // sym
-          if ((ep = strpbrk(s, "() ")) == NULL) {
-            for (; *ep != '\0'; ep++);
-          }
-          else {
-            ep -= 1;
-          }
-          char* sym = str_copy(s, ep - s + 1);
-          ary_push(*curr, value_new_s(sym));
-        }
-        else {
-          // float
-          ary_push(*curr, value_new_f(dv));
-        }
-        s = ep;
-      }
-      else if (dv == HUGE_VAL) {
-        fprintf(stderr, "Too huge value specified.\n");
+      value val = get_value(&s);
+      if (!value_is_null(val)) {
+        ary_push(*curr, val);
       }
       else {
-        fprintf(stderr, "Parser error.\n");
+        fprintf(stderr, "Failed to parse.\n");
+        break;
       }
     }
-    printf("next{%s}\n", s);
   }
 
-  if (ary_len(stack)) {
+  if (n) {
 PARSE_ERROR:
     fprintf(stderr, "The number of brackets are mismatch. : %d\n", ary_len(stack));
+    printf("n=%d\n", n);
     value_free(&stack);
     return 1;
   }
@@ -123,11 +139,11 @@ int main(int argc, char const* argv[])
   }
   fclose(f);
 #else
- char* str = "("
-   "  (put a )"
-   "  (set a (* 2.5 (+ 1 2 ) 3) )"
-   "  (put a)"
-   " )";
+  char* str = "("
+    "  (put a )"
+    "  (set a (* 2.5 (+ 1 2 ) 3 ) )"
+    "  (put a)"
+    " )";
 #endif
 
   printf("%s\n", str);
@@ -140,7 +156,7 @@ int main(int argc, char const* argv[])
   dump(0, arena);
 
   value_free(&arena);
-  dump(0, arena);
+  // dump(0, arena);
 
   return 0;
 }

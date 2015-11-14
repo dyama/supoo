@@ -64,15 +64,16 @@ value ary_resize(value ary, int size)
     fprintf(stderr, "Specified object is nil.\n");
     return ary;
   }
-  int org_size = ary_len(ary);
-  if (org_size == size) {
-    fprintf(stderr, "Same size specified in ary_resize.\n");
-    return ary;
-  }
-  else if (size == 0) {
+  if (size == 0) {
     free(ary.p->a);
     ary.p->size = 0;
   }
+#if DEBUG
+  else if (ary_len(ary) == size) {
+    fprintf(stderr, "Same size specified in ary_resize.\n");
+    return ary;
+  }
+#endif
   else {
     atom** p;
     if ((p = (atom**)realloc(ary.p->a, sizeof(atom) * size)) == NULL) {
