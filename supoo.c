@@ -16,19 +16,28 @@ void value_free(value* val)
   if (value_is_null(*val)) {
     return;
   }
-  // if (value_type(*val) == AT_ATOM) {
-  //   int i;
-  //   for (i = 0; i < ary_len(*val); i++) {
-  //     value item = ary_ref(*val, i);
-  //     value_free(&item);
-  //   }
-  //   ary_resize(*val, 0);
-  // }
-  // else if (value_type(*val) == AT_SYMBOL) {
-  //   if (val->p->s) {
-  //     free(val->p->s);
-  //   }
-  // }
+  free(val->p);
+  val->p = NULL;
+}
+
+void value_free_all(value* val)
+{
+  if (value_is_null(*val)) {
+    return;
+  }
+  if (value_type(*val) == AT_ATOM) {
+    int i;
+    for (i = 0; i < ary_len(*val); i++) {
+      value item = ary_ref(*val, i);
+      value_free(&item);
+    }
+    ary_resize(*val, 0);
+  }
+  else if (value_type(*val) == AT_SYMBOL) {
+    if (val->p->s) {
+      free(val->p->s);
+    }
+  }
   free(val->p);
   val->p = NULL;
 }
@@ -149,13 +158,13 @@ int main(int argc, char const* argv[])
 
   value arena;
   if (parse(str, &arena)) {
-    value_free(&arena);
+    value_free_all(&arena);
     return 1;
   }
   dump(0, arena);
 
-  value_free(&arena);
-  // dump(0, arena);
+  value_free_all(&arena);
+  dump(0, arena);
 
   return 0;
 }
