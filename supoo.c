@@ -7,13 +7,43 @@
 #include "funcptr.h"
 #include "dump.h"
 #include "parse.h"
+#include "func.h"
 
 // * Global variables management list.
 // * Stack for function call.
 // * GC
 
+void test()
+{
+  value a = value_new_f(1.2);
+  value b = value_new_f(3.4);
+  value c = value_new_f(-1.3);
+  value sym = value_new_s("-");
+  value list = ary_new(0);
+  ary_push(list, sym);
+  ary_push(list, a);
+  ary_push(list, b);
+  // ary_push(list, c);
+
+  func_init();
+
+  value res = exec_sentence(NULL, list);
+  dump(0, res);
+
+  value_free_all(&list);
+  value_free_all(&res);
+
+  //value_free(&fis);
+  //value_free(&fps);
+
+  return;
+}
+
 int main(int argc, char const* argv[])
 {
+  test();
+  return 0;
+
   //FILE* f = stdin;
   //if (argc == 2 && (f = fopen(argv[1], "r")) == NULL) {
   //  fprintf(stderr, "No such file: %s", argv[1]);
