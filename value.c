@@ -44,3 +44,17 @@ atom_type value_type(value val)
   return (t >= AT_NIL && t < AT_UKNOWN) ? (atom_type)t : AT_UKNOWN;
 }
 
+value value_nil()
+{
+  return atom_new(AT_NIL, 0);
+}
+
+void value_free(value* val)
+{
+  if (value_is_null(*val)) {
+    return;
+  }
+  free(val->p);
+  val->p = NULL;
+}
+

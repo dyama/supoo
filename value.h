@@ -15,5 +15,7 @@ bool value_is_null(value val);
 bool value_is_nil(value val);
 atom_type value_type(value val);
 value value_copy(value src);
+value value_nil();
+void value_free(value* val);
 
 #endif

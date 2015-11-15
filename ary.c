@@ -126,3 +126,25 @@ value ary_pop(value ary)
   return res;
 }
 
+void value_free_all(value* val)
+{
+  if (value_is_null(*val)) {
+    return;
+  }
+  if (value_type(*val) == AT_ATOM) {
+    int i;
+    for (i = 0; i < ary_len(*val); i++) {
+      value item = ary_ref(*val, i);
+      value_free(&item);
+    }
+    ary_resize(*val, 0);
+  }
+  else if (value_type(*val) == AT_SYMBOL) {
+    if (val->p->s) {
+      free(val->p->s);
+    }
+  }
+  free(val->p);
+  val->p = NULL;
+}
+
