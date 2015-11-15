@@ -4,8 +4,13 @@
 #include "ary.h"
 #include "float.h"
 #include "symbol.h"
+#include "funcptr.h"
 #include "dump.h"
 #include "parse.h"
+
+// * Global variables management list.
+// * Stack for function call.
+// * GC
 
 int main(int argc, char const* argv[])
 {

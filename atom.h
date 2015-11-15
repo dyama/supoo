@@ -12,6 +12,7 @@ enum atom_type
   AT_FLOAT,
   AT_SYMBOL,
   AT_ATOM,
+  AT_FUNCPTR,
   AT_UKNOWN
 };
 
@@ -23,6 +24,7 @@ struct atom
     double f;
     char*  s;
     atom** a;
+    void*  fp;
   };
 };
 

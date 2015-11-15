@@ -1,6 +1,6 @@
 
 PROGRAM=supoo
-OBJS=supoo.o value.o ary.o float.o symbol.o dump.o parse.o
+OBJS=supoo.o value.o ary.o float.o symbol.o dump.o parse.o funcptr.o func.o
 
 CC=gcc
 CFLAGS=-Wall -g -lm
