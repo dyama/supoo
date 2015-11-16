@@ -1,5 +1,4 @@
 #include "common.h"
-#include "atom.h"
 #include "value.h"
 #include "ary.h"
 #include "float.h"
@@ -25,7 +24,7 @@ void test()
   // ary_push(list, b);
   // // ary_push(list, c);
 
-  char* str = " ( ( * 2.5 ( + 1 2 ) 3 ) ) ";
+  char* str = " ( * 2.5 ( + 1 2 ) 3 ) ";
   printf("%s\n", str);
 
   value arena;

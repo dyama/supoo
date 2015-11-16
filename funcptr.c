@@ -2,7 +2,7 @@
 
 value value_new_fp(void* val)
 {
-  value res = atom_new(AT_FUNCPTR, sizeof(val));
+  value res = value_malloc(AT_FUNCPTR);
   res.p->fp = val;
   return res;
 }

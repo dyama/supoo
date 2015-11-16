@@ -2,7 +2,7 @@
 
 value value_new_f(double val)
 {
-  value res = atom_new(AT_FLOAT, sizeof(val));
+  value res = value_malloc(AT_FLOAT);
   res.p->f = val;
   return res;
 }

@@ -2,7 +2,7 @@
 
 value ary_new(int size)
 {
-  value res = atom_new(AT_ATOM, size);
+  value res = value_malloc(AT_ATOM);
   if (size) {
     res = ary_resize(res, size);
   }
@@ -59,7 +59,7 @@ int ary_last(value ary)
 value ary_resize(value ary, int size)
 {
   if (value_is_null(ary)) {
-    ary = atom_new(AT_ATOM, size);
+    ary = value_malloc(AT_ATOM);
   }
   if (size == 0) {
     free(ary.p->a);

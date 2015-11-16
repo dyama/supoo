@@ -2,7 +2,7 @@
 
 value value_new_s(char* const val)
 {
-  value res = atom_new(AT_SYMBOL, strlen(val));
+  value res = value_malloc(AT_SYMBOL);
   res.p->s = val;
   return res;
 }

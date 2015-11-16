@@ -1,17 +1,17 @@
 #include "value.h"
 
-value atom_new(atom_type type, int size)
+value value_malloc(atom_type type)
 {
   value res;
   res.p = (atom*)malloc(sizeof(atom));
   res.p->type = type;
-  res.p->size = size;
+  res.p->size = 0;
   return res;
 }
 
 value value_copy(value src)
 {
-  value res = atom_new(src.p->type, src.p->size);
+  value res = value_malloc(src.p->type);
   *res.p = *src.p;
   return res;
 }
@@ -49,7 +49,7 @@ atom_type value_type(value val)
 
 value value_nil()
 {
-  return atom_new(AT_NIL, 0);
+  return value_malloc(AT_NIL);
 }
 
 void value_free(value* val)

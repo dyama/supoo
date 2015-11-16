@@ -1,7 +1,6 @@
 #ifndef _ARY_H_
 #define _ARY_H_
 
-#include "atom.h"
 #include "value.h"
 
 int ary_index(value ary, value item);
