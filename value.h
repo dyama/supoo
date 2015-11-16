@@ -1,7 +1,7 @@
 #ifndef _VALUE_H_
 #define _VALUE_H_
 
-#include "common.h"
+#include "supoo.h"
 
 typedef enum atom_type atom_type;
 typedef struct atom atom;
