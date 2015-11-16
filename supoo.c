@@ -15,26 +15,32 @@
 
 void test()
 {
-  value a = value_new_f(1.2);
-  value b = value_new_f(3.4);
-  value c = value_new_f(-1.3);
-  value sym = value_new_s("-");
-  value list = ary_new(0);
-  ary_push(list, sym);
-  ary_push(list, a);
-  ary_push(list, b);
-  // ary_push(list, c);
+  // value a = value_new_f(1.2);
+  // value b = value_new_f(3.4);
+  // value c = value_new_f(-1.3);
+  // value sym = value_new_s("-");
+  // value list = ary_new(0);
+  // ary_push(list, sym);
+  // ary_push(list, a);
+  // ary_push(list, b);
+  // // ary_push(list, c);
+
+  char* str = " ( ( * 2.5 ( + 1 2 ) 3 ) ) ";
+  printf("%s\n", str);
+
+  value arena;
+  if (parse(str, &arena)) {
+    value_free_all(&arena);
+    return;
+  }
+  dump(0, arena);
 
   func_init();
 
-  value res = exec_sentence(NULL, list);
-  dump(0, res);
-
-  value_free_all(&list);
-  value_free_all(&res);
-
-  //value_free(&fis);
-  //value_free(&fps);
+  //value res = exec(NULL, arena);
+  //dump(0, res);
+  //value_free_all(&res);
+  value_free_all(&arena);
 
   return;
 }

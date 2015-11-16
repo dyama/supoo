@@ -40,6 +40,9 @@ atom_type value_type(value val)
   if (value_is_null(val)) {
     return AT_NIL;
   }
+  if (val.p == NULL) {
+    return AT_NIL;
+  }
   int t = val.p->type;
   return (t >= AT_NIL && t < AT_UKNOWN) ? (atom_type)t : AT_UKNOWN;
 }

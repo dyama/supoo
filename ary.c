@@ -2,7 +2,7 @@
 
 value ary_new(int size)
 {
-  value res = atom_new(AT_ATOM, 0);
+  value res = atom_new(AT_ATOM, size);
   if (size) {
     res = ary_resize(res, size);
   }
@@ -12,7 +12,6 @@ value ary_new(int size)
 int ary_len(value ary)
 {
   if (value_is_null(ary)) {
-    fprintf(stderr, "Specified object is nil. line:%d\n", __LINE__);
     return 0;
   }
   return ary.p->size;
@@ -52,8 +51,7 @@ value ary_set(value ary, int index, value item)
 int ary_last(value ary)
 {
   if (value_is_null(ary)) {
-    fprintf(stderr, "Specified object is nil.\n");
-    return -1;
+    return 0;
   }
   return ary_len(ary) - 1;
 }
@@ -61,8 +59,7 @@ int ary_last(value ary)
 value ary_resize(value ary, int size)
 {
   if (value_is_null(ary)) {
-    fprintf(stderr, "Specified object is nil.\n");
-    return ary;
+    ary = atom_new(AT_ATOM, size);
   }
   if (size == 0) {
     free(ary.p->a);
@@ -89,11 +86,7 @@ value ary_resize(value ary, int size)
 
 value ary_push(value ary, value item)
 {
-  if (value_is_null(ary)) {
-    fprintf(stderr, "Specified object is nil. line:%d\n", __LINE__);
-    return ary;
-  }
-  ary_resize(ary, ary_len(ary) + 1);
+  ary = ary_resize(ary, ary_len(ary) + 1);
   int last_index = ary_last(ary);
   ary.p->a[last_index] = item.p;
   return ary;
@@ -135,6 +128,9 @@ void value_free_all(value* val)
     int i;
     for (i = 0; i < ary_len(*val); i++) {
       value item = ary_ref(*val, i);
+      if (value_is_null(item)) {
+        continue;
+      }
       value_free(&item);
     }
     ary_resize(*val, 0);

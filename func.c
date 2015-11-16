@@ -15,12 +15,54 @@ void func_init()
   fps = ary_new(0);
 
   ary_push(fis, value_new_s("+"));
-  ary_push(fps, value_new_fp(add));
+  ary_push(fps, value_new_fp(_add));
 
   ary_push(fis, value_new_s("-"));
-  ary_push(fps, value_new_fp(sub));
+  ary_push(fps, value_new_fp(_sub));
 
   return;
+}
+
+/* <sentence> : <SYMBOL>, ...  */
+value exec(value* state, value s)
+{
+  if (value_type(s) != AT_ATOM) {
+    return s;
+  }
+  if (ary_len(s) == 0) {
+    return s;
+  }
+  int index;
+  while ((index = get_atom_index(s)) >= 0) {
+    s.p->a[index] = exec(state, ary_ref(s, index)).p;
+  }
+  value sym = ary_ref(s, 0);
+  value (*fp)(value*, value) = (value(*)(value*,value))get_funcptr(sym);
+  if (fp == NULL) {
+    // no such function.
+    fprintf(stderr, "No such function named %s.\n", value_s(sym));
+    return value_nil();
+  }
+  value res = (*fp)(state, s);
+  return res;
+}
+
+/* リスト s に含まれる最初の ATOM の位置を取得する */
+int get_atom_index(value s)
+{
+  int i;
+  if (value_type(s) == AT_ATOM) {
+    for (i = 0; i < ary_len(s); i++) {
+      value item = ary_ref(s, i);
+      if (value_is_null(item)) {
+        continue;
+      }
+      if (value_type(item) == AT_ATOM) {
+        return i;
+      }
+    }
+  }
+  return -1;
 }
 
 /* <sentence> : <SYMBOL>, ...  */
@@ -61,7 +103,7 @@ void* get_funcptr(value sym)
   return value_fp(func);
 }
 
-value add(value* state, value args)
+value _add(value* state, value args)
 {
   double res = 0.0;
   int i;
@@ -75,7 +117,7 @@ value add(value* state, value args)
   return value_new_f(res);
 }
 
-value sub(value* state, value args)
+value _sub(value* state, value args)
 {
   double res;
   if (ary_len(args) != 3) {
@@ -85,7 +127,7 @@ value sub(value* state, value args)
   return value_new_f(res);
 }
 
-value div(value* state, value args)
+value _div(value* state, value args)
 {
   double res;
   if (ary_len(args) != 3) {
@@ -96,7 +138,7 @@ value div(value* state, value args)
 
 }
 
-value mult(value* state, value args)
+value _mult(value* state, value args)
 {
   double res;
   if (ary_len(args) != 3) {
@@ -106,12 +148,12 @@ value mult(value* state, value args)
   return value_new_f(res);
 }
 
-value put(value* state, value args)
+value _put(value* state, value args)
 {
   return value_nil();
 }
 
-value quate(value* state, value args)
+value _quate(value* state, value args)
 {
   return value_nil();
 }

@@ -8,14 +8,16 @@
 #include "funcptr.h"
 
 void func_init();
+value exec(value* state, value s);
 value exec_sentence(value* state, value s);
 void* get_funcptr(value val);
+int get_atom_index(value s);
 
-value add(value* state, value args);
-value sub(value* state, value args);
-value div(value* state, value args);
-value mult(value* state, value args);
-value put(value* state, value args);
-value quate(value* state, value args);
+value _add(value* state, value args);
+value _sub(value* state, value args);
+value _div(value* state, value args);
+value _mult(value* state, value args);
+value _put(value* state, value args);
+value _quate(value* state, value args);
 
 #endif

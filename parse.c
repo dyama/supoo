@@ -75,8 +75,8 @@ int parse(const char* s, value* curr)
   }
 
   if (n) {
-PARSE_ERROR:
     fprintf(stderr, "The number of brackets are mismatch. : %d\n", ary_len(stack));
+PARSE_ERROR:
     printf("n=%d ! stack:\n", n);
     dump(0, stack);
     value_free(&stack);
