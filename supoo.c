@@ -37,9 +37,9 @@ void test()
 
   func_init();
 
-  //value res = exec(NULL, arena);
-  //dump(0, res);
-  //value_free_all(&res);
+  // value res = exec(NULL, arena);
+  // dump(0, res);
+  // value_free_all(&res);
   value_free_all(&arena);
 
   return;

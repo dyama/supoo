@@ -24,6 +24,9 @@ bool dump(int n, value val)
     case AT_SYMBOL:
       printf("#<SYMBOL:0x%X value:%s>\n", (intptr_t)val.p, value_s(val));
       break;
+    case AT_FUNCPTR:
+      printf("#<FUNCPTR:0x%X>\n", (intptr_t)val.p);
+      break;
     case AT_ATOM:
       printf("#<ATOM:0x%X count:%d>\n", (intptr_t)val.p, ary_len(val));
       int i;
