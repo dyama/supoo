@@ -2,7 +2,7 @@
 #define _FUNC_H_
 
 #include "value.h"
-#include "ary.h"
+#include "list.h"
 
 void func_init();
 value* exec(value* state, value* s);

@@ -11,7 +11,7 @@ bool dump(int n, value* val)
     return 1;
   }
   for (i = 0; i < n; i++) {
-    printf("> ");
+    printf(". ");
   }
   if (val != NULL) {
     switch (val->type) {
@@ -25,10 +25,10 @@ bool dump(int n, value* val)
       printf("#<FUNCPTR:0x%X address:0x%X>\n", (intptr_t)val, (intptr_t)val->fp);
       break;
     case AT_LIST:
-      printf("#<ATOM:0x%X count:%d>\n", (intptr_t)val, val->size);
+      printf("#<LIST:0x%X count:%d>\n", (intptr_t)val, val->size);
       int i;
       for (i = 0; i < val->size; i++) {
-        value* cval = ary_ref(val, i);
+        value* cval = list_ref(val, i);
         if (cval == NULL) {
           continue;
         }

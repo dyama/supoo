@@ -1,5 +1,5 @@
 #include "value.h"
-#include "ary.h"
+#include "list.h"
 #include "dump.h"
 #include "parse.h"
 #include "func.h"
@@ -35,7 +35,7 @@ int main(int argc, char const* argv[])
 
   printf("%s\n", str);
 
-  value arena = ary();
+  value arena = list();
   if (parse(str, &arena)) {
     return 1;
   }

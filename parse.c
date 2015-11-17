@@ -40,14 +40,14 @@ value* get_value(const char** s)
 
 int parse(const char* s, value* curr)
 {
-  value stack = ary();
-  curr = ary_new();
+  value stack = list();
+  curr = list_new();
   value* op = curr;
   int n = 0;
   for (; *s != '\0'; s++) {
     if (*s == '(') {
-      ary_push(&stack, curr);
-      curr = ary_new();
+      list_push(&stack, curr);
+      curr = list_new();
       n++;
     }
     else if (*s == ')') {
@@ -55,8 +55,8 @@ int parse(const char* s, value* curr)
       if (stack.size < 1) {
         goto PARSE_ERROR;
       }
-      curr = ary_pop(&stack);
-      ary_push(curr, prev);
+      curr = list_pop(&stack);
+      list_push(curr, prev);
       n--;
     }
     else if (*s == ' ') {
@@ -65,7 +65,7 @@ int parse(const char* s, value* curr)
     else {
       value* val = get_value(&s);
       if (val != NULL) {
-        ary_push(curr, val);
+        list_push(curr, val);
         s--;
       }
       else {
