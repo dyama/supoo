@@ -1,5 +1,21 @@
 #include "ary.h"
 
+value ary()
+{
+  value res;
+  res.type = AT_ATOM;
+  res.size = 0;
+  return res;
+}
+
+value* ary_new()
+{
+  value* res = (value*)malloc(sizeof(value));
+  res->type = AT_ATOM;
+  res->size = 0;
+  return res;
+}
+
 int ary_index(value* ary, value* item)
 {
   int i;
@@ -30,7 +46,6 @@ value* ary_resize(value* ary, int size)
 {
   if (ary == NULL) {
     ary = (value*)malloc(sizeof(value));
-    ary->type = AT_ATOM;
     ary->size = 0;
   }
   if (size == 0) {
@@ -46,6 +61,7 @@ value* ary_resize(value* ary, int size)
     }
     ary->size = size;
   }
+  ary->type = AT_ATOM;
   return ary;
 }
 

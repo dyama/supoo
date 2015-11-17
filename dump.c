@@ -15,9 +15,6 @@ bool dump(int n, value* val)
   }
   if (val != NULL) {
     switch (val->type) {
-    case AT_NIL:
-      printf("#<NIL:0x%X>\n", (intptr_t)val);
-      break;
     case AT_FLOAT:
       printf("#<FLOAT:0x%X, value:%f>\n", (intptr_t)val, val->f);
       break;

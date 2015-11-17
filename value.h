@@ -8,7 +8,6 @@ typedef struct value value;
 
 enum atom_type
 {
-  AT_NIL,
   AT_FLOAT,
   AT_SYMBOL,
   AT_ATOM,

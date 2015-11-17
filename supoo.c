@@ -35,7 +35,7 @@ int main(int argc, char const* argv[])
 
   printf("%s\n", str);
 
-  value arena;
+  value arena = ary();
   if (parse(str, &arena)) {
     return 1;
   }

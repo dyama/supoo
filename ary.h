@@ -3,6 +3,8 @@
 
 #include "value.h"
 
+value* ary_new(void);
+value ary(void);
 int ary_index(value* ary, value* item);
 int ary_last(value* ary);
 value* ary_pop(value* ary);

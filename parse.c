@@ -10,7 +10,7 @@ char* str_copy(const char* str, int len)
 
 value* get_value(const char** s)
 {
-  value* result = (value*)malloc(sizeof(value));
+  value* result = NULL;
   char* ep;
   double dv;
   dv = strtod(*s, &ep);
@@ -20,7 +20,7 @@ value* get_value(const char** s)
       if ((ep = strpbrk(*s, "() ")) == NULL) {
         for (; *ep != '\0'; ep++);
       }
-      char* sym = str_copy(*s, ep - *s + 1);
+      char* sym = str_copy(*s, ep - *s);
       result = value_new_s(sym);
     }
     else {
@@ -40,13 +40,14 @@ value* get_value(const char** s)
 
 int parse(const char* s, value* curr)
 {
-  value stack;
-  curr = (value*)malloc(sizeof(value));
+  value stack = ary();
+  curr = ary_new();
+  value* op = curr;
   int n = 0;
   for (; *s != '\0'; s++) {
     if (*s == '(') {
       ary_push(&stack, curr);
-      curr = (value*)malloc(sizeof(value));
+      curr = ary_new();
       n++;
     }
     else if (*s == ')') {
@@ -82,5 +83,6 @@ PARSE_ERROR:
     return 1;
   }
 
+  curr = op;
   return 0;
 }
