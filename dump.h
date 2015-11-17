@@ -5,9 +5,7 @@
 
 #include "value.h"
 #include "ary.h"
-#include "float.h"
-#include "symbol.h"
 
-bool dump(int n, value val);
+bool dump(int n, value* val);
 
 #endif

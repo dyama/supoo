@@ -1,6 +1,6 @@
 #include "dump.h"
 
-bool dump(int n, value val)
+bool dump(int n, value* val)
 {
   int i;
   if (n == 0) {
@@ -13,26 +13,26 @@ bool dump(int n, value val)
   for (i = 0; i < n; i++) {
     printf("> ");
   }
-  if (!value_is_null(val)) {
-    switch (value_type(val)) {
+  if (val != NULL) {
+    switch (val->type) {
     case AT_NIL:
-      printf("#<NIL:0x%X>\n", (intptr_t)val.p);
+      printf("#<NIL:0x%X>\n", (intptr_t)val);
       break;
     case AT_FLOAT:
-      printf("#<FLOAT:0x%X, value:%f>\n", (intptr_t)val.p, value_f(val));
+      printf("#<FLOAT:0x%X, value:%f>\n", (intptr_t)val, val->f);
       break;
     case AT_SYMBOL:
-      printf("#<SYMBOL:0x%X value:%s>\n", (intptr_t)val.p, value_s(val));
+      printf("#<SYMBOL:0x%X value:%s>\n", (intptr_t)val, val->s);
       break;
     case AT_FUNCPTR:
-      printf("#<FUNCPTR:0x%X>\n", (intptr_t)val.p);
+      printf("#<FUNCPTR:0x%X address:0x%X>\n", (intptr_t)val, (intptr_t)val->fp);
       break;
     case AT_ATOM:
-      printf("#<ATOM:0x%X count:%d>\n", (intptr_t)val.p, ary_len(val));
+      printf("#<ATOM:0x%X count:%d>\n", (intptr_t)val, val->size);
       int i;
-      for (i = 0; i < ary_len(val); i++) {
-        value cval = ary_ref(val, i);
-        if (value_is_null(cval)) {
+      for (i = 0; i < val->size; i++) {
+        value* cval = ary_ref(val, i);
+        if (cval == NULL) {
           continue;
         }
         if (dump(n + 1, cval)) {
@@ -41,7 +41,7 @@ bool dump(int n, value val)
       }
       break;
     default:
-      printf("#<UNKNOWN:0x%X>\n", (intptr_t)val.p);
+      printf("#<UNKNOWN:0x%X>\n", (intptr_t)val);
       break;
     }
   }

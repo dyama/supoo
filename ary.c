@@ -1,119 +1,81 @@
 #include "ary.h"
 
-value ary_new(int size)
+int ary_index(value* ary, value* item)
 {
-  value res = value_malloc(AT_ATOM);
-  if (size) {
-    res = ary_resize(res, size);
-  }
-  return res;
-}
-
-int ary_len(value ary)
-{
-  if (value_is_null(ary)) {
-    return 0;
-  }
-  return ary.p->size;
-}
-
-int ary_index(value ary, value item)
-{
-  int res = -1;
-  if (value_is_null(ary)) {
-    fprintf(stderr, "Specified object is nil. line:%d\n", __LINE__);
-    return res;
-  }
   int i;
-  for (i=0; i<ary_len(ary); i++) {
-    if (item.p == ary_ref(ary, i).p) {
-      res = i;
-      break;
+  for (i = 0; i < ary->size; i++) {
+    if (item == ary->a[i]) {
+      return i;
     }
   }
-  return res;
+  return -1;
 }
 
-value ary_set(value ary, int index, value item)
+value* ary_set(value* ary, int index, value* item)
 {
-  if (value_is_null(ary)) {
-    fprintf(stderr, "Specified object is nil. line:%d\n", __LINE__);
-    return ary;
-  }
-  if (ary_len(ary) <= index || index < 0) {
+  if (ary->size <= index || index < 0) {
     fprintf(stderr, "Out of range.\n");
     return ary;
   }
-  ary.p->a[index] = item.p;
+  ary->a[index] = item;
   return ary;
 }
 
-int ary_last(value ary)
+int ary_last(value* ary)
 {
-  if (value_is_null(ary)) {
-    return 0;
-  }
-  return ary_len(ary) - 1;
+  return ary->size - 1;
 }
 
-value ary_resize(value ary, int size)
+value* ary_resize(value* ary, int size)
 {
-  if (value_is_null(ary)) {
-    ary = value_malloc(AT_ATOM);
+  if (ary == NULL) {
+    ary = (value*)malloc(sizeof(value));
+    ary->type = AT_ATOM;
+    ary->size = 0;
   }
   if (size == 0) {
-    free(ary.p->a);
-    ary.p->size = 0;
+    free(ary->a);
+    ary->size = 0;
   }
-#if DEBUG
-  else if (ary_len(ary) == size) {
-    fprintf(stderr, "Same size specified in ary_resize.\n");
-    return ary;
-  }
-#endif
   else {
-    atom** p;
-    if ((p = (atom**)realloc(ary.p->a, sizeof(atom) * size)) == NULL) {
-      free(p);
-      fprintf(stderr, "Failed to resize an array. size=%d\n", size);
-      return ary;
+    if (ary->size == 0) {
+      ary->a = (value**)malloc(sizeof(value) * size);
     }
-    ary.p->a = p;
-    ary.p->size = size;
+    else {
+      ary->a = (value**)realloc(ary->a, sizeof(value) * size);
+    }
+    ary->size = size;
   }
   return ary;
 }
 
-value ary_push(value ary, value item)
+value* ary_push(value* ary, value* item)
 {
-  ary = ary_resize(ary, ary_len(ary) + 1);
+  ary = ary_resize(ary, ary->size + 1);
   int last_index = ary_last(ary);
-  ary.p->a[last_index] = item.p;
+  ary->a[last_index] = item;
   return ary;
 }
 
-value ary_ref(value ary, int index)
+value* ary_ref(value* ary, int index)
 {
-  value res;
-  if (value_is_null(ary)) {
-    fprintf(stderr, "Specified object is nil. line:%d\n", __LINE__);
-    return res;
-  }
-  if (ary_len(ary) <= index || index < 0) {
+  if (ary->size <= index || index < 0) {
     fprintf(stderr, "Out of range.\n");
-    return res;
+    return NULL;
   }
-  if (ary.p->a == NULL) {
-    fprintf(stderr, "Array is not initialized.\n");
-    return res;
-  }
-  res.p = ary.p->a[index];
+  return ary->a[index];
+}
+
+value* value_copy(value* val)
+{
+  value* res = (value*)malloc(sizeof(value));
+  *res = *val;
   return res;
 }
 
-value ary_pop(value ary)
+value* ary_pop(value* ary)
 {
-  value res = ary_ref(ary, ary_last(ary));
+  value* res = ary_ref(ary, ary_last(ary));
   res = value_copy(res);
   ary_resize(ary, ary_last(ary));
   return res;
@@ -121,26 +83,23 @@ value ary_pop(value ary)
 
 void value_free_all(value* val)
 {
-  if (value_is_null(*val)) {
-    return;
-  }
-  if (value_type(*val) == AT_ATOM) {
-    int i;
-    for (i = 0; i < ary_len(*val); i++) {
-      value item = ary_ref(*val, i);
-      if (value_is_null(item)) {
-        continue;
-      }
-      value_free(&item);
-    }
-    ary_resize(*val, 0);
-  }
-  else if (value_type(*val) == AT_SYMBOL) {
-    if (val->p->s) {
-      free(val->p->s);
-    }
-  }
-  free(val->p);
-  val->p = NULL;
+  // if (value_type(*val) == AT_ATOM) {
+  //   int i;
+  //   for (i = 0; i < ary_len(*val); i++) {
+  //     value item = ary_ref(*val, i);
+  //     if (value_is_null(item)) {
+  //       continue;
+  //     }
+  //     value_free(&item);
+  //   }
+  //   ary_resize(*val, 0);
+  // }
+  // else if (value_type(*val) == AT_SYMBOL) {
+  //   if (val->p->s) {
+  //     free(val->p->s);
+  //   }
+  // }
+  free(val);
+  val = NULL;
 }
 

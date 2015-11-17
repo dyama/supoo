@@ -8,9 +8,9 @@ char* str_copy(const char* str, int len)
   return res;
 }
 
-value get_value(const char** s)
+value* get_value(const char** s)
 {
-  value result;
+  value* result = (value*)malloc(sizeof(value));
   char* ep;
   double dv;
   dv = strtod(*s, &ep);
@@ -40,31 +40,31 @@ value get_value(const char** s)
 
 int parse(const char* s, value* curr)
 {
-  value stack = ary_new(0);
-  *curr = ary_new(0);
+  value stack;
+  curr = (value*)malloc(sizeof(value));
   int n = 0;
   for (; *s != '\0'; s++) {
     if (*s == '(') {
-      ary_push(stack, *curr);
-      *curr = ary_new(0);
+      ary_push(&stack, curr);
+      curr = (value*)malloc(sizeof(value));
       n++;
     }
     else if (*s == ')') {
-      value prev = *curr;
-      if (ary_len(stack) < 1) {
+      value* prev = curr;
+      if (stack.size < 1) {
         goto PARSE_ERROR;
       }
-      *curr = ary_pop(stack);
-      ary_push(*curr, prev);
+      curr = ary_pop(&stack);
+      ary_push(curr, prev);
       n--;
     }
     else if (*s == ' ') {
       continue;
     }
     else {
-      value val = get_value(&s);
-      if (!value_is_null(val)) {
-        ary_push(*curr, val);
+      value* val = get_value(&s);
+      if (val != NULL) {
+        ary_push(curr, val);
         s--;
       }
       else {
@@ -75,14 +75,12 @@ int parse(const char* s, value* curr)
   }
 
   if (n) {
-    fprintf(stderr, "The number of brackets are mismatch. : %d\n", ary_len(stack));
+    fprintf(stderr, "The number of brackets are mismatch. : %d\n", stack.size);
 PARSE_ERROR:
     printf("n=%d ! stack:\n", n);
-    dump(0, stack);
-    value_free(&stack);
+    dump(0, &stack);
     return 1;
   }
-  value_free(&stack);
 
   return 0;
 }

@@ -4,7 +4,7 @@
 #include "supoo.h"
 
 typedef enum atom_type atom_type;
-typedef struct atom atom;
+typedef struct value value;
 
 enum atom_type
 {
@@ -16,31 +16,20 @@ enum atom_type
   AT_UKNOWN
 };
 
-struct atom
+struct value
 {
-  int type;
+  atom_type type;
   int size;
   union {
     double f;
     char*  s;
-    atom** a;
+    value** a;
     void*  fp;
   };
 };
 
-typedef struct value value;
-
-struct value
-{
-  atom* p;
-};
-
-value value_malloc(atom_type type);
-bool value_is_null(value val);
-bool value_is_nil(value val);
-atom_type value_type(value val);
-value value_copy(value src);
-value value_nil();
-void value_free(value* val);
+value* value_new_f(double val);
+value* value_new_s(char* const val);
+value* value_new_fp(void* val);
 
 #endif
