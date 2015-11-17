@@ -3,7 +3,7 @@
 value ary()
 {
   value res;
-  res.type = AT_ATOM;
+  res.type = AT_LIST;
   res.size = 0;
   return res;
 }
@@ -11,7 +11,7 @@ value ary()
 value* ary_new()
 {
   value* res = (value*)malloc(sizeof(value));
-  res->type = AT_ATOM;
+  res->type = AT_LIST;
   res->size = 0;
   return res;
 }
@@ -61,7 +61,7 @@ value* ary_resize(value* ary, int size)
     }
     ary->size = size;
   }
-  ary->type = AT_ATOM;
+  ary->type = AT_LIST;
   return ary;
 }
 
@@ -99,7 +99,7 @@ value* ary_pop(value* ary)
 
 void value_free_all(value* val)
 {
-  // if (value_type(*val) == AT_ATOM) {
+  // if (value_type(*val) == AT_LIST) {
   //   int i;
   //   for (i = 0; i < ary_len(*val); i++) {
   //     value item = ary_ref(*val, i);

@@ -10,7 +10,7 @@ enum atom_type
 {
   AT_FLOAT,
   AT_SYMBOL,
-  AT_ATOM,
+  AT_LIST,
   AT_FUNCPTR,
   AT_UKNOWN
 };

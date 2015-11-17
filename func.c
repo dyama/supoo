@@ -12,10 +12,10 @@ value* fps; /* Function Pointer List */
 void func_init()
 {
   fis = (value*)malloc(sizeof(value));
-  fis->type = AT_ATOM;
+  fis->type = AT_LIST;
 
   fps = (value*)malloc(sizeof(value));
-  fps->type = AT_ATOM;
+  fps->type = AT_LIST;
 
   ary_push(fis, value_new_s("+"));
   ary_push(fps, value_new_fp(_add));
@@ -29,7 +29,7 @@ void func_init()
 /* <sentence> : <SYMBOL>, ...  */
 value* exec(value* state, value* s)
 {
-  if (s->type != AT_ATOM) {
+  if (s->type != AT_LIST) {
     return s;
   }
   if (s->size == 0) {
@@ -53,13 +53,13 @@ value* exec(value* state, value* s)
 int get_atom_index(value* s)
 {
   int i;
-  if (s->type == AT_ATOM) {
+  if (s->type == AT_LIST) {
     for (i = 0; i < s->size; i++) {
       value* item = ary_ref(s, i);
       if (item == NULL) {
         continue;
       }
-      if (item->type == AT_ATOM) {
+      if (item->type == AT_LIST) {
         return i;
       }
     }
@@ -70,7 +70,7 @@ int get_atom_index(value* s)
 /* <sentence> : <SYMBOL>, ...  */
 value* exec_sentence(value* state, value* s)
 {
-  if (s->type != AT_ATOM) {
+  if (s->type != AT_LIST) {
     return s;
   }
   if (s->size == 0) {

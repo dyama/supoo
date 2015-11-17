@@ -24,7 +24,7 @@ bool dump(int n, value* val)
     case AT_FUNCPTR:
       printf("#<FUNCPTR:0x%X address:0x%X>\n", (intptr_t)val, (intptr_t)val->fp);
       break;
-    case AT_ATOM:
+    case AT_LIST:
       printf("#<ATOM:0x%X count:%d>\n", (intptr_t)val, val->size);
       int i;
       for (i = 0; i < val->size; i++) {
