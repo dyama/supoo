@@ -41,14 +41,15 @@ value* get_value(const char** s)
 int parse(const char* s, value* curr)
 {
   value stack = list();
-  curr = list_new();
-  value* op = curr;
-  int n = 0;
+  curr = NULL;
+
   for (; *s != '\0'; s++) {
+    if (*s == ' ') {
+      continue;
+    }
     if (*s == '(') {
       list_push(&stack, curr);
       curr = list_new();
-      n++;
     }
     else if (*s == ')') {
       value* prev = curr;
@@ -57,10 +58,6 @@ int parse(const char* s, value* curr)
       }
       curr = list_pop(&stack);
       list_push(curr, prev);
-      n--;
-    }
-    else if (*s == ' ') {
-      continue;
     }
     else {
       value* val = get_value(&s);
@@ -70,19 +67,23 @@ int parse(const char* s, value* curr)
       }
       else {
         fprintf(stderr, "Failed to parse.\n");
-        break;
+        goto PARSE_ERROR;
       }
     }
   }
 
-  if (n) {
-    fprintf(stderr, "The number of brackets are mismatch. : %d\n", stack.size);
+  puts("stack=");
+  dump(0, &stack);
+
+  puts("curr=");
+  dump(0, curr);
+
+  if (stack.size) {
+    fprintf(stderr, "The number of brackets are mismatch. stack size : %d\n", stack.size);
 PARSE_ERROR:
-    printf("n=%d ! stack:\n", n);
     dump(0, &stack);
     return 1;
   }
 
-  curr = op;
   return 0;
 }

@@ -67,6 +67,10 @@ value* list_resize(value* list, int size)
 
 value* list_push(value* list, value* item)
 {
+  if (list == NULL) {
+    fprintf(stderr, "List is null.\n");
+    return NULL;
+  }
   list = list_resize(list, list->size + 1);
   int last_index = list_last(list);
   list->a[last_index] = item;
@@ -91,8 +95,14 @@ value* value_copy(value* val)
 
 value* list_pop(value* list)
 {
+  if (!list->size) {
+    fprintf(stderr, "List has no elements.\n");
+    return NULL;
+  }
   value* res = list_ref(list, list_last(list));
-  res = value_copy(res);
+  if (res) {
+    res = value_copy(res);
+  }
   list_resize(list, list_last(list));
   return res;
 }

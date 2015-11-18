@@ -39,6 +39,9 @@ int main(int argc, char const* argv[])
   if (parse(str, &arena)) {
     return 1;
   }
+  puts("");
+  puts("");
+  puts("foo");
   dump(0, &arena);
 
   return 0;

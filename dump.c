@@ -4,7 +4,7 @@ bool dump(int n, value* val)
 {
   int i;
   if (n == 0) {
-    puts("begin of dump ----");
+    // puts("begin of dump ----");
   }
   else if (n > 10) {
     fprintf(stderr, "object has large nested structures.\n");
@@ -46,7 +46,7 @@ bool dump(int n, value* val)
     printf("(nil)\n");
   }
   if (n == 0) {
-    puts("end of dump ----");
+    // puts("end of dump ----");
   }
   return 0;
 }

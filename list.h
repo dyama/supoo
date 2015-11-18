@@ -1,5 +1,5 @@
-#ifndef _ARY_H_
-#define _ARY_H_
+#ifndef _LIST_H_
+#define _LIST_H_
 
 #include "value.h"
 
