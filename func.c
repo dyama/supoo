@@ -81,6 +81,7 @@ value* exec(value* state, value* s)
   return NULL;
 }
 
+/* 加算 */
 value* _add(value* state, value* args)
 {
   double res = 0.0;
@@ -95,6 +96,7 @@ value* _add(value* state, value* args)
   return float_new(res);
 }
 
+/* 減算 */
 value* _sub(value* state, value* args)
 {
   double res;
@@ -105,16 +107,7 @@ value* _sub(value* state, value* args)
   return float_new(res);
 }
 
-value* _div(value* state, value* args)
-{
-  double res;
-  if (args->size != 3) {
-    return NULL;
-  }
-  res = list_ref(args, 1)->f / list_ref(args, 2)->f;
-  return float_new(res);
-}
-
+/* 乗算 */
 value* _mult(value* state, value* args)
 {
   double res;
@@ -125,6 +118,18 @@ value* _mult(value* state, value* args)
   return float_new(res);
 }
 
+/* 除算 */
+value* _div(value* state, value* args)
+{
+  double res;
+  if (args->size != 3) {
+    return NULL;
+  }
+  res = list_ref(args, 1)->f / list_ref(args, 2)->f;
+  return float_new(res);
+}
+
+/* 標準出力に印字 */
 value* _put(value* state, value* args)
 {
   for (int i=1; i < args->size; i++) {
@@ -144,11 +149,6 @@ value* _put(value* state, value* args)
   }
   printf("\n");
   return NULL;
-}
-
-value* _pi(value* state, value* args)
-{
-  return float_new(3.1415926535897932384626433832795L);
 }
 
 value* _quate(value* state, value* args)
