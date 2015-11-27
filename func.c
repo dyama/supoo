@@ -5,7 +5,6 @@ value* vars;  /* Variables Mapper Hash Table */
 
 /*
  * 関数アドレス管理リストを安全に解放する仕組み
- * args に sym が入っているので list に shift/unshift を入れて取り除く
  * funcs, vars を arena 管理
  */
 
@@ -74,7 +73,10 @@ value* exec(value* state, value* s)
     if (f != NULL) {
       if (f->type == AT_FUNCPTR) {
         // リストの最初の要素が FUNCPTR であれば、関数実行
-        return ((value*(*)(value*,value*))f->fp)(state, s);
+        value* funcname = list_shift(s); // 引数から関数名は除去
+        value* result = ((value*(*)(value*,value*))f->fp)(state, s);
+        free(funcname);
+        return result;
       }
     }
   }
@@ -86,7 +88,7 @@ value* _add(value* state, value* args)
 {
   double res = 0.0;
   int i;
-  for (i = 1; i < args->size; i++) {
+  for (i = 0; i < args->size; i++) {
     value* item = list_ref(args, i);
     if (item->type != AT_FLOAT) {
       return NULL;
@@ -100,10 +102,10 @@ value* _add(value* state, value* args)
 value* _sub(value* state, value* args)
 {
   double res;
-  if (args->size != 3) {
+  if (args->size != 2) {
     return NULL;
   }
-  res = list_ref(args, 1)->f - list_ref(args, 2)->f;
+  res = list_ref(args, 0)->f - list_ref(args, 1)->f;
   return float_new(res);
 }
 
@@ -111,10 +113,10 @@ value* _sub(value* state, value* args)
 value* _mult(value* state, value* args)
 {
   double res;
-  if (args->size != 3) {
+  if (args->size != 2) {
     return NULL;
   }
-  res = list_ref(args, 1)->f * list_ref(args, 2)->f;
+  res = list_ref(args, 0)->f * list_ref(args, 1)->f;
   return float_new(res);
 }
 
@@ -122,17 +124,17 @@ value* _mult(value* state, value* args)
 value* _div(value* state, value* args)
 {
   double res;
-  if (args->size != 3) {
+  if (args->size != 2) {
     return NULL;
   }
-  res = list_ref(args, 1)->f / list_ref(args, 2)->f;
+  res = list_ref(args, 0)->f / list_ref(args, 1)->f;
   return float_new(res);
 }
 
 /* 標準出力に印字 */
 value* _put(value* state, value* args)
 {
-  for (int i=1; i < args->size; i++) {
+  for (int i=0; i < args->size; i++) {
     value* item = list_ref(args, i);
     if (item == NULL) {
       break;

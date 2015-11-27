@@ -138,7 +138,6 @@ value* value_copy(value* val)
   return res;
 }
 
-
 void value_free_all(value* val)
 {
   // if (value_type(*val) == AT_LIST) {
