@@ -21,11 +21,11 @@ value* get_value(const char** s)
         for (; *ep != '\0'; ep++);
       }
       char* sym = str_copy(*s, ep - *s);
-      result = value_new_s(sym);
+      result = sym_new(sym);
     }
     else {
       // float
-      result = value_new_f(dv);
+      result = float_new(dv);
     }
     *s = ep;
   }

@@ -1,6 +1,6 @@
 #include "value.h"
 
-value* value_new_f(double val)
+value* float_new(double val)
 {
   value* res = (value*)malloc(sizeof(value));
   res->type = AT_FLOAT;
@@ -8,7 +8,7 @@ value* value_new_f(double val)
   return res;
 }
 
-value* value_new_s(char* const val)
+value* sym_new(char* const val)
 {
   value* res = (value*)malloc(sizeof(value));
   res->type = AT_SYMBOL;
@@ -16,7 +16,7 @@ value* value_new_s(char* const val)
   return res;
 }
 
-value* value_new_fp(void* val)
+value* fp_new(void* val)
 {
   value* res = (value*)malloc(sizeof(value));
   res->type = AT_FUNCPTR;

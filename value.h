@@ -27,8 +27,8 @@ struct value
   };
 };
 
-value* value_new_f(double val);
-value* value_new_s(char* const val);
-value* value_new_fp(void* val);
+value* float_new(double val);
+value* sym_new(char* const val);
+value* fp_new(void* val);
 
 #endif

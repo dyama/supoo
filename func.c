@@ -17,11 +17,11 @@ void func_init()
   fps = (value*)malloc(sizeof(value));
   fps->type = AT_LIST;
 
-  list_push(fis, value_new_s("+"));
-  list_push(fps, value_new_fp(_add));
+  list_push(fis, sym_new("+"));
+  list_push(fps, fp_new(_add));
 
-  list_push(fis, value_new_s("-"));
-  list_push(fps, value_new_fp(_sub));
+  list_push(fis, sym_new("-"));
+  list_push(fps, fp_new(_sub));
 
   return;
 }
@@ -115,7 +115,7 @@ value* _add(value* state, value* args)
     }
     res += item->f;
   }
-  return value_new_f(res);
+  return float_new(res);
 }
 
 value* _sub(value* state, value* args)
@@ -125,7 +125,7 @@ value* _sub(value* state, value* args)
     return NULL;
   }
   res = list_ref(args, 1)->f - list_ref(args, 2)->f;
-  return value_new_f(res);
+  return float_new(res);
 }
 
 value* _div(value* state, value* args)
@@ -135,7 +135,7 @@ value* _div(value* state, value* args)
     return NULL;
   }
   res = list_ref(args, 1)->f / list_ref(args, 2)->f;
-  return value_new_f(res);
+  return float_new(res);
 }
 
 value* _mult(value* state, value* args)
@@ -145,7 +145,7 @@ value* _mult(value* state, value* args)
     return NULL;
   }
   res = list_ref(args, 1)->f * list_ref(args, 2)->f;
-  return value_new_f(res);
+  return float_new(res);
 }
 
 value* _put(value* state, value* args)
