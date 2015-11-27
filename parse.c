@@ -38,10 +38,10 @@ value* get_value(const char** s)
   return result;
 }
 
-int parse(const char* s, value* curr)
+int parse(const char* s, value* arena)
 {
   value stack = list();
-  curr = NULL;
+  value* curr = NULL;
 
   for (; *s != '\0'; s++) {
     if (*s == ' ') {
@@ -56,8 +56,11 @@ int parse(const char* s, value* curr)
       if (stack.size < 1) {
         goto PARSE_ERROR;
       }
-      curr = list_pop(&stack);
-      list_push(curr, prev);
+      value* tmp = list_pop(&stack);
+      if (tmp != NULL) {
+        curr = tmp;
+        list_push(curr, prev);
+      }
     }
     else {
       value* val = get_value(&s);
@@ -72,18 +75,14 @@ int parse(const char* s, value* curr)
     }
   }
 
-  puts("stack=");
-  dump(0, &stack);
-
-  puts("curr=");
-  dump(0, curr);
-
   if (stack.size) {
     fprintf(stderr, "The number of brackets are mismatch. stack size : %d\n", stack.size);
 PARSE_ERROR:
     dump(0, &stack);
     return 1;
   }
+
+  *arena = *curr;
 
   return 0;
 }

@@ -3,7 +3,7 @@ PROGRAM=supoo
 OBJS=supoo.o value.o list.o dump.o parse.o func.o
 
 CC=gcc
-CFLAGS=-Wall -g -lm -O0
+CFLAGS=-Wall -g -lm -O0 -std=c99
 
 .PHONY: clean
 .SUFFIXES: .c .o

@@ -10,39 +10,28 @@
 
 int main(int argc, char const* argv[])
 {
-  //FILE* f = stdin;
-  //if (argc == 2 && (f = fopen(argv[1], "r")) == NULL) {
-  //  fprintf(stderr, "No such file: %s", argv[1]);
-  //  return 1;
-  //}
-
-#if 0
-  FILE* f = fopen("test.lisp", "r");
-  char str[1024] = {0};
-  int c;
-  int i;
-  for (i = 0; (c = fgetc(f)) != EOF; i++) {
-    str[i] = (char)(c == '\n' ? ' ' : c);
-  }
-  fclose(f);
-#else
+  //char* str = "("
+  //  "  (put a)"
+  //  "  (set a (* 2.5 (+ 1 2) 3) )"
+  //  "  (put a)"
+  //  " )";
   char* str = "("
-    "  (put a )"
-    "  (set a (* 2.5 (+ 1 2) 3) )"
-    "  (put a)"
-    " )";
-#endif
+    "  (put (* (+ 1 2) 2))"
+    "  (put PI*4=)"
+    "  (put (* 4 (pi)))"
+    ")";
 
-  printf("%s\n", str);
+  // printf("%s\n", str);
 
-  value arena = list();
+  value arena;
   if (parse(str, &arena)) {
     return 1;
   }
-  puts("");
-  puts("");
-  puts("foo");
-  dump(0, &arena);
+
+  // dump(0, &arena);
+
+  func_init();
+  exec(NULL, &arena);
 
   return 0;
 }
