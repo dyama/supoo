@@ -77,6 +77,51 @@ value* list_push(value* list, value* item)
   return list;
 }
 
+value* list_pop(value* list)
+{
+  if (!list->size) {
+    fprintf(stderr, "List has no elements.\n");
+    return NULL;
+  }
+  value* res = list_ref(list, list_last(list));
+  if (res) {
+    res = value_copy(res);
+  }
+  list_resize(list, list_last(list));
+  return res;
+}
+
+value* list_shift(value* list)
+{
+  if (!list->size) {
+    fprintf(stderr, "List has no elements.\n");
+    return NULL;
+  }
+  value* res = list_ref(list, 0);
+  if (res) {
+    res = value_copy(res);
+  }
+  for (int i=0; i<list->size - 1; i++) {
+    list->a[i] = list->a[i + 1];
+  }
+  list_resize(list, list_last(list));
+  return res;
+}
+
+value* list_unshift(value* list, value* item)
+{
+  if (list == NULL) {
+    fprintf(stderr, "List is null.\n");
+    return NULL;
+  }
+  list = list_resize(list, list->size + 1);
+  for (int i=list->size - 1; i > 0; i--) {
+    list->a[i] = list->a[i - 1];
+  }
+  list->a[0] = item;
+  return list;
+}
+
 value* list_ref(value* list, int index)
 {
   if (list->size <= index || index < 0) {
@@ -93,19 +138,6 @@ value* value_copy(value* val)
   return res;
 }
 
-value* list_pop(value* list)
-{
-  if (!list->size) {
-    fprintf(stderr, "List has no elements.\n");
-    return NULL;
-  }
-  value* res = list_ref(list, list_last(list));
-  if (res) {
-    res = value_copy(res);
-  }
-  list_resize(list, list_last(list));
-  return res;
-}
 
 void value_free_all(value* val)
 {

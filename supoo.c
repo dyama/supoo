@@ -11,7 +11,29 @@
 
 int main(int argc, char const* argv[])
 {
-  // Test for hash
+  // // Test for list_shift()
+  // value ls;
+  // ls = list();
+  // list_push(&ls, sym_new("hoge"));
+  // list_push(&ls, sym_new("fuga"));
+  // list_push(&ls, sym_new("piyo"));
+
+  // list_unshift(&ls, sym_new("test"));
+  // dump(0, &ls);
+  // return 0;
+
+  // // Test for list_shift()
+  // value ls;
+  // ls = list();
+  // list_push(&ls, sym_new("hoge"));
+  // list_push(&ls, sym_new("fuga"));
+  // list_push(&ls, sym_new("piyo"));
+  // value* item = list_shift(&ls);
+  // dump(0, item);
+  // dump(0, &ls);
+  // return 0;
+
+  // // Test for hash
   // value h;
   // h = hash();
   // hash_add(&h, sym_new("hoge"), float_new(123.4));
