@@ -8,6 +8,14 @@ value* float_new(double val)
   return res;
 }
 
+value floatv(double val)
+{
+  value res;
+  res.type = AT_FLOAT;
+  res.f = val;
+  return res;
+}
+
 value* sym_new(char* const val)
 {
   value* res = (value*)malloc(sizeof(value));
@@ -16,11 +24,27 @@ value* sym_new(char* const val)
   return res;
 }
 
+value symv(char* const val)
+{
+  value res;
+  res.type = AT_SYMBOL;
+  res.s = val;
+  return res;
+}
+
 value* fp_new(void* val)
 {
   value* res = (value*)malloc(sizeof(value));
   res->type = AT_FUNCPTR;
   res->fp = val;
+  return res;
+}
+
+value fpv(void* val)
+{
+  value res;
+  res.type = AT_FUNCPTR;
+  res.fp = val;
   return res;
 }
 

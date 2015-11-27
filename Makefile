@@ -1,6 +1,6 @@
 
 PROGRAM=supoo
-OBJS=supoo.o value.o list.o hash.o dump.o parse.o func.o
+OBJS=supoo.o value.o list.o hash.o dump.o parse.o func.o arena.o
 
 CC=gcc
 CFLAGS=-Wall -g -lm -O0 -std=c99

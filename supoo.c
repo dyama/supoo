@@ -4,6 +4,7 @@
 #include "dump.h"
 #include "parse.h"
 #include "func.h"
+#include "arena.h"
 
 // * Global variables management list.
 // * Stack for function call.
@@ -62,9 +63,13 @@ int main(int argc, char const* argv[])
 
   // dump(0, &code);
 
-  func_begin(NULL);
-  exec(NULL, &code);
-  func_end(NULL);
+  value arena;
+  arena_begin(&arena);
+  
+  // dump(0, &arena);
+
+  exec(&arena, &code);
+  arena_end(&arena);
 
   return 0;
 }

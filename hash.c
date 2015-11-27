@@ -55,6 +55,10 @@ value* hash_drop(value* hash, value* key)
 
 int hash_exist(value* hash, value* key)
 {
+  if (hash == NULL || key == NULL) {
+    fprintf(stderr, "Hash or Key is NULL at hash_exist().\n");
+    return 0;
+  }
   if (hash->type != AT_LIST || hash->size % 2 != 0) {
     fprintf(stderr, "Inccorrect value specified at first.\n");
     return 0;
