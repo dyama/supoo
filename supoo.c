@@ -55,15 +55,15 @@ int main(int argc, char const* argv[])
 
   // printf("%s\n", str);
 
-  value arena;
-  if (parse(str, &arena)) {
+  value code;
+  if (parse(str, &code)) {
     return 1;
   }
 
-  // dump(0, &arena);
+  // dump(0, &code);
 
   func_begin(NULL);
-  exec(NULL, &arena);
+  exec(NULL, &code);
   func_end(NULL);
 
   return 0;

@@ -8,7 +8,7 @@ value* vars;  /* Variables Mapper Hash Table */
  * funcs, vars を arena 管理
  */
 
-void func_begin(value* state)
+void func_begin(value* arena)
 {
   // 組み込み関数
   funcs = hash_new();
@@ -25,7 +25,7 @@ void func_begin(value* state)
   return;
 }
 
-void func_end(value* state)
+void func_end(value* arena)
 {
   for (int i=0; i < funcs->size; i++) {
     value* item = list_ref(funcs, i);
@@ -41,7 +41,7 @@ void func_end(value* state)
  * 構文木の実行処理
  * (元の構文木 value* s を壊しながら評価していく)
  * */
-value* exec(value* state, value* s)
+value* exec(value* arena, value* s)
 {
   if (s->type == AT_FLOAT || s->type == AT_FUNCPTR) {
     // 数値, 関数ポインタは評価する必要なし
@@ -67,14 +67,14 @@ value* exec(value* state, value* s)
     // }
     // リスト実行
     for (int i=0; i < s->size; i++) {
-      s->a[i] = exec(state, list_ref(s, i));
+      s->a[i] = exec(arena, list_ref(s, i));
     }
     value* f = list_ref(s, 0);
     if (f != NULL) {
       if (f->type == AT_FUNCPTR) {
         // リストの最初の要素が FUNCPTR であれば、関数実行
         value* funcname = list_shift(s); // 引数から関数名は除去
-        value* result = ((value*(*)(value*,value*))f->fp)(state, s);
+        value* result = exec_func(arena, f, s);
         free(funcname);
         return result;
       }
@@ -83,8 +83,18 @@ value* exec(value* state, value* s)
   return NULL;
 }
 
+/* 関数実行 */
+value* exec_func(value* arena, value* func, value* args)
+{
+  if (func->type != AT_FUNCPTR) {
+    fprintf(stderr, "Specified object type is not FUNCPTR.\n");
+    return NULL;
+  }
+  return ((value*(*)(value*,value*))func->fp)(arena, args);
+}
+
 /* 加算 */
-value* _add(value* state, value* args)
+value* _add(value* arena, value* args)
 {
   double res = 0.0;
   int i;
@@ -99,7 +109,7 @@ value* _add(value* state, value* args)
 }
 
 /* 減算 */
-value* _sub(value* state, value* args)
+value* _sub(value* arena, value* args)
 {
   double res;
   if (args->size != 2) {
@@ -110,7 +120,7 @@ value* _sub(value* state, value* args)
 }
 
 /* 乗算 */
-value* _mult(value* state, value* args)
+value* _mult(value* arena, value* args)
 {
   double res;
   if (args->size != 2) {
@@ -121,7 +131,7 @@ value* _mult(value* state, value* args)
 }
 
 /* 除算 */
-value* _div(value* state, value* args)
+value* _div(value* arena, value* args)
 {
   double res;
   if (args->size != 2) {
@@ -132,7 +142,7 @@ value* _div(value* state, value* args)
 }
 
 /* 標準出力に印字 */
-value* _put(value* state, value* args)
+value* _put(value* arena, value* args)
 {
   for (int i=0; i < args->size; i++) {
     value* item = list_ref(args, i);
@@ -153,7 +163,7 @@ value* _put(value* state, value* args)
   return NULL;
 }
 
-value* _quate(value* state, value* args)
+value* _quate(value* arena, value* args)
 {
   return NULL;
 }

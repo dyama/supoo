@@ -5,15 +5,16 @@
 #include "list.h"
 #include "hash.h"
 
-void func_begin(value* state);
-void func_end(value* state);
-value* exec(value* state, value* s);
+void func_begin(value* arena);
+void func_end(value* arena);
+value* exec(value* arena, value* s);
+value* exec_func(value* arena, value* func, value* args);
 
-value* _add(value* state, value* args);
-value* _sub(value* state, value* args);
-value* _mult(value* state, value* args);
-value* _div(value* state, value* args);
-value* _put(value* state, value* args);
-value* _quate(value* state, value* args);
+value* _add(value* arena, value* args);
+value* _sub(value* arena, value* args);
+value* _mult(value* arena, value* args);
+value* _div(value* arena, value* args);
+value* _put(value* arena, value* args);
+value* _quate(value* arena, value* args);
 
 #endif
