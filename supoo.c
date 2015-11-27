@@ -54,20 +54,13 @@ int main(int argc, char const* argv[])
     "  (put (* 4 pi))"
     ")";
 
-  // printf("%s\n", str);
-
   value code;
   if (parse(str, &code)) {
     return 1;
   }
 
-  // dump(0, &code);
-
   value arena;
   arena_begin(&arena);
-  
-  // dump(0, &arena);
-
   exec(&arena, &code);
   arena_end(&arena);
 

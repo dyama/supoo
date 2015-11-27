@@ -24,13 +24,14 @@ value* exec(value* arena, value* s)
   }
   if (s->type == AT_LIST) { // リスト評価
     // クォート(評価せずに返す)
-    // value* first = list_ref(s, 0);
-    // if (f != NULL) {
-    //   if (f->type == AT_SYMBOL && strcmp(f->s, "quate") == 0) {
-    //     // shift s
-    //     // return s
-    //   }
-    // }
+    value* first = list_ref(s, 0);
+    if (first != NULL) {
+      if (first->type == AT_SYMBOL && strcmp(first->s, "quate") == 0) {
+        list_shift(s);
+        free(first);
+        return s;
+      }
+    }
     // リスト実行
     for (int i=0; i < s->size; i++) {
       s->a[i] = exec(arena, list_ref(s, i));
