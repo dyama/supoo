@@ -1,2 +1,2 @@
 # supoo
-The lesser Lisp like programing language
+**supoo** is an Lisp like programing language.
