@@ -12,7 +12,7 @@ enum atom_type
   AT_SYMBOL,
   AT_LIST,
   AT_FUNCPTR,
-  AT_UKNOWN
+  AT_UNKNOWN
 };
 
 struct value

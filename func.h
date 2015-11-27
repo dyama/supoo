@@ -3,11 +3,11 @@
 
 #include "value.h"
 #include "list.h"
+#include "hash.h"
 
-void func_init();
+void func_begin(value* state);
+void func_end(value* state);
 value* exec(value* state, value* s);
-void* get_funcptr(value* val);
-int get_atom_index(value* s);
 
 value* _add(value* state, value* args);
 value* _sub(value* state, value* args);

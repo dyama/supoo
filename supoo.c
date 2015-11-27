@@ -28,7 +28,7 @@ int main(int argc, char const* argv[])
   char* str = "("
     "  (put (* (+ 1 2) 2))"
     "  (put PI*4=)"
-    "  (put (* 4 (pi)))"
+    "  (put (* 4 pi))"
     ")";
 
   // printf("%s\n", str);
@@ -40,8 +40,9 @@ int main(int argc, char const* argv[])
 
   // dump(0, &arena);
 
-  func_init();
+  func_begin(NULL);
   exec(NULL, &arena);
+  func_end(NULL);
 
   return 0;
 }
