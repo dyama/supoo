@@ -17,18 +17,21 @@ value* get_value(const char** s)
   if (errno != ERANGE) {
     if (*s == ep) {
       // sym
+      char* sym = NULL;
       if (**s == '"') {
         if ((ep = strpbrk((*s+1), "\"")) == NULL) {
           for (; *ep != '\0'; ep++);
         }
+        (*s)++;
+        sym = str_copy(*s, ep - *s);
         ep++;
       }
       else {
         if ((ep = strpbrk(*s, "() ")) == NULL) {
           for (; *ep != '\0'; ep++);
         }
+        sym = str_copy(*s, ep - *s);
       }
-      char* sym = str_copy(*s, ep - *s);
       result = sym_new(sym);
     }
     else {
