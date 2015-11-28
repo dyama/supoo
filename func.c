@@ -123,7 +123,8 @@ value* _put(value* arena, value* args)
     case AT_SYMBOL:
       printf("%s", item->s);
       break;
-    default: break;
+    default:
+      break;
     }
   }
   printf("\n");

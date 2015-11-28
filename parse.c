@@ -44,7 +44,7 @@ int parse(const char* s, value* arena)
   value* curr = NULL;
 
   for (; *s != '\0'; s++) {
-    if (*s == ' ') {
+    if (*s == ' ' || *s == '\n' || *s == '\r') {
       continue;
     }
     if (*s == '(') {

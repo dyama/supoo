@@ -10,54 +10,60 @@
 // * Stack for function call.
 // * GC
 
+long get_file_size(const char* path)
+{
+  FILE* f;
+  if ((f = fopen(path, "r")) == NULL) {
+    fprintf(stderr, "Failed to open file: %s", path);
+    return -1;
+  }
+  fseek(f, 0, SEEK_END);
+  long size = ftell(f);
+  fclose(f);
+  return size;
+}
+
+char* read_to_end(const char* path)
+{
+  FILE* f;
+  if ((f = fopen(path, "r")) == NULL) {
+    fprintf(stderr, "Failed to open file: %s", path);
+    return NULL;
+  }
+  long size = get_file_size(path);
+  char* str = (char*)malloc(sizeof(char) * size + 1);
+  char* p = str;
+  int c;
+
+  while ((c = getc(f)) != EOF) {
+    if ((char)c != '\n' || (char)c != '\r') {
+      *p = (char)c;
+      ++p;
+    }
+  }
+  *p = '\0';
+  fclose(f);
+  return str;
+}
+
 int main(int argc, char const* argv[])
 {
-  // // Test for list_shift()
-  // value ls;
-  // ls = list();
-  // list_push(&ls, sym_new("hoge"));
-  // list_push(&ls, sym_new("fuga"));
-  // list_push(&ls, sym_new("piyo"));
+  if (argc != 2) {
+    printf("usage: %s file\n", argv[0]);
+    return 0;
+  }
 
-  // list_unshift(&ls, sym_new("test"));
-  // dump(0, &ls);
-  // return 0;
-
-  // // Test for list_shift()
-  // value ls;
-  // ls = list();
-  // list_push(&ls, sym_new("hoge"));
-  // list_push(&ls, sym_new("fuga"));
-  // list_push(&ls, sym_new("piyo"));
-  // value* item = list_shift(&ls);
-  // dump(0, item);
-  // dump(0, &ls);
-  // return 0;
-
-  // // Test for hash
-  // value h;
-  // h = hash();
-  // hash_add(&h, sym_new("hoge"), float_new(123.4));
-  // hash_add(&h, sym_new("fuga"), sym_new("hello"));
-  // value* item = hash_ref(&h, sym_new("fuga"));
-  // dump(0, item);
-  // return 0;
-
-  //char* str = "("
-  //  "  (put a)"
-  //  "  (set a (* 2.5 (+ 1 2) 3) )"
-  //  "  (put a)"
-  //  " )";
-  char* str = "("
-    "  (put (* (+ 1 2) 2))"
-    "  (put PI*4=)"
-    "  (put (* 4 pi))"
-    ")";
+  char* str = read_to_end(argv[1]);
+  if (str == NULL) {
+    return 1;
+  }
 
   value code;
   if (parse(str, &code)) {
-    return 1;
+    free(str);
+    return 2;
   }
+  free(str);
 
   value arena;
   arena_begin(&arena);
