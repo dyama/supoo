@@ -135,6 +135,13 @@ value* _put(value* arena, value* args)
       break;
     }
   }
+  return NULL;
+}
+
+/* 標準出力に印字(改行付) */
+value* _putln(value* arena, value* args)
+{
+  _put(arena, args);
   printf("\n");
   return NULL;
 }
