@@ -17,8 +17,16 @@ value* get_value(const char** s)
   if (errno != ERANGE) {
     if (*s == ep) {
       // sym
-      if ((ep = strpbrk(*s, "() ")) == NULL) {
-        for (; *ep != '\0'; ep++);
+      if (**s == '"') {
+        if ((ep = strpbrk((*s+1), "\"")) == NULL) {
+          for (; *ep != '\0'; ep++);
+        }
+        ep++;
+      }
+      else {
+        if ((ep = strpbrk(*s, "() ")) == NULL) {
+          for (; *ep != '\0'; ep++);
+        }
       }
       char* sym = str_copy(*s, ep - *s);
       result = sym_new(sym);
