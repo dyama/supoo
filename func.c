@@ -116,6 +116,17 @@ value* _div(value* arena, value* args)
   return float_new(res);
 }
 
+/* べき乗 */
+value* _pow(value* arena, value* args)
+{
+  double res;
+  if (args->size != 2) {
+    return NULL;
+  }
+  res = pow(list_ref(args, 0)->f, list_ref(args, 1)->f);
+  return float_new(res);
+}
+
 /* 標準出力に印字 */
 value* _put(value* arena, value* args)
 {
