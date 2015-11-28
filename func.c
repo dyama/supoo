@@ -7,20 +7,28 @@ value* arena_vars(value*);
  * 構文木の実行処理
  * (元の構文木 value* s を壊しながら評価していく)
  * */
-value* exec(value* arena, value* s)
+value* exec(value* arena, value* s, int index)
 {
   if (s->type == AT_FLOAT || s->type == AT_FUNCPTR) {
     // 数値, 関数ポインタは評価する必要なし
     return s;
   }
   if (s->type == AT_SYMBOL) { // シンボル評価
-    if (hash_exist(arena_vars(arena), s)) { // 変数
-      return hash_ref(arena_vars(arena), s);
+    if (s->s[0] == '$') {
+      s->s++;
+      if (hash_exist(arena_vars(arena), s)) {
+        value* tmp = hash_ref(arena_vars(arena), s); // 変数展開
+        s->s--;
+        return tmp;
+      }
+      s->s--;
     }
-    else if (hash_exist(arena_funcs(arena), s)) { // 関数
-      return hash_ref(arena_funcs(arena), s);
+    else if (index == 0) {
+      if (hash_exist(arena_funcs(arena), s)) {
+        return hash_ref(arena_funcs(arena), s); // 関数展開
+      }
     }
-    return s; // 関数でも変数でもなければ文字列リテラル
+    return s;
   }
   if (s->type == AT_LIST) { // リスト評価
     // クォート(評価せずに返す)
@@ -34,7 +42,7 @@ value* exec(value* arena, value* s)
     }
     // リスト実行
     for (int i=0; i < s->size; i++) {
-      s->a[i] = exec(arena, list_ref(s, i));
+      s->a[i] = exec(arena, list_ref(s, i), i);
     }
     value* f = list_ref(s, 0);
     if (f != NULL) {
@@ -47,7 +55,7 @@ value* exec(value* arena, value* s)
       }
     }
   }
-  return NULL;
+  return s;
 }
 
 /* 関数実行 */
@@ -133,6 +141,25 @@ value* _put(value* arena, value* args)
 
 value* _quate(value* arena, value* args)
 {
+  return NULL;
+}
+
+/* 変数定義 */
+value* _setq(value* arena, value* args)
+{
+  if (args->size != 2) {
+    fprintf(stderr, "Argument error.\n");
+    return NULL;
+  }
+  value* vars = arena_vars(arena);
+  value* var = list_ref(args, 0);
+  value* val = list_ref(args, 1);
+  if (hash_exist(vars, var)) {
+    *hash_ref(vars, var) = *val;
+  }
+  else {
+    hash_add(vars, var, val);
+  }
   return NULL;
 }
 
