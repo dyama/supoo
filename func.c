@@ -127,6 +127,21 @@ value* _pow(value* arena, value* args)
   return float_new(res);
 }
 
+/* 剰余 */
+value* _mod(value* arena, value* args)
+{
+  double res;
+  if (args->size != 2) {
+    return NULL;
+  }
+  double a1 = list_ref(args, 0)->f;
+  double a2 = list_ref(args, 1)->f;
+  for (res = a1; res >= a2; res -= a2) {
+    ;
+  }
+  return float_new(res);
+}
+
 /* 標準出力に印字 */
 value* _put(value* arena, value* args)
 {

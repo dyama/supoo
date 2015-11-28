@@ -13,6 +13,7 @@ value* _sub(value* arena, value* args);
 value* _mult(value* arena, value* args);
 value* _div(value* arena, value* args);
 value* _pow(value* arena, value* args);
+value* _mod(value* arena, value* args);
 value* _put(value* arena, value* args);
 value* _putln(value* arena, value* args);
 value* _quate(value* arena, value* args);
