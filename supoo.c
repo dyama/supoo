@@ -34,11 +34,21 @@ char* read_to_end(const char* path)
   char* str = (char*)malloc(sizeof(char) * size + 1);
   char* p = str;
   int c;
+  int comment = 0;
 
   while ((c = getc(f)) != EOF) {
-    if ((char)c != '\n' || (char)c != '\r') {
-      *p = (char)c;
-      ++p;
+    char cc = (char)c;
+    if (!comment) {
+      if (cc == ';') {
+        comment = 1;
+      }
+      else if (strpbrk(&cc, "\n\r") == NULL) {
+        *p = cc;
+        ++p;
+      }
+    }
+    else if (cc == '\n') {
+      comment = 0;
     }
   }
   *p = '\0';
