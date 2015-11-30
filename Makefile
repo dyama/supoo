@@ -4,6 +4,7 @@ OBJS=supoo.o value.o list.o hash.o dump.o parse.o func.o arena.o
 
 CC=gcc
 CFLAGS=-Wall -g -lm -O0 -std=c99
+# CFLAGS=-Wall -lm -O3 -std=c99
 
 .PHONY: clean
 .SUFFIXES: .c .o
