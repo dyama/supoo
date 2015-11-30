@@ -47,11 +47,22 @@ value* exec(value* arena, value* s, int index)
     value* f = list_ref(s, 0);
     if (f != NULL) {
       if (f->type == AT_FUNCPTR) {
-        // リストの最初の要素が FUNCPTR であれば、関数実行
+        // リストの最初の要素が FUNCPTR であれば、組み込み関数実行
         value* funcname = list_shift(s); // 引数から関数名は除去
         value* result = exec_func(arena, f, s);
         free(funcname);
         return result;
+      }
+      else if (f->type == AT_LIST) {
+        value* funcbody = list_ref(f, 0);
+        if (funcbody != NULL && funcbody->type == AT_LIST) {
+          // リストの最初の要素が LIST であれば、それを関数本体文として
+          // ユーザー定義関数の実行
+          value* funcname = list_shift(s);          // 引数 s から関数名は除去
+          value* result = exec(arena, funcbody, 0);
+          free(funcname);
+          return result;
+        }
       }
     }
   }
@@ -187,6 +198,25 @@ value* _setq(value* arena, value* args)
   }
   else {
     hash_add(vars, var, val);
+  }
+  return NULL;
+}
+
+/* 変数定義 */
+value* _defun(value* arena, value* args)
+{
+  if (args->size != 2) {
+    fprintf(stderr, "Argument error.\n");
+    return NULL;
+  }
+  value* funcs = arena_funcs(arena);
+  value* func = list_ref(args, 0);
+  value* sent = list_ref(args, 1);
+  if (hash_exist(funcs, func)) {
+    *hash_ref(funcs, func) = *sent;
+  }
+  else {
+    hash_add(funcs, func, sent);
   }
   return NULL;
 }

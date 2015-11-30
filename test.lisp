@@ -22,8 +22,13 @@
   (setq hoge 123)
   (setq fuga 123)
   (if (eq $hoge $fuga)     ; if 文
-    (quote (put "true"))
-    (quote (put "false"))
+    (quote (putln "true"))
+    (quote (putln "false"))
     )
+
+  (defun myfunc (quote       ; 関数定義
+    (putln "function called.")
+  ))
+  (myfunc 1 2)               ; 関数呼び出し(仮引数代入は未実装)
 )
 
