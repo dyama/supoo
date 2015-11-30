@@ -34,7 +34,7 @@ value* exec(value* arena, value* s, int index)
     // クォート(評価せずに返す)
     value* first = list_ref(s, 0);
     if (first != NULL) {
-      if (first->type == AT_SYMBOL && strcmp(first->s, "quate") == 0) {
+      if (first->type == AT_SYMBOL && strcmp(first->s, "quote") == 0) {
         list_shift(s);
         free(first);
         return s;

@@ -22,8 +22,8 @@
   (setq hoge 123)
   (setq fuga 123)
   (if (eq $hoge $fuga)     ; if 文
-    (quate (put "true"))
-    (quate (put "false"))
+    (quote (put "true"))
+    (quote (put "false"))
     )
 )
 
