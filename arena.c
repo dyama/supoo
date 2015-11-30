@@ -23,22 +23,60 @@ void arena_begin(value* arena)
   value* funcs = hash_new();
   hash_add(arena, sym_new("funcs"), funcs);
 
-  hash_add(funcs, sym_new("+"),     fp_new(_add));
-  hash_add(funcs, sym_new("-"),     fp_new(_sub));
-  hash_add(funcs, sym_new("*"),     fp_new(_mult));
-  hash_add(funcs, sym_new("/"),     fp_new(_div));
-  hash_add(funcs, sym_new("eq"),    fp_new(_eq));
-  hash_add(funcs, sym_new("ne"),    fp_new(_ne));
-  hash_add(funcs, sym_new("gt"),    fp_new(_gt));
-  hash_add(funcs, sym_new("lt"),    fp_new(_lt));
-  hash_add(funcs, sym_new("ge"),    fp_new(_ge));
-  hash_add(funcs, sym_new("le"),    fp_new(_le));
-  hash_add(funcs, sym_new("pow"),   fp_new(_pow));
-  hash_add(funcs, sym_new("mod"),   fp_new(_mod));
+  value* add = fp_new(_add);
+  hash_add(funcs, sym_new("+"),     add);
+  hash_add(funcs, sym_new("add"),   add);
+
+  value* sub = fp_new(_sub);
+  hash_add(funcs, sym_new("-"),     sub);
+  hash_add(funcs, sym_new("sub"),   sub);
+
+  value* mult = fp_new(_mult);
+  hash_add(funcs, sym_new("*"),     mult);
+  hash_add(funcs, sym_new("mult"),  mult);
+
+  value* div = fp_new(_div);
+  hash_add(funcs, sym_new("/"),     div);
+  hash_add(funcs, sym_new("div"),   div);
+
+  value* eq = fp_new(_eq);
+  hash_add(funcs, sym_new("=="),    eq);
+  hash_add(funcs, sym_new("eq"),    eq);
+
+  value* ne = fp_new(_ne);
+  hash_add(funcs, sym_new("!="),    ne);
+  hash_add(funcs, sym_new("ne"),    ne);
+
+  value* gt = fp_new(_gt);
+  hash_add(funcs, sym_new(">"),     gt);
+  hash_add(funcs, sym_new("gt"),    gt);
+
+  value* lt = fp_new(_lt);
+  hash_add(funcs, sym_new("<"),     lt);
+  hash_add(funcs, sym_new("lt"),    lt);
+
+  value* ge = fp_new(_ge);
+  hash_add(funcs, sym_new(">="),    ge);
+  hash_add(funcs, sym_new("ge"),    ge);
+
+  value* le = fp_new(_le);
+  hash_add(funcs, sym_new("<="),    le);
+  hash_add(funcs, sym_new("le"),    le);
+
+  value* pow = fp_new(_pow);
+  hash_add(funcs, sym_new("**"),    pow);
+  hash_add(funcs, sym_new("pow"),   pow);
+
+  value* mod = fp_new(_mod);
+  hash_add(funcs, sym_new("%"),     mod);
+  hash_add(funcs, sym_new("mod"),   mod);
+
   hash_add(funcs, sym_new("put"),   fp_new(_put));
   hash_add(funcs, sym_new("putln"), fp_new(_putln));
+
   hash_add(funcs, sym_new("setq"),  fp_new(_setq));
   hash_add(funcs, sym_new("defun"), fp_new(_defun));
+
   hash_add(funcs, sym_new("if"),    fp_new(_if));
 
   // ‘g‚Ýž‚Ý•Ï”
