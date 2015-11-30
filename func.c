@@ -294,3 +294,20 @@ value* _le(value* arena, value* args)
   return res2;
 }
 
+value* _if(value* arena, value* args)
+{
+  if (args->size < 2 || args->size > 3) {
+    fprintf(stderr, "Argument error.\n");
+    return NULL;
+  }
+  value* cond = list_ref(args, 0);
+  if (bool_true(cond)) {
+    value* true_sent = list_ref(args, 1);
+    return exec(arena, true_sent, 0);
+  }
+  else if (args->size == 3) {
+    value* false_sent = list_ref(args, 2);
+    return exec(arena, false_sent, 0);
+  }
+  return cond;
+}

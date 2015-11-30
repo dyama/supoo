@@ -25,4 +25,6 @@ value* _lt(value* arena, value* args);
 value* _ge(value* arena, value* args);
 value* _le(value* arena, value* args);
 
+value* _if(value* arena, value* args);
+
 #endif

@@ -38,6 +38,7 @@ void arena_begin(value* arena)
   hash_add(funcs, sym_new("put"),   fp_new(_put));
   hash_add(funcs, sym_new("putln"), fp_new(_putln));
   hash_add(funcs, sym_new("setq"),  fp_new(_setq));
+  hash_add(funcs, sym_new("if"),    fp_new(_if));
 
   // ‘g‚İ‚İ•Ï”
   value* vars = hash_new();

@@ -18,5 +18,12 @@
   (putln (lt 1 1))         ; 比較 <
   (putln (ge 1 1))         ; 比較 >=
   (putln (le 1 1))         ; 比較 <=
+
+  (setq hoge 123)
+  (setq fuga 123)
+  (if (eq $hoge $fuga)     ; if 文
+    (quate (put "true"))
+    (quate (put "false"))
+    )
 )
 
