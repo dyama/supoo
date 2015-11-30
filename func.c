@@ -61,7 +61,12 @@ value* exec(value* arena, value* const tree)
         }
         else {
           // ケース2: (((sentence1) (sentence2) (sentence3)) arg1 arg2)
+          value* args3 = list_new();
+          for (int i=1; i < args->size; i++) {
+            list_push(args3, list_ref(args, i));
+          }
           result = exec(arena, funcptr);
+          free(args3);
         }
         return result;
       }

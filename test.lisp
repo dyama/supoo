@@ -25,14 +25,14 @@
     (if (eq $hoge $fuga)     ; if 文
       (quote (putln "true"))
       (quote (putln "false"))
-      )
+    )
 
     (defun myfunc (quote       ; 関数定義
       (putln "function called.")
     ))
     (myfunc 1 2)               ; 関数呼び出し(仮引数代入は未実装)
   )))
-  (test1)
+  ;(test1)
 
   (defun test2 (quote (        ; 組み込み関数の別名
     (putln (add 1 2))
@@ -42,7 +42,7 @@
     (putln (** 2 3))
     (putln (% 2 3))
   )))
-  (test2)
+  ;(test2)
 
   (setq c 0)
   (defun loop (quote (          ; 関数の再帰呼び出しによるループ
@@ -52,8 +52,21 @@
       (quote (loop))
     )
   )))
-  (putln "loop defined")
-  (loop)
+  ;(loop)
+
+  (defun "遅延評価テスト" (quote
+    (defun check_value (quote
+      (if (eq $a 3)
+        (quote (putln "a is 3!"))
+        (quote (putln "a is not 3!"))
+      )
+    ))
+    (setq a 4)
+    (check_value) 
+    (setq a 3)
+    (check_value) 
+  ))
+  ("遅延評価テスト")
 
 )
 
