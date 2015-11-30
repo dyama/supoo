@@ -27,6 +27,12 @@ void arena_begin(value* arena)
   hash_add(funcs, sym_new("-"),     fp_new(_sub));
   hash_add(funcs, sym_new("*"),     fp_new(_mult));
   hash_add(funcs, sym_new("/"),     fp_new(_div));
+  hash_add(funcs, sym_new("eq"),    fp_new(_eq));
+  hash_add(funcs, sym_new("ne"),    fp_new(_ne));
+  hash_add(funcs, sym_new("gt"),    fp_new(_gt));
+  hash_add(funcs, sym_new("lt"),    fp_new(_lt));
+  hash_add(funcs, sym_new("ge"),    fp_new(_ge));
+  hash_add(funcs, sym_new("le"),    fp_new(_le));
   hash_add(funcs, sym_new("pow"),   fp_new(_pow));
   hash_add(funcs, sym_new("mod"),   fp_new(_mod));
   hash_add(funcs, sym_new("put"),   fp_new(_put));

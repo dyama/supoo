@@ -36,4 +36,7 @@ value symv(char* const val);
 value fpv(void* val);
 value boolv(int val);
 
+int bool_true(value* val);
+value* bool_not(value* val);
+
 #endif

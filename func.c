@@ -191,3 +191,106 @@ value* _setq(value* arena, value* args)
   return NULL;
 }
 
+/* 比較演算: 同等 */
+value* _eq(value* arena, value* args)
+{
+  if (args->size != 2) {
+    fprintf(stderr, "Argument error.\n");
+    return NULL;
+  }
+  value* a = list_ref(args, 0);
+  value* b = list_ref(args, 1);
+  if (a->type != b->type) {
+    return bool_new(0);
+  }
+  switch (a->type) {
+    case AT_FLOAT:
+    if (a->f == b->f)
+      return bool_new(1);
+    break;
+  case AT_SYMBOL:
+    if (strcmp(a->s, b->s) == 0)
+      return bool_new(1);
+    break;
+  case AT_LIST:
+    if (a->size == b->size) {
+      for (int i = 0; i < a->size; i++) {
+        value args = list(); 
+        list_push(&args, a->a[i]);
+        list_push(&args, b->a[i]);
+        value* res = _eq(arena, &args);
+        if (res->f == 0.0) {
+          free(res);
+          return bool_new(0);
+        }
+        free(res);
+      }
+      return bool_new(1);
+    }
+    break;
+  case AT_FUNCPTR:
+    if (a->fp == b->fp)
+      return bool_new(1);
+    break;
+  default: break;
+  }
+  return bool_new(0);
+}
+
+/* 比較演算: 非同等 */
+value* _ne(value* arena, value* args)
+{
+  value* res = _eq(arena, args);
+  value* res2 = bool_not(res);
+  free(res);
+  return res2;
+}
+
+/* 比較演算: 大きい */
+value* _gt(value* arena, value* args)
+{
+  if (args->size != 2) {
+    fprintf(stderr, "Argument error.\n");
+    return NULL;
+  }
+  value* a = list_ref(args, 0);
+  value* b = list_ref(args, 1);
+  if (a->type != AT_FLOAT || b->type != AT_FLOAT) {
+    return bool_new(0);
+  }
+  return (a->f > b->f) ? bool_new(1) : bool_new(0);
+}
+
+/* 比較演算: 未満 */
+value* _lt(value* arena, value* args)
+{
+  if (args->size != 2) {
+    fprintf(stderr, "Argument error.\n");
+    return NULL;
+  }
+  value* a = list_ref(args, 0);
+  value* b = list_ref(args, 1);
+  if (a->type != AT_FLOAT || b->type != AT_FLOAT) {
+    return bool_new(0);
+  }
+  return (a->f < b->f) ? bool_new(1) : bool_new(0);
+}
+
+/* 比較演算: 以上 */
+value* _ge(value* arena, value* args)
+{
+  value* res = _lt(arena, args);
+  value* res2 = bool_not(res);
+  free(res);
+  return res2;
+}
+
+/* 比較演算: 以下 */
+value* _le(value* arena, value* args)
+{
+  value* res = _gt(arena, args);
+  value* res2 = bool_not(res);
+  free(res);
+  return res2;
+}
+

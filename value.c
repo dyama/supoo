@@ -66,3 +66,16 @@ value boolv(int val)
   return res;
 }
 
+int bool_true(value* val)
+{
+  if (val->type != AT_FLOAT) {
+    fprintf(stderr, "Specified object type is not AT_FLOAT.\n");
+    return 0;
+  }
+  return val->f ? 1 : 0; 
+}
+
+value* bool_not(value* val)
+{
+  return bool_true(val) ? bool_new(0) : bool_new(1); 
+}

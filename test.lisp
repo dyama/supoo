@@ -12,5 +12,11 @@
   (putln (* 4 $pi))        ; 組み込み変数 pi の展開
                            ; => 12.566371
   (putln (mod 10 3))       ; => 1
+  (putln (eq 1 1))         ; 比較 ==
+  (putln (ne 1 1))         ; 比較 !=
+  (putln (gt 1 1))         ; 比較 >
+  (putln (lt 1 1))         ; 比較 <
+  (putln (ge 1 1))         ; 比較 >=
+  (putln (le 1 1))         ; 比較 <=
 )
 

@@ -18,4 +18,11 @@ value* _put(value* arena, value* args);
 value* _putln(value* arena, value* args);
 value* _setq(value* arena, value* args);
 
+value* _eq(value* arena, value* args);
+value* _ne(value* arena, value* args);
+value* _gt(value* arena, value* args);
+value* _lt(value* arena, value* args);
+value* _ge(value* arena, value* args);
+value* _le(value* arena, value* args);
+
 #endif
