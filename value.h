@@ -30,8 +30,10 @@ struct value
 value* float_new(double val);
 value* sym_new(char* const val);
 value* fp_new(void* val);
+value* bool_new(int val);
 value floatv(double val);
 value symv(char* const val);
 value fpv(void* val);
+value boolv(int val);
 
 #endif
