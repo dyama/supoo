@@ -5,8 +5,8 @@
 #include "list.h"
 #include "hash.h"
 
-value* exec(value* arena, value* s, int index);
-value* exec_func(value* arena, value* func, value* args);
+value* exec(value* arena, value* const s);
+value* exec_func(value* const arena, const value* const func, value* const args);
 
 value* _add(value* arena, value* args);
 value* _sub(value* arena, value* args);

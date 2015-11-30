@@ -1,5 +1,7 @@
 #include "list.h"
 
+void dump(int, value*);
+
 /* ƒŠƒXƒg‚ðì¬‚·‚é */
 value list()
 {
@@ -137,7 +139,8 @@ value* list_unshift(value* list, value* item)
 value* list_ref(value* list, int index)
 {
   if (list->size <= index || index < 0) {
-    fprintf(stderr, "Out of range.\n");
+    fprintf(stderr, "Out of range list_ref(0x%X, %i).\n", (intptr_t)list, index);
+    dump(0, list);
     return NULL;
   }
   return list->a[index];

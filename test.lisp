@@ -32,6 +32,7 @@
     ))
     (myfunc 1 2)               ; 関数呼び出し(仮引数代入は未実装)
   )))
+  (test1)
 
   (defun test2 (quote (        ; 組み込み関数の別名
     (putln (add 1 2))
@@ -42,6 +43,17 @@
     (putln (% 2 3))
   )))
   (test2)
+
+  (setq c 0)
+  (defun loop (quote (          ; 関数の再帰呼び出しによるループ
+    (putln $c)
+    (setq c (+ $c 1))
+    (if (lt $c 10)
+      (quote (loop))
+    )
+  )))
+  (putln "loop defined")
+  (loop)
 
 )
 

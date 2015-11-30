@@ -2,75 +2,78 @@
 
 value* arena_funcs(value*);
 value* arena_vars(value*);
+void dump(int,value*);
 
 /*
  * 構文木の実行処理
- * (元の構文木 value* s を壊しながら評価していく)
+ * (元の構文木 value* tree を壊しながら評価していく)
  * */
-value* exec(value* arena, value* s, int index)
+value* exec(value* arena, value* const tree)
 {
-  if (s->type == AT_FLOAT || s->type == AT_FUNCPTR) {
+  if (tree == NULL) {
+    return tree;
+  }
+  if (tree->type == AT_FLOAT || tree->type == AT_FUNCPTR) {
     // 数値, 関数ポインタは評価する必要なし
-    return s;
+    return tree;
   }
-  if (s->type == AT_SYMBOL) { // シンボル評価
-    if (s->s[0] == '$') {
-      s->s++;
-      if (hash_exist(arena_vars(arena), s)) {
-        value* tmp = hash_ref(arena_vars(arena), s); // 変数展開
-        s->s--;
-        return tmp;
-      }
-      s->s--;
-    }
-    else if (index == 0) {
-      if (hash_exist(arena_funcs(arena), s)) {
-        return hash_ref(arena_funcs(arena), s); // 関数展開
+  if (tree->type == AT_SYMBOL) { // シンボル評価
+    if (tree->s[0] == '$') {
+      value key = symv(tree->s + 1);
+      if (hash_exist(arena_vars(arena), &key)) {
+        return hash_ref(arena_vars(arena), &key); // 変数展開
       }
     }
-    return s;
+    return tree;
   }
-  if (s->type == AT_LIST) { // リスト評価
-    // クォート(評価せずに返す)
-    value* first = list_ref(s, 0);
-    if (first != NULL) {
-      if (first->type == AT_SYMBOL && strcmp(first->s, "quote") == 0) {
-        list_shift(s);
-        free(first);
-        return s;
-      }
-    }
-    // リスト実行
-    for (int i=0; i < s->size; i++) {
-      s->a[i] = exec(arena, list_ref(s, i), i);
-    }
-    value* f = list_ref(s, 0);
+  if (tree->type == AT_LIST && tree->size > 0) { // リスト評価
+    value* f = list_ref(tree, 0);
     if (f != NULL) {
-      if (f->type == AT_FUNCPTR) {
-        // リストの最初の要素が FUNCPTR であれば、組み込み関数実行
-        value* funcname = list_shift(s); // 引数から関数名は除去
-        value* result = exec_func(arena, f, s);
-        free(funcname);
+
+      // クォート(評価せずに quate を取り除いたものを返す)
+      if (f->type == AT_SYMBOL && strcmp(f->s, "quote") == 0) {
+        value* args2 = list_new();
+        for (int i=1; i<tree->size; i++) {
+          list_push(args2, list_ref(tree, i));
+        }
+        return args2;
+      }
+
+      value* args = list_new();
+
+      // リスト評価を実行
+      for (int i=0; i < tree->size; i++) {
+        list_push(args, exec(arena, list_ref(tree, i)));
+      }
+
+      f = list_ref(args, 0);
+      if (f == NULL) {
+        return NULL;
+      }
+
+      if (f->type == AT_SYMBOL && hash_exist(arena_funcs(arena), f)) {
+        value* funcptr = hash_ref(arena_funcs(arena), f); // 関数展開
+        list_shift(args);
+        value* result = NULL;
+        if (funcptr->type == AT_FUNCPTR) {
+          // ケース1: (funcname arg1 arg2)
+          result = exec_func(arena, funcptr, args);
+        }
+        else {
+          // ケース2: (((sentence1) (sentence2) (sentence3)) arg1 arg2)
+          result = exec(arena, funcptr);
+        }
         return result;
       }
-      else if (f->type == AT_LIST) {
-        value* funcbody = list_ref(f, 0);
-        if (funcbody != NULL && funcbody->type == AT_LIST) {
-          // リストの最初の要素が LIST であれば、それを関数本体文として
-          // ユーザー定義関数の実行
-          value* funcname = list_shift(s);          // 引数 s から関数名は除去
-          value* result = exec(arena, funcbody, 0);
-          free(funcname);
-          return result;
-        }
-      }
+
+      free(args);
     }
   }
-  return s;
+  return tree;
 }
 
 /* 関数実行 */
-value* exec_func(value* arena, value* func, value* args)
+value* exec_func(value* const arena, const value* const func, value* const args)
 {
   if (func->type != AT_FUNCPTR) {
     fprintf(stderr, "Specified object type is not FUNCPTR.\n");
@@ -333,11 +336,11 @@ value* _if(value* arena, value* args)
   value* cond = list_ref(args, 0);
   if (bool_true(cond)) {
     value* true_sent = list_ref(args, 1);
-    return exec(arena, true_sent, 0);
+    return exec(arena, true_sent);
   }
   else if (args->size == 3) {
     value* false_sent = list_ref(args, 2);
-    return exec(arena, false_sent, 0);
+    return exec(arena, false_sent);
   }
   return cond;
 }

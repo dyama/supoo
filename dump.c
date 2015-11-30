@@ -7,12 +7,13 @@ bool dump(int n, value* val)
   if (n == 0) {
     // puts("begin of dump ----");
   }
-  else if (n > 10) {
-    fprintf(stderr, "object has large nested structures.\n");
-    return 1;
-  }
   for (i = 0; i < n; i++) {
     printf(". ");
+  }
+  if (n > 10) {
+    // fprintf(stderr, "object has large nested structures.\n");
+    printf("...\n");
+    return 0;
   }
   if (val != NULL) {
     switch (val->type) {

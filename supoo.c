@@ -77,7 +77,7 @@ int main(int argc, char const* argv[])
 
   value arena;
   arena_begin(&arena);
-  exec(&arena, &code, 0);
+  exec(&arena, &code);
   arena_end(&arena);
 
   return 0;
