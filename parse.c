@@ -1,5 +1,6 @@
 #include "parse.h"
 
+/* 文字列を新しくコピーする */
 char* str_copy(const char* str, int len)
 {
   char* res = (char*)malloc(sizeof(char) * len + 1);
@@ -8,6 +9,7 @@ char* str_copy(const char* str, int len)
   return res;
 }
 
+/* SYMBOL、FLOAT 値を取得し、ポインタを進める */
 value* get_value(const char** s)
 {
   value* result = NULL;
@@ -49,6 +51,7 @@ value* get_value(const char** s)
   return result;
 }
 
+/* 構文解析しS式木を構築する */
 int parse(const char* s, value* arena)
 {
   value stack = list();

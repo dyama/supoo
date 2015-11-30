@@ -1,5 +1,6 @@
 #include "value.h"
 
+/* FLOAT Œ^‚Ì value ‚ğì¬‚·‚é */
 value* float_new(double val)
 {
   value* res = (value*)malloc(sizeof(value));
@@ -8,6 +9,7 @@ value* float_new(double val)
   return res;
 }
 
+/* FLOAT Œ^‚Ì value ‚ğì¬‚·‚é */
 value floatv(double val)
 {
   value res;
@@ -16,6 +18,7 @@ value floatv(double val)
   return res;
 }
 
+/* SYMBOL Œ^‚Ì value ‚ğì¬‚·‚é */
 value* sym_new(char* const val)
 {
   value* res = (value*)malloc(sizeof(value));
@@ -24,6 +27,7 @@ value* sym_new(char* const val)
   return res;
 }
 
+/* SYMBOL Œ^‚Ì value ‚ğì¬‚·‚é */
 value symv(char* const val)
 {
   value res;
@@ -32,6 +36,7 @@ value symv(char* const val)
   return res;
 }
 
+/* FUNCPTR Œ^‚Ì value ‚ğì¬‚·‚é */
 value* fp_new(void* val)
 {
   value* res = (value*)malloc(sizeof(value));
@@ -40,6 +45,7 @@ value* fp_new(void* val)
   return res;
 }
 
+/* FUNCPTR Œ^‚Ì value ‚ğì¬‚·‚é */
 value fpv(void* val)
 {
   value res;

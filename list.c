@@ -1,5 +1,6 @@
 #include "list.h"
 
+/* リストを作成する */
 value list()
 {
   value res;
@@ -8,14 +9,17 @@ value list()
   return res;
 }
 
+/* リストを作成する */
 value* list_new()
 {
   value* res = (value*)malloc(sizeof(value));
-  res->type = AT_LIST;
-  res->size = 0;
+  *res = list();
   return res;
 }
 
+/* 項目のインデックスを取得する
+ * 項目が存在しない場合は -1
+ * */
 int list_index(value* list, value* item)
 {
   int i;
@@ -27,6 +31,7 @@ int list_index(value* list, value* item)
   return -1;
 }
 
+/* インデックスを指定し項目を設定する */
 value* list_set(value* list, int index, value* item)
 {
   if (list->size <= index || index < 0) {
@@ -37,11 +42,13 @@ value* list_set(value* list, int index, value* item)
   return list;
 }
 
+/* 最終インデックスを取得する */
 int list_last(value* list)
 {
   return list->size - 1;
 }
 
+/* リストのサイズを変更する */
 value* list_resize(value* list, int size)
 {
   if (list == NULL) {
@@ -65,6 +72,7 @@ value* list_resize(value* list, int size)
   return list;
 }
 
+/* リストの末尾に要素を追加する */
 value* list_push(value* list, value* item)
 {
   if (list == NULL) {
@@ -77,6 +85,7 @@ value* list_push(value* list, value* item)
   return list;
 }
 
+/* リストの末尾から要素を取り出す */
 value* list_pop(value* list)
 {
   if (!list->size) {
@@ -91,6 +100,7 @@ value* list_pop(value* list)
   return res;
 }
 
+/* リストの先頭から要素を取り出す */
 value* list_shift(value* list)
 {
   if (!list->size) {
@@ -108,6 +118,7 @@ value* list_shift(value* list)
   return res;
 }
 
+/* リストの先頭に要素を挿入する */
 value* list_unshift(value* list, value* item)
 {
   if (list == NULL) {
@@ -122,6 +133,7 @@ value* list_unshift(value* list, value* item)
   return list;
 }
 
+/* リストを参照する */
 value* list_ref(value* list, int index)
 {
   if (list->size <= index || index < 0) {

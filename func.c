@@ -172,11 +172,6 @@ value* _putln(value* arena, value* args)
   return NULL;
 }
 
-value* _quate(value* arena, value* args)
-{
-  return NULL;
-}
-
 /* 変数定義 */
 value* _setq(value* arena, value* args)
 {

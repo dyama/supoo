@@ -16,7 +16,6 @@ value* _pow(value* arena, value* args);
 value* _mod(value* arena, value* args);
 value* _put(value* arena, value* args);
 value* _putln(value* arena, value* args);
-value* _quate(value* arena, value* args);
 value* _setq(value* arena, value* args);
 
 #endif

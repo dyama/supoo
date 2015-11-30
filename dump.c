@@ -1,5 +1,6 @@
 #include "dump.h"
 
+/* SŽ®–Ø‚ðƒ_ƒ“ƒv‚·‚é */
 bool dump(int n, value* val)
 {
   int i;
