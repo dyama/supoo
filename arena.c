@@ -79,6 +79,10 @@ void arena_begin(value* arena)
 
   hash_add(funcs, sym_new("if"),    fp_new(_if));
 
+  hash_add(funcs, sym_new("sin"),   fp_new(_sin));
+  hash_add(funcs, sym_new("cos"),   fp_new(_cos));
+  hash_add(funcs, sym_new("tan"),   fp_new(_tan));
+
   // ‘g‚İ‚İ•Ï”
   value* vars = hash_new();
   hash_add(arena, sym_new("vars"), vars);

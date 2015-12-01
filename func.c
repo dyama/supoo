@@ -349,3 +349,34 @@ value* _if(value* arena, value* args)
   }
   return cond;
 }
+
+value* _sin(value* arena, value* args)
+{
+  if (args->size != 1) {
+    fprintf(stderr, "Wrong number of arguments.\n");
+    return NULL;
+  }
+  value* f = list_ref(args, 0);
+  return float_new(sin(f->f));
+}
+
+value* _cos(value* arena, value* args)
+{
+  if (args->size != 1) {
+    fprintf(stderr, "Wrong number of arguments.\n");
+    return NULL;
+  }
+  value* f = list_ref(args, 0);
+  return float_new(cos(f->f));
+  return NULL;
+}
+
+value* _tan(value* arena, value* args)
+{
+  if (args->size != 1) {
+    fprintf(stderr, "Wrong number of arguments.\n");
+    return NULL;
+  }
+  value* f = list_ref(args, 0);
+  return float_new(tan(f->f));
+}

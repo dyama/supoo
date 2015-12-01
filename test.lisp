@@ -66,7 +66,17 @@
     (setq a 3)
     (check_value) 
   ))
-  ("遅延評価テスト")
+  ;("遅延評価テスト")
+
+  (defun math-funcs (quote
+    (put "sin(1) = ")
+    (putln (sin 1))
+    (put "cos(1) = ")
+    (putln (cos 1))
+    (put "tan(1) = ")
+    (putln (tan 1))
+  ))
+  (math-funcs)
 
 )
 
