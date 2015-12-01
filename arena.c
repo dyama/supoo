@@ -92,15 +92,17 @@ void arena_begin(value* arena)
 void arena_end(value* arena)
 {
   /* 関数 */
-  value key = symv("funcs");
-  value* funcs = hash_ref(arena, &key);
-  for (int i=0; i < funcs->size; i++) {
-    value* item = list_ref(funcs, i);
-    free(item);
-    // 再帰的解放が必要
-  }
-  free(funcs->a);
-  free(funcs);
+  // value key = symv("funcs");
+  // value* funcs = hash_ref(arena, &key);
+  // for (int i=0; i < funcs->size; i++) {
+  //   value* item = list_ref(funcs, i);
+  //   if (item) {
+  //     free(item);
+  //   }
+  //   // 再帰的解放が必要
+  // }
+  // free(funcs->a);
+  // free(funcs);
   /* 変数 */
   return;
 }
