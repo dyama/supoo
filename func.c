@@ -350,6 +350,20 @@ value* _if(value* arena, value* args)
   return cond;
 }
 
+value* _while(value* arena, value* args)
+{
+  if (args->size != 2) {
+    fprintf(stderr, "Wrong number of arguments.\n");
+    return NULL;
+  }
+  value* condition = list_ref(args, 0);
+  value* sentence = list_ref(args, 1);
+  while (exec(arena, list_ref(condition, 0))->f == 1.0) {
+    exec(arena, sentence);
+  }
+  return NULL;
+}
+
 value* _sin(value* arena, value* args)
 {
   if (args->size != 1) {

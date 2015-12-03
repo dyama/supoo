@@ -52,7 +52,7 @@
       (quote (loop))
     )
   ))
-  (loop)
+  ;(loop)
 
   (defun "遅延評価テスト" (quote
     (defun check_value (quote
@@ -95,6 +95,18 @@
     (putln $number)
   ))
   ;(test-list)
+  
+  ; ループ構文的な関数のテスト
+  (defun looptest (quote
+    ; 変数初期化
+    (setq i 0)
+    ; while 文(関数)
+    (while (quote (lt $i 10)) (quote
+      (putln $i)
+      (setq i (+ $i 1))
+    ))
+  ))
+  (looptest)
 
 )
 

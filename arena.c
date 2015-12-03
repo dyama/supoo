@@ -78,6 +78,7 @@ void arena_begin(value* arena)
   hash_add(funcs, sym_new("defun"), fp_new(_defun));
 
   hash_add(funcs, sym_new("if"),    fp_new(_if));
+  hash_add(funcs, sym_new("while"), fp_new(_while));
 
   hash_add(funcs, sym_new("sin"),   fp_new(_sin));
   hash_add(funcs, sym_new("cos"),   fp_new(_cos));
