@@ -97,7 +97,9 @@ void arena_begin(value* arena)
   value* vars = hash_new();
   hash_add(arena, sym_new("vars"), vars);
 
-  hash_add(vars, sym_new("pi"), float_new(3.1415926535897932384626433832795L));
+  hash_add(vars, sym_new("pi"),    float_new(3.1415926535897932384626433832795L));
+  hash_add(vars, sym_new("true"),  bool_new(1));
+  hash_add(vars, sym_new("false"), bool_new(0));
 
   return;
 }

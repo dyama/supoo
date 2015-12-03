@@ -106,7 +106,12 @@
       (setq i (+ $i 1))
     ))
   ))
-  (looptest)
+  ;(looptest)
+  
+  (setq flag1 $true)
+  (setq flag2 $false)
+  (putln $flag1)
+  (putln $flag2)
 
 )
 

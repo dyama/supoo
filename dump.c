@@ -17,6 +17,9 @@ bool dump(int n, value* val)
   }
   if (val != NULL) {
     switch (val->type) {
+    case AT_BOOL:
+      printf("#<BOOL:0x%X, value:%s>\n", (intptr_t)val, is_true(val) ? "TRUE" : "FALSE");
+      break;
     case AT_FLOAT:
       printf("#<FLOAT:0x%X, value:%f>\n", (intptr_t)val, val->f);
       break;

@@ -170,6 +170,9 @@ value* _put(value* arena, value* args)
       break;
     }
     switch (item->type) {
+    case AT_BOOL:
+      printf("%s", is_true(item) ? "TRUE" : "FALSE");
+      break;
     case AT_FLOAT:
       printf("%f", item->f);
       break;
