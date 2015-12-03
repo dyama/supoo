@@ -3,14 +3,14 @@
 /* アリーナから関数マッパーを取得する */
 value* arena_funcs(value* arena)
 {
-  value key = symv("funcs");
+  value key = sym_value("funcs");
   return hash_ref(arena, &key);
 }
 
 /* アリーナから変数マッパーを取得する */
 value* arena_vars(value* arena)
 {
-  value key = symv("vars");
+  value key = sym_value("vars");
   return hash_ref(arena, &key);
 }
 
@@ -106,7 +106,7 @@ void arena_begin(value* arena)
 void arena_end(value* arena)
 {
   /* 関数 */
-  // value key = symv("funcs");
+  // value key = sym_value("funcs");
   // value* funcs = hash_ref(arena, &key);
   // for (int i=0; i < funcs->size; i++) {
   //   value* item = list_ref(funcs, i);

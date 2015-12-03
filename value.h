@@ -8,10 +8,12 @@ typedef struct value value;
 
 enum atom_type
 {
+  AT_INT,
   AT_FLOAT,
   AT_SYMBOL,
   AT_LIST,
   AT_FUNCPTR,
+  AT_BOOL,
   AT_UNKNOWN
 };
 
@@ -20,23 +22,26 @@ struct value
   atom_type type;
   int size;
   union {
-    double f;
-    char*  s;
+    int     i;
+    double  f;
+    char*   s;
     value** a;
-    void*  fp;
+    void*   fp;
   };
 };
+
+value* value_new(void);
 
 value* float_new(double val);
 value* sym_new(char* const val);
 value* fp_new(void* val);
 value* bool_new(int val);
-value floatv(double val);
-value symv(char* const val);
-value fpv(void* val);
-value boolv(int val);
+value float_value(double val);
+value sym_value(char* const val);
+value fp_value(void* val);
+value bool_value(int val);
 
-int bool_true(value* val);
+int is_true(value* val);
 value* bool_not(value* val);
 
 #endif

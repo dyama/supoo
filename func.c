@@ -19,7 +19,7 @@ value* exec(value* arena, value* const tree)
   }
   if (tree->type == AT_SYMBOL) { // シンボル評価
     if (tree->s[0] == '$') {
-      value key = symv(tree->s + 1);
+      value key = sym_value(tree->s + 1);
       if (hash_exist(arena_vars(arena), &key)) {
         return hash_ref(arena_vars(arena), &key); // 変数展開
       }
@@ -339,7 +339,7 @@ value* _if(value* arena, value* args)
     return NULL;
   }
   value* cond = list_ref(args, 0);
-  if (bool_true(cond)) {
+  if (is_true(cond)) {
     value* true_sent = list_ref(args, 1);
     return exec(arena, true_sent);
   }
@@ -358,7 +358,7 @@ value* _while(value* arena, value* args)
   }
   value* condition = list_ref(args, 0);
   value* sentence = list_ref(args, 1);
-  while (exec(arena, list_ref(condition, 0))->f == 1.0) {
+  while (is_true(exec(arena, list_ref(condition, 0)))) {
     exec(arena, sentence);
   }
   return NULL;

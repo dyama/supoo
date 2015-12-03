@@ -1,15 +1,21 @@
 #include "value.h"
 
+/* malloc ‚µ‚Ä value* ‚ð•Ô‚· */
+value* value_new(void)
+{
+  return (value*)malloc(sizeof(value));
+}
+
 /* FLOAT Œ^‚Ì value ‚ðì¬‚·‚é */
 value* float_new(double val)
 {
-  value* res = (value*)malloc(sizeof(value));
-  *res = floatv(val);
+  value* res = value_new();
+  *res = float_value(val);
   return res;
 }
 
 /* FLOAT Œ^‚Ì value ‚ðì¬‚·‚é */
-value floatv(double val)
+value float_value(double val)
 {
   value res;
   res.type = AT_FLOAT;
@@ -20,13 +26,13 @@ value floatv(double val)
 /* SYMBOL Œ^‚Ì value ‚ðì¬‚·‚é */
 value* sym_new(char* const val)
 {
-  value* res = (value*)malloc(sizeof(value));
-  *res = symv(val);
+  value* res = value_new();
+  *res = sym_value(val);
   return res;
 }
 
 /* SYMBOL Œ^‚Ì value ‚ðì¬‚·‚é */
-value symv(char* const val)
+value sym_value(char* const val)
 {
   value res;
   res.type = AT_SYMBOL;
@@ -37,13 +43,13 @@ value symv(char* const val)
 /* FUNCPTR Œ^‚Ì value ‚ðì¬‚·‚é */
 value* fp_new(void* val)
 {
-  value* res = (value*)malloc(sizeof(value));
-  *res = fpv(val);
+  value* res = value_new();
+  *res = fp_value(val);
   return res;
 }
 
 /* FUNCPTR Œ^‚Ì value ‚ðì¬‚·‚é */
-value fpv(void* val)
+value fp_value(void* val)
 {
   value res;
   res.type = AT_FUNCPTR;
@@ -51,31 +57,37 @@ value fpv(void* val)
   return res;
 }
 
+/* BOOL Œ^‚Ì value ‚ðì¬‚·‚é */
 value* bool_new(int val)
 {
-  value* res = (value*)malloc(sizeof(value));
-  *res = boolv(val);
+  value* res = value_new();
+  *res = bool_value(val);
   return res;
 }
 
-value boolv(int val)
+/* BOOL Œ^‚Ì value ‚ðì¬‚·‚é */
+value bool_value(int val)
 {
   value res;
-  res.type = AT_FLOAT;
-  res.f = val ? 1.0 : 0.0;
+  res.type = AT_BOOL;
+  res.i = val ? 1 : 0;
   return res;
 }
 
-int bool_true(value* val)
+int is_true(value* val)
 {
-  if (val->type != AT_FLOAT) {
-    fprintf(stderr, "Specified object type is not AT_FLOAT.\n");
-    return 0;
+  int r = 0;
+  switch (val->type) {
+  case AT_BOOL:    r = val->i ? 1 : 0; break;
+  case AT_FLOAT:   r = val->f ? 1 : 0; break;
+  case AT_SYMBOL:  r = *(val->s) ? 1 : 0; break;
+  case AT_FUNCPTR: r = val->fp ? 1 : 0; break;
+  default: r = 0; break;
   }
-  return val->f ? 1 : 0; 
+  return r;
 }
 
 value* bool_not(value* val)
 {
-  return bool_true(val) ? bool_new(0) : bool_new(1); 
+  return is_true(val) ? bool_new(0) : bool_new(1); 
 }
