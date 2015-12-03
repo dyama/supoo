@@ -57,20 +57,37 @@ value fp_value(void* val)
   return res;
 }
 
-/* BOOL Œ^‚Ì value ‚ğì¬‚·‚é */
-value* bool_new(int val)
+/* BOOL Œ^‚Å^‚Ì value ‚ğì¬‚·‚é */
+value* bool_new_true(void)
 {
   value* res = value_new();
-  *res = bool_value(val);
+  *res = bool_true();
   return res;
 }
 
-/* BOOL Œ^‚Ì value ‚ğì¬‚·‚é */
-value bool_value(int val)
+/* BOOL Œ^‚Å^‚Ì value ‚ğì¬‚·‚é */
+value bool_true(void)
 {
   value res;
   res.type = AT_BOOL;
-  res.i = val ? 1 : 0;
+  res.i = 1;
+  return res;
+}
+
+/* BOOL Œ^‚Å‹U‚Ì value ‚ğì¬‚·‚é */
+value* bool_new_false(void)
+{
+  value* res = value_new();
+  *res = bool_false();
+  return res;
+}
+
+/* BOOL Œ^‚Å‹U‚Ì value ‚ğì¬‚·‚é */
+value bool_false(void)
+{
+  value res;
+  res.type = AT_BOOL;
+  res.i = 0;
   return res;
 }
 
@@ -89,5 +106,5 @@ int is_true(value* val)
 
 value* bool_not(value* val)
 {
-  return is_true(val) ? bool_new(0) : bool_new(1); 
+  return is_true(val) ? bool_new_false() : bool_new_true(); 
 }

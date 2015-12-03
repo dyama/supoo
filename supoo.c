@@ -6,10 +6,6 @@
 #include "func.h"
 #include "arena.h"
 
-// * Global variables management list.
-// * Stack for function call.
-// * GC
-
 long get_file_size(const char* path)
 {
   FILE* f;
