@@ -84,6 +84,13 @@ void arena_begin(value* arena)
   hash_add(funcs, sym_new("tan"),   fp_new(_tan));
 
   hash_add(funcs, sym_new("ref"),   fp_new(_ref));
+  hash_add(funcs, sym_new("len"),   fp_new(_len));
+  hash_add(funcs, sym_new("pop"),   fp_new(_pop));
+  hash_add(funcs, sym_new("push"),  fp_new(_push));
+  hash_add(funcs, sym_new("shift"), fp_new(_shift));
+  hash_add(funcs, sym_new("unshift"), fp_new(_unshift));
+
+  hash_add(funcs, sym_new("dump"),   fp_new(_dump));
 
   // ‘g‚İ‚İ•Ï”
   value* vars = hash_new();

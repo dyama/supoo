@@ -34,6 +34,12 @@ value* _cos(value* arena, value* args);
 value* _tan(value* arena, value* args);
 
 value* _ref(value* arena, value* args);
+value* _len(value* arena, value* args);
+value* _push(value* arena, value* args);
+value* _pop(value* arena, value* args);
+value* _shift(value* arena, value* args);
+value* _unshift(value* arena, value* args);
 
+value* _dump(value* arena, value* args);
 
 #endif

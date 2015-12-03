@@ -1,6 +1,6 @@
 ; Test script for supoo
 (
-  (defun test1 (quote (
+  (defun test1 (quote
     (putln "")               ; 空文字列
     (setq title              ; 途中改行
           "supooのテスト")   ; 非英数字
@@ -31,28 +31,28 @@
       (putln "function called.")
     ))
     (myfunc 1 2)               ; 関数呼び出し(仮引数代入は未実装)
-  )))
+  ))
   ;(test1)
 
-  (defun test2 (quote (        ; 組み込み関数の別名
+  (defun test2 (quote         ; 組み込み関数の別名
     (putln (add 1 2))
     (putln (+ 1 2))
     (putln (>= 1 2))
     (putln (< 1 2))
     (putln (** 2 3))
     (putln (% 2 3))
-  )))
+  ))
   ;(test2)
 
   (setq c 0)
-  (defun loop (quote (          ; 関数の再帰呼び出しによるループ
+  (defun loop (quote           ; 関数の再帰呼び出しによるループ
     (putln $c)
     (setq c (+ $c 1))
     (if (lt $c 10)
       (quote (loop))
     )
-  )))
-  ;(loop)
+  ))
+  (loop)
 
   (defun "遅延評価テスト" (quote
     (defun check_value (quote
@@ -78,7 +78,23 @@
   ))
   ;(math-funcs)
 
-  (setq ary ("foo" "bar" "baz"))
-  (putln (ref $ary 1))
+  ; リスト操作
+  (defun test-list (quote
+    (setq ary ("foo" "bar" "baz"))
+    (put "Size of array is ")
+    (putln (len $ary))
+    (put "Second element is ")
+    (putln (ref $ary 1))
+    ; push/pop
+    (push $ary "hoge")
+    (setq hoge (pop $ary))
+    (putln $hoge)
+    ; shift/unshift
+    (unshift $ary 123)
+    (setq number (shift $ary))
+    (putln $number)
+  ))
+  ;(test-list)
+
 )
 

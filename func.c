@@ -400,3 +400,85 @@ value* _ref(value* arena, value* args)
   return list_ref(a1, (int)a2->f);
 }
 
+value* _len(value* arena, value* args)
+{
+  if (args->size != 1) {
+    fprintf(stderr, "Wrong number of arguments.\n");
+    return NULL;
+  }
+  value* a1 = list_ref(args, 0);
+  if (a1->type != AT_LIST) {
+    fprintf(stderr, "Wrong type of argument at first.\n");
+    return NULL;
+  }
+  return float_new(a1->size);
+}
+
+value* _push(value* arena, value* args)
+{
+  if (args->size != 2) {
+    fprintf(stderr, "Wrong number of arguments.\n");
+    return NULL;
+  }
+  value* a1 = list_ref(args, 0);
+  if (a1->type != AT_LIST) {
+    fprintf(stderr, "Wrong type of argument at first.\n");
+    return NULL;
+  }
+  value* a2 = list_ref(args, 1);
+  list_push(a1, a2);
+  return a1;
+}
+
+value* _pop(value* arena, value* args)
+{
+  if (args->size != 1) {
+    fprintf(stderr, "Wrong number of arguments.\n");
+    return NULL;
+  }
+  value* a1 = list_ref(args, 0);
+  if (a1->type != AT_LIST) {
+    fprintf(stderr, "Wrong type of argument at first.\n");
+    return NULL;
+  }
+  return list_pop(a1);
+}
+
+value* _shift(value* arena, value* args)
+{
+  if (args->size != 1) {
+    fprintf(stderr, "Wrong number of arguments.\n");
+    return NULL;
+  }
+  value* a1 = list_ref(args, 0);
+  if (a1->type != AT_LIST) {
+    fprintf(stderr, "Wrong type of argument at first.\n");
+    return NULL;
+  }
+  return list_shift(a1);
+}
+
+value* _unshift(value* arena, value* args)
+{
+  if (args->size != 2) {
+    fprintf(stderr, "Wrong number of arguments.\n");
+    return NULL;
+  }
+  value* a1 = list_ref(args, 0);
+  if (a1->type != AT_LIST) {
+    fprintf(stderr, "Wrong type of argument at first.\n");
+    return NULL;
+  }
+  value* a2 = list_ref(args, 1);
+  list_unshift(a1, a2);
+  return a1;
+}
+
+value* _dump(value* arena, value* args)
+{
+  for (int i=0; i<args->size; i++) {
+    dump(0, list_ref(args, i));
+    puts("");
+  }
+  return NULL;
+}
