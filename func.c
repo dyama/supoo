@@ -309,6 +309,12 @@ value* _eq(value* arena, value* args)
   value* a = list_ref(args, 0);
   value* b = list_ref(args, 1);
   if (a->type != b->type) {
+    if (a->type == AT_INT && b->type == AT_FLOAT) {
+      return a->i == a->f ? bool_new_true() : bool_new_false();
+    }
+    if (a->type == AT_FLOAT && b->type == AT_INT) {
+      return a->f == a->i ? bool_new_true() : bool_new_false();
+    }
     return bool_new_false();
   }
   switch (a->type) {
