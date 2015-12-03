@@ -33,5 +33,7 @@ value* _sin(value* arena, value* args);
 value* _cos(value* arena, value* args);
 value* _tan(value* arena, value* args);
 
+value* _ref(value* arena, value* args);
+
 
 #endif

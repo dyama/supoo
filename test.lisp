@@ -76,7 +76,9 @@
     (put "tan(1) = ")
     (putln (tan 1))
   ))
-  (math-funcs)
+  ;(math-funcs)
 
+  (setq ary ("foo" "bar" "baz"))
+  (putln (ref $ary 1))
 )
 

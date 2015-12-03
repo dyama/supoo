@@ -380,3 +380,23 @@ value* _tan(value* arena, value* args)
   value* f = list_ref(args, 0);
   return float_new(tan(f->f));
 }
+
+value* _ref(value* arena, value* args)
+{
+  if (args->size != 2) {
+    fprintf(stderr, "Wrong number of arguments.\n");
+    return NULL;
+  }
+  value* a1 = list_ref(args, 0);
+  value* a2 = list_ref(args, 1);
+  if (a1->type != AT_LIST) {
+    fprintf(stderr, "Wrong type of argument at first.\n");
+    return NULL;
+  }
+  if (a2->type != AT_FLOAT) {
+    fprintf(stderr, "Wrong type of argument at second.\n");
+    return NULL;
+  }
+  return list_ref(a1, (int)a2->f);
+}
+
