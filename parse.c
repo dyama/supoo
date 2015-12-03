@@ -9,7 +9,7 @@ char* str_copy(const char* str, int len)
   return res;
 }
 
-/* SYMBOL、FLOAT 値を取得し、ポインタを進める */
+/* SYMBOL, FLOAT, INT 値を取得し、ポインタを進める */
 value* get_value(const char** s)
 {
   value* result = NULL;
@@ -37,8 +37,15 @@ value* get_value(const char** s)
       result = sym_new(sym);
     }
     else {
-      // float
-      result = float_new(dv);
+      // float, int
+      char* ep2;
+      long n = strtol(*s, &ep2, 10);
+      if (*ep2 == '.') {
+        result = float_new(dv);
+      }
+      else {
+        result = int_new(n);
+      }
     }
     *s = ep;
   }

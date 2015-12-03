@@ -108,10 +108,13 @@
   ))
   ;(looptest)
   
-  (setq flag1 $true)
-  (setq flag2 $false)
-  (putln $flag1)
-  (putln $flag2)
+  ;(setq flag1 $true)
+  ;(setq flag2 $false)
+  ;(putln $flag1)
+  ;(putln $flag2)
+
+  (setq foo (int 1.23))
+  (dump $foo)
 
 )
 

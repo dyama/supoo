@@ -32,17 +32,22 @@ struct value
 
 value* value_new(void);
 
-value* float_new(double val);
-value* sym_new(char* const val);
-value* fp_new(void* val);
-value* bool_new_true(void);
-value* bool_new_false(void);
-value float_value(double val);
-value sym_value(char* const val);
-value fp_value(void* val);
-value bool_true(void);
-value bool_false(void);
+value* int_new(int val);
+value int_value(int val);
 
+value* float_new(double val);
+value float_value(double val);
+
+value* sym_new(char* const val);
+value sym_value(char* const val);
+
+value* fp_new(void* val);
+value fp_value(void* val);
+
+value* bool_new_true(void);
+value bool_true(void);
+value* bool_new_false(void);
+value bool_false(void);
 int is_true(value* val);
 value* bool_not(value* val);
 

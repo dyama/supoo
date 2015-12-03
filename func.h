@@ -41,6 +41,8 @@ value* _pop(value* arena, value* args);
 value* _shift(value* arena, value* args);
 value* _unshift(value* arena, value* args);
 
+value* _int(value* arena, value* args);
+
 value* _dump(value* arena, value* args);
 
 #endif

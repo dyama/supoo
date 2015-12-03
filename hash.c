@@ -82,6 +82,11 @@ int hash_keyindex(value* hash, value* key)
 {
   for (int i = 0; i < hash->size; i += 2) {
     value* item = list_ref(hash, i);
+    if (key->type == AT_INT && item->type == AT_INT) {
+      if (key->i == item->i) {
+        return i;
+      }
+    }
     if (key->type == AT_SYMBOL && item->type == AT_SYMBOL) {
       if (strcmp(key->s, item->s) == 0) {
         return i;

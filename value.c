@@ -6,6 +6,23 @@ value* value_new(void)
   return (value*)malloc(sizeof(value));
 }
 
+/* INT Œ^‚Ì value ‚ğì¬‚·‚é */
+value* int_new(int val)
+{
+  value* res = value_new();
+  *res = int_value(val);
+  return res;
+}
+
+/* INT Œ^‚Ì value ‚ğì¬‚·‚é */
+value int_value(int val)
+{
+  value res;
+  res.type = AT_INT;
+  res.i = val;
+  return res;
+}
+
 /* FLOAT Œ^‚Ì value ‚ğì¬‚·‚é */
 value* float_new(double val)
 {

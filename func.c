@@ -90,75 +90,139 @@ value* exec_func(value* const arena, const value* const func, value* const args)
 /* 加算 */
 value* _add(value* arena, value* args)
 {
-  double res = 0.0;
-  int i;
-  for (i = 0; i < args->size; i++) {
-    value* item = list_ref(args, i);
-    if (item->type != AT_FLOAT) {
-      return NULL;
-    }
-    res += item->f;
+  if (args->size != 2) {
+    return NULL;
   }
-  return float_new(res);
+  value* a = list_ref(args, 0);
+  value* b = list_ref(args, 1);
+  if (a->type == AT_INT && b->type == AT_INT) {
+    return int_new(a->i + b->i);
+  }
+  if (a->type == AT_INT && b->type == AT_FLOAT) {
+    return float_new(a->i + b->f);
+  }
+  if (a->type == AT_FLOAT && b->type == AT_INT) {
+    return float_new(a->f + b->i);
+  }
+  if (a->type == AT_FLOAT && b->type == AT_FLOAT) {
+    return float_new(a->f + b->f);
+  }
+  return NULL;
 }
 
 /* 減算 */
 value* _sub(value* arena, value* args)
 {
-  double res;
   if (args->size != 2) {
     return NULL;
   }
-  res = list_ref(args, 0)->f - list_ref(args, 1)->f;
-  return float_new(res);
+  value* a = list_ref(args, 0);
+  value* b = list_ref(args, 1);
+  if (a->type == AT_INT && b->type == AT_INT) {
+    return int_new(a->i - b->i);
+  }
+  if (a->type == AT_INT && b->type == AT_FLOAT) {
+    return float_new(a->i - b->f);
+  }
+  if (a->type == AT_FLOAT && b->type == AT_INT) {
+    return float_new(a->f - b->i);
+  }
+  if (a->type == AT_FLOAT && b->type == AT_FLOAT) {
+    return float_new(a->f - b->f);
+  }
+  return NULL;
 }
 
 /* 乗算 */
 value* _mult(value* arena, value* args)
 {
-  double res;
   if (args->size != 2) {
     return NULL;
   }
-  res = list_ref(args, 0)->f * list_ref(args, 1)->f;
-  return float_new(res);
+  value* a = list_ref(args, 0);
+  value* b = list_ref(args, 1);
+  if (a->type == AT_INT && b->type == AT_INT) {
+    return int_new(a->i * b->i);
+  }
+  if (a->type == AT_INT && b->type == AT_FLOAT) {
+    return float_new(a->i * b->f);
+  }
+  if (a->type == AT_FLOAT && b->type == AT_INT) {
+    return float_new(a->f * b->i);
+  }
+  if (a->type == AT_FLOAT && b->type == AT_FLOAT) {
+    return float_new(a->f * b->f);
+  }
+  return NULL;
 }
 
 /* 除算 */
 value* _div(value* arena, value* args)
 {
-  double res;
   if (args->size != 2) {
     return NULL;
   }
-  res = list_ref(args, 0)->f / list_ref(args, 1)->f;
-  return float_new(res);
+  value* a = list_ref(args, 0);
+  value* b = list_ref(args, 1);
+  if (a->type == AT_INT && b->type == AT_INT) {
+    return int_new(a->i / b->i);
+  }
+  if (a->type == AT_INT && b->type == AT_FLOAT) {
+    return float_new(a->i / b->f);
+  }
+  if (a->type == AT_FLOAT && b->type == AT_INT) {
+    return float_new(a->f / b->i);
+  }
+  if (a->type == AT_FLOAT && b->type == AT_FLOAT) {
+    return float_new(a->f / b->f);
+  }
+  return NULL;
 }
 
 /* べき乗 */
 value* _pow(value* arena, value* args)
 {
-  double res;
   if (args->size != 2) {
     return NULL;
   }
-  res = pow(list_ref(args, 0)->f, list_ref(args, 1)->f);
-  return float_new(res);
+  value* a = list_ref(args, 0);
+  value* b = list_ref(args, 1);
+  if (a->type == AT_INT && b->type == AT_INT) {
+    return float_new(pow(a->i, b->i));
+  }
+  if (a->type == AT_INT && b->type == AT_FLOAT) {
+    return float_new(pow(a->i, b->f));
+  }
+  if (a->type == AT_FLOAT && b->type == AT_INT) {
+    return float_new(pow(a->f, b->i));
+  }
+  if (a->type == AT_FLOAT && b->type == AT_FLOAT) {
+    return float_new(pow(a->f, b->f));
+  }
+  return NULL;
 }
 
 /* 剰余 */
 value* _mod(value* arena, value* args)
 {
-  double res;
   if (args->size != 2) {
     return NULL;
   }
-  double a1 = list_ref(args, 0)->f;
-  double a2 = list_ref(args, 1)->f;
-  for (res = a1; res >= a2; res -= a2) {
-    ;
+  value* a = list_ref(args, 0);
+  value* b = list_ref(args, 1);
+  if (a->type == AT_INT && b->type == AT_INT) {
+    return int_new(a->i % b->i);
   }
-  return float_new(res);
+  if (a->type == AT_INT && b->type == AT_FLOAT) {
+    return float_new(fmod(a->i, b->f));
+  }
+  if (a->type == AT_FLOAT && b->type == AT_INT) {
+    return float_new(fmod(a->f, b->i));
+  }
+  if (a->type == AT_FLOAT && b->type == AT_FLOAT) {
+    return float_new(fmod(a->f, b->f));
+  }
+  return NULL;
 }
 
 /* 標準出力に印字 */
@@ -172,6 +236,9 @@ value* _put(value* arena, value* args)
     switch (item->type) {
     case AT_BOOL:
       printf("%s", is_true(item) ? "TRUE" : "FALSE");
+      break;
+    case AT_INT:
+      printf("%d", item->i);
       break;
     case AT_FLOAT:
       printf("%f", item->f);
@@ -245,6 +312,10 @@ value* _eq(value* arena, value* args)
     return bool_new_false();
   }
   switch (a->type) {
+    case AT_INT:
+    if (a->i == b->i)
+      return bool_new_true();
+    break;
     case AT_FLOAT:
     if (a->f == b->f)
       return bool_new_true();
@@ -296,10 +367,19 @@ value* _gt(value* arena, value* args)
   }
   value* a = list_ref(args, 0);
   value* b = list_ref(args, 1);
-  if (a->type != AT_FLOAT || b->type != AT_FLOAT) {
-    return bool_new_false();
+  if (a->type == AT_INT && b->type == AT_INT) {
+    return (a->i > b->i) ? bool_new_true() : bool_new_false();
   }
-  return (a->f > b->f) ? bool_new_true() : bool_new_false();
+  if (a->type == AT_INT && b->type == AT_FLOAT) {
+    return (a->i > b->f) ? bool_new_true() : bool_new_false();
+  }
+  if (a->type == AT_FLOAT && b->type == AT_INT) {
+    return (a->f > b->i) ? bool_new_true() : bool_new_false();
+  }
+  if (a->type == AT_FLOAT && b->type == AT_FLOAT) {
+    return (a->f > b->f) ? bool_new_true() : bool_new_false();
+  }
+  return bool_new_false();
 }
 
 /* 比較演算: 未満 */
@@ -311,10 +391,19 @@ value* _lt(value* arena, value* args)
   }
   value* a = list_ref(args, 0);
   value* b = list_ref(args, 1);
-  if (a->type != AT_FLOAT || b->type != AT_FLOAT) {
-    return bool_new_false();
+  if (a->type == AT_INT && b->type == AT_INT) {
+    return (a->i < b->i) ? bool_new_true() : bool_new_false();
   }
-  return (a->f < b->f) ? bool_new_true() : bool_new_false();
+  if (a->type == AT_INT && b->type == AT_FLOAT) {
+    return (a->i < b->f) ? bool_new_true() : bool_new_false();
+  }
+  if (a->type == AT_FLOAT && b->type == AT_INT) {
+    return (a->f < b->i) ? bool_new_true() : bool_new_false();
+  }
+  if (a->type == AT_FLOAT && b->type == AT_FLOAT) {
+    return (a->f < b->f) ? bool_new_true() : bool_new_false();
+  }
+  return bool_new_false();
 }
 
 /* 比較演算: 以上 */
@@ -374,7 +463,13 @@ value* _sin(value* arena, value* args)
     return NULL;
   }
   value* f = list_ref(args, 0);
-  return float_new(sin(f->f));
+  if (f->type == AT_FLOAT) {
+    return float_new(sin(f->f));
+  }
+  if (f->type == AT_INT) {
+    return float_new(sin(f->i));
+  }
+  return NULL;
 }
 
 value* _cos(value* arena, value* args)
@@ -384,7 +479,12 @@ value* _cos(value* arena, value* args)
     return NULL;
   }
   value* f = list_ref(args, 0);
-  return float_new(cos(f->f));
+  if (f->type == AT_FLOAT) {
+    return float_new(cos(f->f));
+  }
+  if (f->type == AT_INT) {
+    return float_new(cos(f->i));
+  }
   return NULL;
 }
 
@@ -395,7 +495,13 @@ value* _tan(value* arena, value* args)
     return NULL;
   }
   value* f = list_ref(args, 0);
-  return float_new(tan(f->f));
+  if (f->type == AT_FLOAT) {
+    return float_new(tan(f->f));
+  }
+  if (f->type == AT_INT) {
+    return float_new(tan(f->i));
+  }
+  return NULL;
 }
 
 value* _ref(value* arena, value* args)
@@ -410,11 +516,11 @@ value* _ref(value* arena, value* args)
     fprintf(stderr, "Wrong type of argument at first.\n");
     return NULL;
   }
-  if (a2->type != AT_FLOAT) {
+  if (a2->type != AT_INT) {
     fprintf(stderr, "Wrong type of argument at second.\n");
     return NULL;
   }
-  return list_ref(a1, (int)a2->f);
+  return list_ref(a1, a2->i);
 }
 
 value* _len(value* arena, value* args)
@@ -428,7 +534,7 @@ value* _len(value* arena, value* args)
     fprintf(stderr, "Wrong type of argument at first.\n");
     return NULL;
   }
-  return float_new(a1->size);
+  return int_new(a1->size);
 }
 
 value* _push(value* arena, value* args)
@@ -499,3 +605,20 @@ value* _dump(value* arena, value* args)
   }
   return NULL;
 }
+
+value* _int(value* arena, value* args)
+{
+  if (args->size != 1) {
+    fprintf(stderr, "Wrong number of arguments.\n");
+    return NULL;
+  }
+  value* a = list_ref(args, 0);
+  if (a->type == AT_INT) {
+    return a;
+  }
+  if (a->type == AT_FLOAT) {
+    return int_new((int)a->f);
+  }
+  return NULL;
+}
+
