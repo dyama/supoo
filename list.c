@@ -145,13 +145,6 @@ value* list_ref(value* list, int index)
   return list->a[index];
 }
 
-value* value_copy(value* val)
-{
-  value* res = (value*)malloc(sizeof(value));
-  *res = *val;
-  return res;
-}
-
 void value_free_all(value* val)
 {
   // if (value_type(*val) == AT_LIST) {

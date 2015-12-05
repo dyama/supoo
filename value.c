@@ -125,3 +125,11 @@ value* bool_not(value* val)
 {
   return is_true(val) ? bool_new_false() : bool_new_true(); 
 }
+
+value* value_copy(value* val)
+{
+  value* res = value_new();
+  *res = *val;
+  return res;
+}
+

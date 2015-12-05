@@ -51,4 +51,6 @@ value bool_false(void);
 int is_true(value* val);
 value* bool_not(value* val);
 
+value* value_copy(value* val);
+
 #endif
