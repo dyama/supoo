@@ -63,6 +63,7 @@ int parse(const char* s, value* tree)
 {
   value stack = list();
   value* curr = NULL;
+  const char *start = s;
 
   for (; *s != '\0'; s++) {
     if (*s == ' ' || *s == '\n' || *s == '\r' || *s == '\'') {
@@ -71,7 +72,7 @@ int parse(const char* s, value* tree)
     if (*s == '(') {
       list_push(&stack, curr);
       curr = list_new();
-      if (*(s - 1) == '\'') {
+      if (start < s && *(s - 1) == '\'') {
         curr->flag = 1;
       }
     }
@@ -106,7 +107,9 @@ PARSE_ERROR:
     return 1;
   }
 
-  *tree = *curr;
+  if (curr != NULL) {
+    *tree = *curr;
+  }
 
   return 0;
 }
