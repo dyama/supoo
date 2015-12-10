@@ -64,16 +64,24 @@ int parse(const char* s, value* tree)
   value stack = list();
   value* curr = NULL;
   const char *start = s;
+  int line = 1;
+  int ch = 0;
 
   for (; *s != '\0'; s++) {
-    if (*s == ' ' || *s == '\n' || *s == '\r' || *s == '\'') {
+    ++ch;
+    if (*s == '\n') {
+      ++line;
+      ch = 0;
+      continue;
+    }
+    if (*s == ' ' || *s == '\r' || *s == '\'') {
       continue;
     }
     if (*s == '(') {
       list_push(&stack, curr);
       curr = list_new();
       if (start < s && *(s - 1) == '\'') {
-        curr->flag = 1;
+        curr->flag = F_QUOTE;
       }
     }
     else if (*s == ')') {
@@ -94,16 +102,17 @@ int parse(const char* s, value* tree)
         s--;
       }
       else {
-        fprintf(stderr, "Failed to parse.\n");
+        fprintf(stderr, "Failed to parse at "
+          "line %d:%d.\n", line, ch);
         goto PARSE_ERROR;
       }
     }
   }
 
   if (stack.size) {
-    fprintf(stderr, "The number of brackets are mismatch. stack size : %d\n", stack.size);
+    fprintf(stderr, "Number of brackets are mismatch at "
+      "line %d:%d.\n", line, ch);
 PARSE_ERROR:
-    dump(0, &stack);
     return 1;
   }
 
