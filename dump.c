@@ -18,19 +18,24 @@ bool dump(int n, value* val)
   if (val != NULL) {
     switch (val->type) {
     case AT_INT:
-      printf("#<INT:0x%X, value:%d, flag:%d>\n", (intptr_t)val, val->i, val->flag);
+      printf("#<INT:0x%X, value:%d, flag:%d>\n",
+        (unsigned int)(intptr_t)val, val->i, val->flag);
       break;
     case AT_FLOAT:
-      printf("#<FLOAT:0x%X, value:%f, flag:%d>\n", (intptr_t)val, val->f, val->flag);
+      printf("#<FLOAT:0x%X, value:%f, flag:%d>\n",
+        (unsigned int)(intptr_t)val, val->f, val->flag);
       break;
     case AT_SYMBOL:
-      printf("#<SYMBOL:0x%X value:%s, flag:%d>\n", (intptr_t)val, val->s, val->flag);
+      printf("#<SYMBOL:0x%X value:%s, flag:%d>\n",
+        (unsigned int)(intptr_t)val, val->s, val->flag);
       break;
     case AT_FUNCPTR:
-      printf("#<FUNCPTR:0x%X address:0x%X, flag:%d>\n", (intptr_t)val, (intptr_t)val->fp, val->flag);
+      printf("#<FUNCPTR:0x%X address:0x%X, flag:%d>\n",
+        (unsigned int)(intptr_t)val, (unsigned int)(intptr_t)val->fp, val->flag);
       break;
     case AT_LIST:
-      printf("#<LIST:0x%X count:%d, flag:%d>\n", (intptr_t)val, val->size, val->flag);
+      printf("#<LIST:0x%X count:%d, flag:%d>\n",
+        (unsigned int)(intptr_t)val, val->size, val->flag);
       int i;
       for (i = 0; i < val->size; i++) {
         value* cval = list_ref(val, i);
@@ -43,10 +48,12 @@ bool dump(int n, value* val)
       }
       break;
     case AT_BOOL:
-      printf("#<BOOL:0x%X, value:%s, flag:%d>\n", (intptr_t)val, is_true(val) ? "TRUE" : "FALSE", val->flag);
+      printf("#<BOOL:0x%X, value:%s, flag:%d>\n",
+        (unsigned int)(intptr_t)val, is_true(val) ? "TRUE" : "FALSE", val->flag);
       break;
     default:
-      printf("#<UNKNOWN:0x%X>\n", (intptr_t)val);
+      printf("#<UNKNOWN:0x%X>\n",
+          (unsigned int)(intptr_t)val);
       break;
     }
   }
