@@ -1,5 +1,6 @@
-; Test script for supoo
+;;;; Test script for supoo
 (
+  ;;; 基本関数
   (defun test1 (quote
     (putln "")               ; 空文字列
     (setq title              ; 途中改行
@@ -34,7 +35,8 @@
   ))
   ;(test1)
 
-  (defun test2 (quote         ; 組み込み関数の別名
+  ;;; 組み込み関数の別名
+  (defun test2 (quote
     (putln (add 1 2))
     (putln (+ 1 2))
     (putln (>= 1 2))
@@ -44,8 +46,9 @@
   ))
   ;(test2)
 
+  ;;; 関数の再帰呼び出しによるループ
   (setq c 0)
-  (defun loop (quote           ; 関数の再帰呼び出しによるループ
+  (defun loop (quote
     (putln $c)
     (setq c (+ $c 1))
     (if (lt $c 10)
@@ -54,6 +57,7 @@
   ))
   ;(loop)
 
+  ;;; 遅延評価テスト
   (defun "遅延評価テスト" (quote
     (defun check_value (quote
       (if (eq $a 3)
@@ -68,6 +72,7 @@
   ))
   ;("遅延評価テスト")
 
+  ;;; 数学関数
   (defun math-funcs (quote
     (put "sin(1) = ")
     (putln (sin 1))
@@ -102,19 +107,21 @@
     (setq i 0)
     ; while 文(関数)
     (while (quote (lt $i 10)) (quote
-      (putln $i)
+      (put $i)
+      (put " ")
       (setq i (+ $i 1))
     ))
+    (putln "")
   ))
-  ;(looptest)
+  (looptest)
   
   ;(setq flag1 $true)
   ;(setq flag2 $false)
   ;(putln $flag1)
   ;(putln $flag2)
 
-  (setq foo (int 1.23))
-  (dump $foo)
+  ;(setq foo (int 1.23))
+  ;(dump $foo)
 
 )
 
