@@ -15,6 +15,7 @@ value* exec(value* arena, value* const tree, value* const args)
   value* result = NULL;
   switch (tree->type) {
     case AT_FUNCPTR:
+    case AT_INT:
     case AT_FLOAT:
       result = tree;
       break;
@@ -34,6 +35,9 @@ value* exec(value* arena, value* const tree, value* const args)
         else if (func->type == AT_LIST) {
           // ユーザー定義関数
           result = exec(arena, func, args);
+        }
+        else {
+          fprintf(stderr, "boo!\n");
         }
       }
       else {
@@ -73,8 +77,8 @@ value* _add(value* arena, value* args)
   if (args->size != 2) {
     return NULL;
   }
-  value* a = list_ref(args, 0);
-  value* b = list_ref(args, 1);
+  value* a = exec(arena, list_ref(args, 0), NULL);
+  value* b = exec(arena, list_ref(args, 1), NULL);
   if (a->type == AT_INT && b->type == AT_INT) {
     return int_new(a->i + b->i);
   }
@@ -96,8 +100,8 @@ value* _sub(value* arena, value* args)
   if (args->size != 2) {
     return NULL;
   }
-  value* a = list_ref(args, 0);
-  value* b = list_ref(args, 1);
+  value* a = exec(arena, list_ref(args, 0), NULL);
+  value* b = exec(arena, list_ref(args, 1), NULL);
   if (a->type == AT_INT && b->type == AT_INT) {
     return int_new(a->i - b->i);
   }
@@ -119,8 +123,8 @@ value* _mult(value* arena, value* args)
   if (args->size != 2) {
     return NULL;
   }
-  value* a = list_ref(args, 0);
-  value* b = list_ref(args, 1);
+  value* a = exec(arena, list_ref(args, 0), NULL);
+  value* b = exec(arena, list_ref(args, 1), NULL);
   if (a->type == AT_INT && b->type == AT_INT) {
     return int_new(a->i * b->i);
   }
@@ -142,8 +146,8 @@ value* _div(value* arena, value* args)
   if (args->size != 2) {
     return NULL;
   }
-  value* a = list_ref(args, 0);
-  value* b = list_ref(args, 1);
+  value* a = exec(arena, list_ref(args, 0), NULL);
+  value* b = exec(arena, list_ref(args, 1), NULL);
   if (a->type == AT_INT && b->type == AT_INT) {
     return int_new(a->i / b->i);
   }
@@ -165,8 +169,8 @@ value* _pow(value* arena, value* args)
   if (args->size != 2) {
     return NULL;
   }
-  value* a = list_ref(args, 0);
-  value* b = list_ref(args, 1);
+  value* a = exec(arena, list_ref(args, 0), NULL);
+  value* b = exec(arena, list_ref(args, 1), NULL);
   if (a->type == AT_INT && b->type == AT_INT) {
     return float_new(pow(a->i, b->i));
   }
@@ -188,8 +192,8 @@ value* _mod(value* arena, value* args)
   if (args->size != 2) {
     return NULL;
   }
-  value* a = list_ref(args, 0);
-  value* b = list_ref(args, 1);
+  value* a = exec(arena, list_ref(args, 0), NULL);
+  value* b = exec(arena, list_ref(args, 1), NULL);
   if (a->type == AT_INT && b->type == AT_INT) {
     return int_new(a->i % b->i);
   }
@@ -271,7 +275,7 @@ value* _defun(value* arena, value* args)
     return NULL;
   }
   value* funcs = arena_funcs(arena);
-  value* func = list_ref(args, 0);
+  value* func = exec(arena, list_ref(args, 0), NULL);
   value* sent = list_ref(args, 1);
   if (hash_exist(funcs, func)) {
     *hash_ref(funcs, func) = *sent;
@@ -289,8 +293,8 @@ value* _eq(value* arena, value* args)
     fprintf(stderr, "Argument error.\n");
     return NULL;
   }
-  value* a = list_ref(args, 0);
-  value* b = list_ref(args, 1);
+  value* a = exec(arena, list_ref(args, 0), NULL);
+  value* b = exec(arena, list_ref(args, 1), NULL);
   if (a->type != b->type) {
     if (a->type == AT_INT && b->type == AT_FLOAT) {
       return a->i == a->f ? bool_new_true() : bool_new_false();
@@ -354,8 +358,8 @@ value* _gt(value* arena, value* args)
     fprintf(stderr, "Argument error.\n");
     return NULL;
   }
-  value* a = list_ref(args, 0);
-  value* b = list_ref(args, 1);
+  value* a = exec(arena, list_ref(args, 0), NULL);
+  value* b = exec(arena, list_ref(args, 1), NULL);
   if (a->type == AT_INT && b->type == AT_INT) {
     return (a->i > b->i) ? bool_new_true() : bool_new_false();
   }
@@ -378,8 +382,8 @@ value* _lt(value* arena, value* args)
     fprintf(stderr, "Argument error.\n");
     return NULL;
   }
-  value* a = list_ref(args, 0);
-  value* b = list_ref(args, 1);
+  value* a = exec(arena, list_ref(args, 0), NULL);
+  value* b = exec(arena, list_ref(args, 1), NULL);
   if (a->type == AT_INT && b->type == AT_INT) {
     return (a->i < b->i) ? bool_new_true() : bool_new_false();
   }
@@ -439,7 +443,7 @@ value* _while(value* arena, value* args)
   }
   value* condition = list_ref(args, 0);
   value* sentence = list_ref(args, 1);
-  while (is_true(exec(arena, list_ref(condition, 0), NULL))) {
+  while (is_true(exec(arena, condition, NULL))) {
     exec(arena, sentence, NULL);
   }
   return NULL;
@@ -451,7 +455,7 @@ value* _sin(value* arena, value* args)
     fprintf(stderr, "Wrong number of arguments.\n");
     return NULL;
   }
-  value* f = list_ref(args, 0);
+  value* f = exec(arena, list_ref(args, 0), NULL);
   if (f->type == AT_FLOAT) {
     return float_new(sin(f->f));
   }
@@ -467,7 +471,7 @@ value* _cos(value* arena, value* args)
     fprintf(stderr, "Wrong number of arguments.\n");
     return NULL;
   }
-  value* f = list_ref(args, 0);
+  value* f = exec(arena, list_ref(args, 0), NULL);
   if (f->type == AT_FLOAT) {
     return float_new(cos(f->f));
   }
@@ -483,7 +487,7 @@ value* _tan(value* arena, value* args)
     fprintf(stderr, "Wrong number of arguments.\n");
     return NULL;
   }
-  value* f = list_ref(args, 0);
+  value* f = exec(arena, list_ref(args, 0), NULL);
   if (f->type == AT_FLOAT) {
     return float_new(tan(f->f));
   }
@@ -499,8 +503,8 @@ value* _ref(value* arena, value* args)
     fprintf(stderr, "Wrong number of arguments.\n");
     return NULL;
   }
-  value* a1 = list_ref(args, 0);
-  value* a2 = list_ref(args, 1);
+  value* a1 = exec(arena, list_ref(args, 0), NULL);
+  value* a2 = exec(arena, list_ref(args, 1), NULL);
   if (a1->type != AT_LIST) {
     fprintf(stderr, "Wrong type of argument at first.\n");
     return NULL;
@@ -518,7 +522,7 @@ value* _len(value* arena, value* args)
     fprintf(stderr, "Wrong number of arguments.\n");
     return NULL;
   }
-  value* a1 = list_ref(args, 0);
+  value* a1 = exec(arena, list_ref(args, 0), NULL);
   if (a1->type != AT_LIST) {
     fprintf(stderr, "Wrong type of argument at first.\n");
     return NULL;
@@ -532,7 +536,7 @@ value* _push(value* arena, value* args)
     fprintf(stderr, "Wrong number of arguments.\n");
     return NULL;
   }
-  value* a1 = list_ref(args, 0);
+  value* a1 = exec(arena, list_ref(args, 0), NULL);
   if (a1->type != AT_LIST) {
     fprintf(stderr, "Wrong type of argument at first.\n");
     return NULL;
@@ -548,7 +552,7 @@ value* _pop(value* arena, value* args)
     fprintf(stderr, "Wrong number of arguments.\n");
     return NULL;
   }
-  value* a1 = list_ref(args, 0);
+  value* a1 = exec(arena, list_ref(args, 0), NULL);
   if (a1->type != AT_LIST) {
     fprintf(stderr, "Wrong type of argument at first.\n");
     return NULL;
@@ -562,7 +566,7 @@ value* _shift(value* arena, value* args)
     fprintf(stderr, "Wrong number of arguments.\n");
     return NULL;
   }
-  value* a1 = list_ref(args, 0);
+  value* a1 = exec(arena, list_ref(args, 0), NULL);
   if (a1->type != AT_LIST) {
     fprintf(stderr, "Wrong type of argument at first.\n");
     return NULL;
@@ -576,7 +580,7 @@ value* _unshift(value* arena, value* args)
     fprintf(stderr, "Wrong number of arguments.\n");
     return NULL;
   }
-  value* a1 = list_ref(args, 0);
+  value* a1 = exec(arena, list_ref(args, 0), NULL);
   if (a1->type != AT_LIST) {
     fprintf(stderr, "Wrong type of argument at first.\n");
     return NULL;
@@ -601,7 +605,7 @@ value* _int(value* arena, value* args)
     fprintf(stderr, "Wrong number of arguments.\n");
     return NULL;
   }
-  value* a = list_ref(args, 0);
+  value* a = exec(arena, list_ref(args, 0), NULL);
   if (a->type == AT_INT) {
     return a;
   }

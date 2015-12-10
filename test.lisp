@@ -1,5 +1,6 @@
 ;;;; Test script for supoo
 (
+
   ;;; 基本関数
   (defun test1 (
     (putln "")               ; 空文字列
@@ -55,7 +56,7 @@
       (loop)
     )
   ))
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;(loop)
+  ;(loop)
 
   ;;; 遅延評価テスト
   (defun "遅延評価テスト" (
@@ -70,7 +71,7 @@
     (setq a 3)
     (check_value) 
   ))
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;("遅延評価テスト")
+  ;("遅延評価テスト")
 
   ;;; 数学関数
   (defun math-funcs (
@@ -86,20 +87,21 @@
   ; リスト操作
   (defun test-list (
     (setq ary ("foo" "bar" "baz"))
-    (put "Size of array is ")
-    (putln (len $ary))
-    (put "Second element is ")
-    (putln (ref $ary 1))
-    ; push/pop
-    (push $ary "hoge")
-    (setq hoge (pop $ary))
-    (putln $hoge)
-    ; shift/unshift
-    (unshift $ary 123)
-    (setq number (shift $ary))
-    (putln $number)
+    (dump $ary)
+    ; (put "Size of array is ")
+    ; (putln (len $ary))
+    ; (put "Second element is ")
+    ; (putln (ref $ary 1))
+    ; ; push/pop
+    ; (push $ary "hoge")
+    ; (setq hoge (pop $ary))
+    ; (putln $hoge)
+    ; ; shift/unshift
+    ; (unshift $ary 123)
+    ; (setq number (shift $ary))
+    ; (putln $number)
   ))
-  ;;;;;;;;;;;;;;;;;;(test-list)
+  (test-list)
   
   ; ループ構文的な関数のテスト
   (defun looptest (
@@ -113,7 +115,7 @@
     ))
     (putln "")
   ))
-  ;;;;;;;;;;;;;;;;;;;;(looptest)
+  ;(looptest)
   
   ;(setq flag1 $true)
   ;(setq flag2 $false)
