@@ -14,7 +14,7 @@ value* list_unshift(value* list, value* item);
 value* list_ref(value* list, int index);
 value* list_resize(value* list, int size);
 value* list_set(value* list, int index, value* item);
-value* value_copy(value* val);
+
 void value_free_all(value* val);
 
 #endif

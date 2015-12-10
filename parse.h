@@ -13,6 +13,6 @@
 
 char* str_copy(const char* str, int len);
 value* get_value(const char** s);
-int parse(const char* s, value* curr);
+int parse(const char* s, value* tree);
 
 #endif

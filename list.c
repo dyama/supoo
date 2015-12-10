@@ -14,7 +14,7 @@ value list()
 /* ƒŠƒXƒg‚ðì¬‚·‚é */
 value* list_new()
 {
-  value* res = (value*)malloc(sizeof(value));
+  value* res = value_new();
   *res = list();
   return res;
 }
@@ -54,8 +54,7 @@ int list_last(value* list)
 value* list_resize(value* list, int size)
 {
   if (list == NULL) {
-    list = (value*)malloc(sizeof(value));
-    list->size = 0;
+    list = list_new();
   }
   if (size == 0) {
     free(list->a);
@@ -144,13 +143,6 @@ value* list_ref(value* list, int index)
     return NULL;
   }
   return list->a[index];
-}
-
-value* value_copy(value* val)
-{
-  value* res = (value*)malloc(sizeof(value));
-  *res = *val;
-  return res;
 }
 
 void value_free_all(value* val)

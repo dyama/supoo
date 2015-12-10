@@ -59,7 +59,7 @@ value* get_value(const char** s)
 }
 
 /* \•¶‰ğÍ‚µS®–Ø‚ğ\’z‚·‚é */
-int parse(const char* s, value* arena)
+int parse(const char* s, value* tree)
 {
   value stack = list();
   value* curr = NULL;
@@ -103,7 +103,7 @@ PARSE_ERROR:
     return 1;
   }
 
-  *arena = *curr;
+  *tree = *curr;
 
   return 0;
 }
