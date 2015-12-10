@@ -12,6 +12,9 @@ value* exec(value* arena, value* const tree, value* const args)
   if (tree == NULL) {
     return tree;
   }
+  if (tree->flag & F_QUOTE) {
+    return tree;
+  }
   value* result = NULL;
   switch (tree->type) {
     case AT_FUNCPTR:

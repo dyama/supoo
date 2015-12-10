@@ -28,7 +28,11 @@ struct value
     value** a;
     void*   fp;
   };
+  char flag;
 };
+
+#define F_NONE  0x0
+#define F_QUOTE 0x1
 
 value* value_new(void);
 

@@ -65,12 +65,15 @@ int parse(const char* s, value* tree)
   value* curr = NULL;
 
   for (; *s != '\0'; s++) {
-    if (*s == ' ' || *s == '\n' || *s == '\r') {
+    if (*s == ' ' || *s == '\n' || *s == '\r' || *s == '\'') {
       continue;
     }
     if (*s == '(') {
       list_push(&stack, curr);
       curr = list_new();
+      if (*(s - 1) == '\'') {
+        curr->flag = 1;
+      }
     }
     else if (*s == ')') {
       value* prev = curr;
