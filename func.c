@@ -26,8 +26,11 @@ value* exec(value* arena, value* const tree, value* const args)
       if (tree->s[0] == '$') {
         value key = sym_value(tree->s + 1);
         if (hash_exist(arena_vars(arena), &key)) {
-          return hash_ref(arena_vars(arena), &key); // 変数展開
+          return hash_ref(arena_vars(arena), &key); // グローバル変数展開
         }
+        //else if () {
+        //  // ローカル変数展開
+        //}
       }
       if (hash_exist(arena_funcs(arena), tree)) {
         value* func = hash_ref(arena_funcs(arena), tree); // 関数展開
@@ -544,7 +547,7 @@ value* _push(value* arena, value* args)
     fprintf(stderr, "Wrong type of argument at first.\n");
     return NULL;
   }
-  value* a2 = list_ref(args, 1);
+  value* a2 = exec(arena, list_ref(args, 1), NULL);
   list_push(a1, a2);
   return a1;
 }
@@ -596,7 +599,17 @@ value* _unshift(value* arena, value* args)
 value* _dump(value* arena, value* args)
 {
   for (int i=0; i<args->size; i++) {
-    dump(0, exec(arena, list_ref(args, i), NULL));
+    value* item = list_ref(args, i);
+    if (item->flag & F_QUOTE) {
+      dump(0, item);
+    }
+    else {
+      //char flag = item->flag;
+      //item->flag &= ~F_QUOTE;
+      //printf("%d = flag\n", item->flag);
+      dump(0, exec(arena, item, NULL));
+      //item->flag = flag;
+    }
     puts("");
   }
   return NULL;

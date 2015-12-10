@@ -87,14 +87,16 @@
   ; リスト操作
   (defun test-list (
     (setq ary '("foo" "bar" "baz"))
-    (put "Size of array is ")
-    (putln (len $ary))
-    (put "Second element is ")
-    (putln (ref $ary 1))
-    ; ; push/pop
-    ; (push $ary "hoge")
-    ; (setq hoge (pop $ary))
-    ; (putln $hoge)
+    ;(put "Size of array is ")
+    ;(putln (len $ary))
+    ;(put "Second element is ")
+    ;(putln (ref $ary 1))
+    ; push/pop
+    (dump $ary)
+    (push $ary "hoge")
+    (dump $ary)
+    ;(setq hoge (pop $ary))
+    ;(putln $hoge)
     ; ; shift/unshift
     ; (unshift $ary 123)
     ; (setq number (shift $ary))
