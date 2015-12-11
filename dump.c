@@ -53,12 +53,13 @@ bool dump(int n, value* val)
       break;
     default:
       printf("#<UNKNOWN:0x%X>\n",
-          (unsigned int)(intptr_t)val);
+        (unsigned int)(intptr_t)val);
       break;
     }
   }
   else {
-    printf("(nil)\n");
+    printf("#<NIL:0x%X>\n",
+        (unsigned int)(intptr_t)val);
   }
   if (n == 0) {
     // puts("end of dump ----");

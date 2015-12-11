@@ -54,11 +54,17 @@ value* hash_set(value* hash, value* key, value* item)
   return hash;
 }
 
-/* 指定したキーの項目をハッシュから取り除く */
+/* 指定したキーの項目をハッシュから取り除く
+ * value は解放しない。
+ * */
 value* hash_drop(value* hash, value* key)
 {
-  fprintf(stderr, "hash_drop() is not impremented.\n");
-  return NULL;
+  if (hash_exist(hash, key)) {
+    int index = hash_keyindex(hash, key);
+    hash->a[index] = NULL;     // key
+    hash->a[index + 1] = NULL; // value
+  }
+  return hash;
 }
 
 /* 指定したキーの項目がハッシュに含まれるか */
@@ -80,21 +86,26 @@ int hash_exist(value* hash, value* key)
  * */
 int hash_keyindex(value* hash, value* key)
 {
-  for (int i = 0; i < hash->size; i += 2) {
-    value* item = list_ref(hash, i);
-    if (key->type == AT_INT && item->type == AT_INT) {
-      if (key->i == item->i) {
-        return i;
+  if (key != NULL) {
+    for (int i = 0; i < hash->size; i += 2) {
+      value* item = list_ref(hash, i);
+      if (item == NULL) {
+        continue;
       }
-    }
-    if (key->type == AT_SYMBOL && item->type == AT_SYMBOL) {
-      if (strcmp(key->s, item->s) == 0) {
-        return i;
+      if (key->type == AT_INT && item->type == AT_INT) {
+        if (key->i == item->i) {
+          return i;
+        }
       }
-    }
-    if (key->type == AT_FLOAT && item->type == AT_FLOAT) {
-      if (key->f == item->f) {
-        return i;
+      if (key->type == AT_SYMBOL && item->type == AT_SYMBOL) {
+        if (strcmp(key->s, item->s) == 0) {
+          return i;
+        }
+      }
+      if (key->type == AT_FLOAT && item->type == AT_FLOAT) {
+        if (key->f == item->f) {
+          return i;
+        }
       }
     }
   }

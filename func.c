@@ -4,6 +4,13 @@ value* arena_funcs(value*);
 value* arena_vars(value*);
 void dump(int,value*);
 
+int sym_to_int(const value* sym)
+{
+  if (sym == NULL || sym->type != AT_SYMBOL)
+    return -1;
+  return atoi(sym->s);
+}
+
 /*
  * 構文木の実行処理
  * */
@@ -28,12 +35,23 @@ value* exec(value* arena, value* const tree, value* const args)
         if (hash_exist(arena_vars(arena), &key)) {
           return hash_ref(arena_vars(arena), &key); // グローバル変数展開
         }
-        //else if () {
-        //  // ローカル変数展開
-        //}
         else {
-          // 登録されていない変数は nil として展開
-          return NULL;
+          int n = sym_to_int(&key) - 1;
+          if (n >= 0 && n < 10) {
+            value sym = sym_value("localvars");
+            value* localvars = hash_ref(arena, &sym);
+            if (localvars != NULL && localvars->size > n) {
+              // ローカル変数展開
+              return list_ref(localvars, n);
+            }
+            else {
+              return NULL;
+            }
+          }
+          else {
+            // 登録されていない変数は nil として展開
+            return NULL;
+          }
         }
       }
       if (hash_exist(arena_funcs(arena), tree)) {
@@ -62,12 +80,20 @@ value* exec(value* arena, value* const tree, value* const args)
           for (int i=1; i<tree->size; i++) {
             list_push(args2, list_ref(tree, i));
           }
-          result = exec(arena, first, args2);
+          if (args != NULL && args->size > 0) {
+            value sym = sym_value("localvars");
+            hash_add(arena, &sym, args); 
+            result = exec(arena, first, args2);
+            hash_drop(arena, &sym); 
+          }
+          else {
+            result = exec(arena, first, args2);
+          }
           free(args2);
         }
         else {
           for (int i=0; i<tree->size; i++) {
-            result = exec(arena, list_ref(tree, i), NULL);
+            result = exec(arena, list_ref(tree, i), args);
             if (i < tree->size) {
               free(result);
             }
@@ -281,14 +307,13 @@ value* _setq(value* arena, value* args)
 /* 変数定義 */
 value* _defun(value* arena, value* args)
 {
-  if (args->size != 3) {
+  if (args->size != 2) {
     fprintf(stderr, "Argument error.\n");
     return NULL;
   }
   value* funcs   = arena_funcs(arena);
   value* func    = exec(arena, list_ref(args, 0), NULL);
-  value* arglist = list_ref(args, 1);
-  value* sent    = list_ref(args, 2);
+  value* sent    = list_ref(args, 1);
   if (hash_exist(funcs, func)) {
     *hash_ref(funcs, func) = *sent;
   }
