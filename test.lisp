@@ -1,3 +1,6 @@
 (
-  (putln "test1")
-
+  (putln "test")
+  (putln "test")
+  (putln "test")
+  (putln "test")
+)
