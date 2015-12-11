@@ -73,7 +73,7 @@ int parse(const char* s, value* tree)
       list_push(&stack, curr);
       curr = list_new();
       if (start < s && *(s - 1) == '\'') {
-        curr->flag = F_QUOTE;
+        curr->flag = AF_QUOTE;
       }
     }
     else if (*s == ')') {

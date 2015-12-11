@@ -31,8 +31,8 @@ struct value
   char flag;
 };
 
-#define F_NONE  0x0
-#define F_QUOTE 0x1
+#define AF_NONE  0x0
+#define AF_QUOTE 0x1
 
 value* value_new(void);
 

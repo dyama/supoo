@@ -20,7 +20,7 @@ value int_value(int val)
   value res;
   res.type = AT_INT;
   res.i = val;
-  res.flag = F_NONE;
+  res.flag = AF_NONE;
   return res;
 }
 
@@ -38,7 +38,7 @@ value float_value(double val)
   value res;
   res.type = AT_FLOAT;
   res.f = val;
-  res.flag = F_NONE;
+  res.flag = AF_NONE;
   return res;
 }
 
@@ -56,7 +56,7 @@ value sym_value(char* const val)
   value res;
   res.type = AT_SYMBOL;
   res.s = val;
-  res.flag = F_NONE;
+  res.flag = AF_NONE;
   return res;
 }
 
@@ -74,7 +74,7 @@ value fp_value(void* val)
   value res;
   res.type = AT_FUNCPTR;
   res.fp = val;
-  res.flag = F_NONE;
+  res.flag = AF_NONE;
   return res;
 }
 
@@ -92,7 +92,7 @@ value bool_true(void)
   value res;
   res.type = AT_BOOL;
   res.i = 1;
-  res.flag = F_NONE;
+  res.flag = AF_NONE;
   return res;
 }
 
@@ -110,7 +110,7 @@ value bool_false(void)
   value res;
   res.type = AT_BOOL;
   res.i = 0;
-  res.flag = F_NONE;
+  res.flag = AF_NONE;
   return res;
 }
 

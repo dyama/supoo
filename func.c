@@ -12,7 +12,7 @@ value* exec(value* arena, value* const tree, value* const args)
   if (tree == NULL) {
     return tree;
   }
-  if (tree->flag & F_QUOTE) {
+  if (tree->flag & AF_QUOTE) {
     return tree;
   }
   value* result = NULL;
@@ -31,6 +31,10 @@ value* exec(value* arena, value* const tree, value* const args)
         //else if () {
         //  // ローカル変数展開
         //}
+        else {
+          // 登録されていない変数は nil として展開
+          return NULL;
+        }
       }
       if (hash_exist(arena_funcs(arena), tree)) {
         value* func = hash_ref(arena_funcs(arena), tree); // 関数展開
@@ -221,7 +225,8 @@ value* _put(value* arena, value* args)
   for (int i=0; i < args->size; i++) {
     value* item = exec(arena, list_ref(args, i), NULL);
     if (item == NULL) {
-      break;
+      printf("nil");
+      continue;
     }
     switch (item->type) {
     case AT_BOOL:
@@ -276,13 +281,14 @@ value* _setq(value* arena, value* args)
 /* 変数定義 */
 value* _defun(value* arena, value* args)
 {
-  if (args->size != 2) {
+  if (args->size != 3) {
     fprintf(stderr, "Argument error.\n");
     return NULL;
   }
-  value* funcs = arena_funcs(arena);
-  value* func = exec(arena, list_ref(args, 0), NULL);
-  value* sent = list_ref(args, 1);
+  value* funcs   = arena_funcs(arena);
+  value* func    = exec(arena, list_ref(args, 0), NULL);
+  value* arglist = list_ref(args, 1);
+  value* sent    = list_ref(args, 2);
   if (hash_exist(funcs, func)) {
     *hash_ref(funcs, func) = *sent;
   }
@@ -600,12 +606,12 @@ value* _dump(value* arena, value* args)
 {
   for (int i=0; i<args->size; i++) {
     value* item = list_ref(args, i);
-    if (item->flag & F_QUOTE) {
+    if (item->flag & AF_QUOTE) {
       dump(0, item);
     }
     else {
       //char flag = item->flag;
-      //item->flag &= ~F_QUOTE;
+      //item->flag &= ~AF_QUOTE;
       //printf("%d = flag\n", item->flag);
       dump(0, exec(arena, item, NULL));
       //item->flag = flag;

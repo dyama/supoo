@@ -8,7 +8,7 @@ value list()
   value res;
   res.type = AT_LIST;
   res.size = 0;
-  res.flag = F_NONE;
+  res.flag = AF_NONE;
   return res;
 }
 
