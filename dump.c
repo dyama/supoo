@@ -1,6 +1,6 @@
 #include "dump.h"
 
-/* S®–Ø‚ğƒ_ƒ“ƒv‚·‚é */
+/* Så¼æœ¨ã‚’ãƒ€ãƒ³ãƒ—ã™ã‚‹ */
 bool dump(int n, value* val)
 {
   int i;

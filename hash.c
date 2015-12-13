@@ -1,18 +1,18 @@
 #include "hash.h"
 
-/* �n�b�V�����쐬���� */
+/* ハッシュを作成する */
 value hash()
 {
   return list();
 }
 
-/* �n�b�V�����쐬���� */
+/* ハッシュを作成する */
 value* hash_new()
 {
   return list_new();
 }
 
-/* �n�b�V���ɍ��ڂ�ǉ����� */
+/* ハッシュに項目を追加する */
 value* hash_add(value* hash, value* key, value* item)
 {
   if (hash->type != AT_LIST || hash->size % 2 != 0) {
@@ -24,7 +24,7 @@ value* hash_add(value* hash, value* key, value* item)
   return hash;
 }
 
-/* �n�b�V���ɃL�[��n���v�f���Q�Ƃ��� */
+/* ハッシュにキーを渡し要素を参照する */
 value* hash_ref(value* hash, value* key)
 {
   if (hash->type != AT_LIST || hash->size % 2 != 0) {
@@ -38,14 +38,14 @@ value* hash_ref(value* hash, value* key)
   return list_ref(hash, index + 1);
 }
 
-/* �n�b�V���ɍ��ڂ�ݒ肷��
- * �����̃L�[���w�肵���ꍇ�A�l���㏑������
+/* ハッシュに項目を設定する
+ * 既存のキーを指定した場合、値を上書きする
  * */
 value* hash_set(value* hash, value* key, value* item)
 {
   if (hash_exist(hash, key)) {
     int index = hash_keyindex(hash, key);
-    // ���̃I�u�W�F�N�g�̉���Y��ɒ���
+    // 元のオブジェクトの解放忘れに注意
     hash->a[index] = item;
   }
   else {
@@ -54,8 +54,8 @@ value* hash_set(value* hash, value* key, value* item)
   return hash;
 }
 
-/* �w�肵���L�[�̍��ڂ��n�b�V�������菜��
- * value �͉�����Ȃ��B
+/* 指定したキーの項目をハッシュから取り除く
+ * value は解放しない。
  * */
 value* hash_drop(value* hash, value* key)
 {
@@ -67,7 +67,7 @@ value* hash_drop(value* hash, value* key)
   return hash;
 }
 
-/* �w�肵���L�[�̍��ڂ��n�b�V���Ɋ܂܂�邩 */
+/* 指定したキーの項目がハッシュに含まれるか */
 int hash_exist(value* hash, value* key)
 {
   if (hash == NULL || key == NULL) {
@@ -81,8 +81,8 @@ int hash_exist(value* hash, value* key)
   return hash_keyindex(hash, key) >= 0;
 }
 
-/* �w�肵���L�[�̍��ڂ̃C���f�b�N�X���擾����
- * ������Ȃ��ꍇ�� -1 ��Ԃ�
+/* 指定したキーの項目のインデックスを取得する
+ * 見つからない場合は -1 を返す
  * */
 int hash_keyindex(value* hash, value* key)
 {

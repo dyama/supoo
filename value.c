@@ -1,12 +1,12 @@
 #include "value.h"
 
-/* malloc ‚µ‚Ä value* ‚ğ•Ô‚· */
+/* malloc ã—ã¦ value* ã‚’è¿”ã™ */
 value* value_new(void)
 {
   return (value*)malloc(sizeof(value));
 }
 
-/* INT Œ^‚Ì value ‚ğì¬‚·‚é */
+/* INT å‹ã® value ã‚’ä½œæˆã™ã‚‹ */
 value* int_new(int val)
 {
   value* res = value_new();
@@ -14,7 +14,7 @@ value* int_new(int val)
   return res;
 }
 
-/* INT Œ^‚Ì value ‚ğì¬‚·‚é */
+/* INT å‹ã® value ã‚’ä½œæˆã™ã‚‹ */
 value int_value(int val)
 {
   value res;
@@ -24,7 +24,7 @@ value int_value(int val)
   return res;
 }
 
-/* FLOAT Œ^‚Ì value ‚ğì¬‚·‚é */
+/* FLOAT å‹ã® value ã‚’ä½œæˆã™ã‚‹ */
 value* float_new(double val)
 {
   value* res = value_new();
@@ -32,7 +32,7 @@ value* float_new(double val)
   return res;
 }
 
-/* FLOAT Œ^‚Ì value ‚ğì¬‚·‚é */
+/* FLOAT å‹ã® value ã‚’ä½œæˆã™ã‚‹ */
 value float_value(double val)
 {
   value res;
@@ -42,7 +42,7 @@ value float_value(double val)
   return res;
 }
 
-/* SYMBOL Œ^‚Ì value ‚ğì¬‚·‚é */
+/* SYMBOL å‹ã® value ã‚’ä½œæˆã™ã‚‹ */
 value* sym_new(char* const val)
 {
   value* res = value_new();
@@ -50,7 +50,7 @@ value* sym_new(char* const val)
   return res;
 }
 
-/* SYMBOL Œ^‚Ì value ‚ğì¬‚·‚é */
+/* SYMBOL å‹ã® value ã‚’ä½œæˆã™ã‚‹ */
 value sym_value(char* const val)
 {
   value res;
@@ -60,7 +60,7 @@ value sym_value(char* const val)
   return res;
 }
 
-/* FUNCPTR Œ^‚Ì value ‚ğì¬‚·‚é */
+/* FUNCPTR å‹ã® value ã‚’ä½œæˆã™ã‚‹ */
 value* fp_new(void* val)
 {
   value* res = value_new();
@@ -68,7 +68,7 @@ value* fp_new(void* val)
   return res;
 }
 
-/* FUNCPTR Œ^‚Ì value ‚ğì¬‚·‚é */
+/* FUNCPTR å‹ã® value ã‚’ä½œæˆã™ã‚‹ */
 value fp_value(void* val)
 {
   value res;
@@ -78,7 +78,7 @@ value fp_value(void* val)
   return res;
 }
 
-/* BOOL Œ^‚Å^‚Ì value ‚ğì¬‚·‚é */
+/* BOOL å‹ã§çœŸã® value ã‚’ä½œæˆã™ã‚‹ */
 value* bool_new_true(void)
 {
   value* res = value_new();
@@ -86,7 +86,7 @@ value* bool_new_true(void)
   return res;
 }
 
-/* BOOL Œ^‚Å^‚Ì value ‚ğì¬‚·‚é */
+/* BOOL å‹ã§çœŸã® value ã‚’ä½œæˆã™ã‚‹ */
 value bool_true(void)
 {
   value res;
@@ -96,7 +96,7 @@ value bool_true(void)
   return res;
 }
 
-/* BOOL Œ^‚Å‹U‚Ì value ‚ğì¬‚·‚é */
+/* BOOL å‹ã§å½ã® value ã‚’ä½œæˆã™ã‚‹ */
 value* bool_new_false(void)
 {
   value* res = value_new();
@@ -104,7 +104,7 @@ value* bool_new_false(void)
   return res;
 }
 
-/* BOOL Œ^‚Å‹U‚Ì value ‚ğì¬‚·‚é */
+/* BOOL å‹ã§å½ã® value ã‚’ä½œæˆã™ã‚‹ */
 value bool_false(void)
 {
   value res;

@@ -2,7 +2,7 @@
 
 void dump(int, value*);
 
-/* ƒŠƒXƒg‚ðì¬‚·‚é */
+/* ãƒªã‚¹ãƒˆã‚’ä½œæˆã™ã‚‹ */
 value list()
 {
   value res;
@@ -12,7 +12,7 @@ value list()
   return res;
 }
 
-/* ƒŠƒXƒg‚ðì¬‚·‚é */
+/* ãƒªã‚¹ãƒˆã‚’ä½œæˆã™ã‚‹ */
 value* list_new()
 {
   value* res = value_new();
@@ -20,8 +20,8 @@ value* list_new()
   return res;
 }
 
-/* €–Ú‚ÌƒCƒ“ƒfƒbƒNƒX‚ðŽæ“¾‚·‚é
- * €–Ú‚ª‘¶Ý‚µ‚È‚¢ê‡‚Í -1
+/* é …ç›®ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’å–å¾—ã™ã‚‹
+ * é …ç›®ãŒå­˜åœ¨ã—ãªã„å ´åˆã¯ -1
  * */
 int list_index(value* list, value* item)
 {
@@ -34,7 +34,7 @@ int list_index(value* list, value* item)
   return -1;
 }
 
-/* ƒCƒ“ƒfƒbƒNƒX‚ðŽw’è‚µ€–Ú‚ðÝ’è‚·‚é */
+/* ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’æŒ‡å®šã—é …ç›®ã‚’è¨­å®šã™ã‚‹ */
 value* list_set(value* list, int index, value* item)
 {
   if (list->size <= index || index < 0) {
@@ -45,13 +45,13 @@ value* list_set(value* list, int index, value* item)
   return list;
 }
 
-/* ÅIƒCƒ“ƒfƒbƒNƒX‚ðŽæ“¾‚·‚é */
+/* æœ€çµ‚ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’å–å¾—ã™ã‚‹ */
 int list_last(value* list)
 {
   return list->size - 1;
 }
 
-/* ƒŠƒXƒg‚ÌƒTƒCƒY‚ð•ÏX‚·‚é */
+/* ãƒªã‚¹ãƒˆã®ã‚µã‚¤ã‚ºã‚’å¤‰æ›´ã™ã‚‹ */
 value* list_resize(value* list, int size)
 {
   if (list == NULL) {
@@ -74,7 +74,7 @@ value* list_resize(value* list, int size)
   return list;
 }
 
-/* ƒŠƒXƒg‚Ì––”ö‚É—v‘f‚ð’Ç‰Á‚·‚é */
+/* ãƒªã‚¹ãƒˆã®æœ«å°¾ã«è¦ç´ ã‚’è¿½åŠ ã™ã‚‹ */
 value* list_push(value* list, value* item)
 {
   if (list == NULL) {
@@ -87,7 +87,7 @@ value* list_push(value* list, value* item)
   return list;
 }
 
-/* ƒŠƒXƒg‚Ì––”ö‚©‚ç—v‘f‚ðŽæ‚èo‚· */
+/* ãƒªã‚¹ãƒˆã®æœ«å°¾ã‹ã‚‰è¦ç´ ã‚’å–ã‚Šå‡ºã™ */
 value* list_pop(value* list)
 {
   if (!list->size) {
@@ -102,7 +102,7 @@ value* list_pop(value* list)
   return res;
 }
 
-/* ƒŠƒXƒg‚Ìæ“ª‚©‚ç—v‘f‚ðŽæ‚èo‚· */
+/* ãƒªã‚¹ãƒˆã®å…ˆé ­ã‹ã‚‰è¦ç´ ã‚’å–ã‚Šå‡ºã™ */
 value* list_shift(value* list)
 {
   if (!list->size) {
@@ -120,7 +120,7 @@ value* list_shift(value* list)
   return res;
 }
 
-/* ƒŠƒXƒg‚Ìæ“ª‚É—v‘f‚ð‘}“ü‚·‚é */
+/* ãƒªã‚¹ãƒˆã®å…ˆé ­ã«è¦ç´ ã‚’æŒ¿å…¥ã™ã‚‹ */
 value* list_unshift(value* list, value* item)
 {
   if (list == NULL) {
@@ -135,7 +135,7 @@ value* list_unshift(value* list, value* item)
   return list;
 }
 
-/* ƒŠƒXƒg‚ðŽQÆ‚·‚é */
+/* ãƒªã‚¹ãƒˆã‚’å‚ç…§ã™ã‚‹ */
 value* list_ref(value* list, int index)
 {
   if (list->size <= index || index < 0) {

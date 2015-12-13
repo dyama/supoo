@@ -1,6 +1,6 @@
 #include "parse.h"
 
-/* •¶š—ñ‚ğV‚µ‚­ƒRƒs[‚·‚é */
+/* æ–‡å­—åˆ—ã‚’æ–°ã—ãã‚³ãƒ”ãƒ¼ã™ã‚‹ */
 char* str_copy(const char* str, int len)
 {
   char* res = (char*)malloc(sizeof(char) * len + 1);
@@ -9,7 +9,7 @@ char* str_copy(const char* str, int len)
   return res;
 }
 
-/* SYMBOL, FLOAT, INT ’l‚ğæ“¾‚µAƒ|ƒCƒ“ƒ^‚ği‚ß‚é */
+/* SYMBOL, FLOAT, INT å€¤ã‚’å–å¾—ã—ã€ãƒã‚¤ãƒ³ã‚¿ã‚’é€²ã‚ã‚‹ */
 value* get_value(const char** s)
 {
   value* result = NULL;
@@ -58,7 +58,7 @@ value* get_value(const char** s)
   return result;
 }
 
-/* \•¶‰ğÍ‚µS®–Ø‚ğ\’z‚·‚é */
+/* æ§‹æ–‡è§£æã—Så¼æœ¨ã‚’æ§‹ç¯‰ã™ã‚‹ */
 int parse(const char* s, value* tree)
 {
   value stack = list();

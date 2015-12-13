@@ -1,25 +1,25 @@
 #include "arena.h"
 
-/* ƒAƒŠ[ƒi‚©‚çŠÖ”ƒ}ƒbƒp[‚ğæ“¾‚·‚é */
+/* ã‚¢ãƒªãƒ¼ãƒŠã‹ã‚‰é–¢æ•°ãƒãƒƒãƒ‘ãƒ¼ã‚’å–å¾—ã™ã‚‹ */
 value* arena_funcs(value* arena)
 {
   value key = sym_value("funcs");
   return hash_ref(arena, &key);
 }
 
-/* ƒAƒŠ[ƒi‚©‚ç•Ï”ƒ}ƒbƒp[‚ğæ“¾‚·‚é */
+/* ã‚¢ãƒªãƒ¼ãƒŠã‹ã‚‰å¤‰æ•°ãƒãƒƒãƒ‘ãƒ¼ã‚’å–å¾—ã™ã‚‹ */
 value* arena_vars(value* arena)
 {
   value key = sym_value("vars");
   return hash_ref(arena, &key);
 }
 
-/* ƒAƒŠ[ƒi‚ğ‰Šú‰» */
+/* ã‚¢ãƒªãƒ¼ãƒŠã‚’åˆæœŸåŒ– */
 void arena_begin(value* arena)
 {
   *arena = hash();
 
-  // ‘g‚İ‚İŠÖ”
+  // çµ„ã¿è¾¼ã¿é–¢æ•°
   value* funcs = hash_new();
   hash_add(arena, sym_new("funcs"), funcs);
 
@@ -95,7 +95,7 @@ void arena_begin(value* arena)
 
   hash_add(funcs, sym_new("int"),   fp_new(_int));
 
-  // ‘g‚İ‚İ•Ï”
+  // çµ„ã¿è¾¼ã¿å¤‰æ•°
   value* vars = hash_new();
   hash_add(arena, sym_new("vars"), vars);
 
@@ -106,10 +106,10 @@ void arena_begin(value* arena)
   return;
 }
 
-/* ƒAƒŠ[ƒi‚ğ‰ğ•ú */
+/* ã‚¢ãƒªãƒ¼ãƒŠã‚’è§£æ”¾ */
 void arena_end(value* arena)
 {
-  /* ŠÖ” */
+  /* é–¢æ•° */
   // value key = sym_value("funcs");
   // value* funcs = hash_ref(arena, &key);
   // for (int i=0; i < funcs->size; i++) {
@@ -117,11 +117,11 @@ void arena_end(value* arena)
   //   if (item) {
   //     free(item);
   //   }
-  //   // Ä‹A“I‰ğ•ú‚ª•K—v
+  //   // å†å¸°çš„è§£æ”¾ãŒå¿…è¦
   // }
   // free(funcs->a);
   // free(funcs);
-  /* •Ï” */
+  /* å¤‰æ•° */
   return;
 }
 
