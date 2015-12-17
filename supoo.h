@@ -7,7 +7,6 @@
 #include <math.h>
 #include <errno.h>
 #include <stdint.h>
-
-typedef int bool;
+#include <stdbool.h>
 
 #endif

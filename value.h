@@ -22,6 +22,7 @@ struct value
   atom_type type;
   int size;
   union {
+    bool    b;
     int     i;
     double  f;
     char*   s;
@@ -52,7 +53,7 @@ value* bool_new_true(void);
 value bool_true(void);
 value* bool_new_false(void);
 value bool_false(void);
-int is_true(value* val);
+bool is_true(value* val);
 value* bool_not(value* val);
 
 value* value_copy(value* val);

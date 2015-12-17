@@ -91,7 +91,7 @@ value bool_true(void)
 {
   value res;
   res.type = AT_BOOL;
-  res.i = 1;
+  res.b = true;
   res.flag = AF_NONE;
   return res;
 }
@@ -109,20 +109,21 @@ value bool_false(void)
 {
   value res;
   res.type = AT_BOOL;
-  res.i = 0;
+  res.b = false;
   res.flag = AF_NONE;
   return res;
 }
 
-int is_true(value* val)
+bool is_true(value* val)
 {
-  int r = 0;
+  bool r = false;
   switch (val->type) {
-  case AT_BOOL:    r = val->i ? 1 : 0; break;
-  case AT_FLOAT:   r = val->f ? 1 : 0; break;
-  case AT_SYMBOL:  r = *(val->s) ? 1 : 0; break;
-  case AT_FUNCPTR: r = val->fp ? 1 : 0; break;
-  default: r = 0; break;
+  case AT_BOOL:    r = val->b;          break;
+  case AT_INT:     r = (bool)val->i;    break;
+  case AT_FLOAT:   r = (bool)val->f;    break;
+  case AT_SYMBOL:  r = (bool)*(val->s); break;
+  case AT_FUNCPTR: r = (bool)val->fp;   break;
+  default: r = false; break;
   }
   return r;
 }
