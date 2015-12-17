@@ -27,6 +27,7 @@ value* exec(value* arena, value* const tree, value* const args)
     case AT_FUNCPTR:
     case AT_INT:
     case AT_FLOAT:
+    case AT_STRING:
       result = tree;
       break;
     case AT_SYMBOL:
@@ -69,7 +70,7 @@ value* exec(value* arena, value* const tree, value* const args)
         }
       }
       else {
-        result = tree; // 文字列リテラル
+        result = tree; // 旧文字列リテラル
       }
       break;
     case AT_LIST:
@@ -264,6 +265,7 @@ value* _put(value* arena, value* args)
     case AT_FLOAT:
       printf("%f", item->f);
       break;
+    case AT_STRING:
     case AT_SYMBOL:
       printf("%s", item->s);
       break;
@@ -350,6 +352,7 @@ value* _eq(value* arena, value* args)
     if (a->f == b->f)
       return bool_new_true();
     break;
+  case AT_STRING:
   case AT_SYMBOL:
     if (strcmp(a->s, b->s) == 0)
       return bool_new_true();

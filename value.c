@@ -60,6 +60,24 @@ value sym_value(char* const val)
   return res;
 }
 
+/* STRING 型の value を作成する */
+value* str_new(char* const val)
+{
+  value* res = value_new();
+  *res = str_value(val);
+  return res;
+}
+
+/* STRING 型の value を作成する */
+value str_value(char* const val)
+{
+  value res;
+  res.type = AT_STRING;
+  res.s = val;
+  res.flag = AF_NONE;
+  return res;
+}
+
 /* FUNCPTR 型の value を作成する */
 value* fp_new(void* val)
 {

@@ -18,23 +18,25 @@ value* get_value(const char** s)
   dv = strtod(*s, &ep);
   if (errno != ERANGE) {
     if (*s == ep) {
-      // sym
-      char* sym = NULL;
+      char* str = NULL;
       if (**s == '"') {
+        // STRING
         if ((ep = strpbrk((*s+1), "\"")) == NULL) {
           for (; *ep != '\0'; ep++);
         }
         (*s)++;
-        sym = str_copy(*s, ep - *s);
+        str = str_copy(*s, ep - *s);
+        result = str_new(str);
         ep++;
       }
       else {
+        // SYMBOL
         if ((ep = strpbrk(*s, "() ")) == NULL) {
           for (; *ep != '\0'; ep++);
         }
-        sym = str_copy(*s, ep - *s);
+        str = str_copy(*s, ep - *s);
+        result = sym_new(str);
       }
-      result = sym_new(sym);
     }
     else {
       // float, int

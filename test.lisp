@@ -1,5 +1,6 @@
 (
-  (defun myfunc (   
+  (dump "hoge")
+  (defun myfunc (
     (putln $1) 
     (putln $2) 
     (putln $3) 

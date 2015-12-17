@@ -25,8 +25,12 @@ bool dump(int n, value* val)
       printf("#<FLOAT:0x%X, value:%f, flag:%d>\n",
         (unsigned int)(intptr_t)val, val->f, val->flag);
       break;
+    case AT_STRING:
+      printf("#<STRING:0x%X value:\"%s\", flag:%d>\n",
+        (unsigned int)(intptr_t)val, val->s, val->flag);
+      break;
     case AT_SYMBOL:
-      printf("#<SYMBOL:0x%X value:%s, flag:%d>\n",
+      printf("#<SYMBOL:0x%X value:\"%s\", flag:%d>\n",
         (unsigned int)(intptr_t)val, val->s, val->flag);
       break;
     case AT_FUNCPTR:

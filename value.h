@@ -11,6 +11,7 @@ enum atom_type
   AT_INT,
   AT_FLOAT,
   AT_SYMBOL,
+  AT_STRING,
   AT_LIST,
   AT_FUNCPTR,
   AT_BOOL,
@@ -45,6 +46,9 @@ value float_value(double val);
 
 value* sym_new(char* const val);
 value sym_value(char* const val);
+
+value* str_new(char* const val);
+value str_value(char* const val);
 
 value* fp_new(void* val);
 value fp_value(void* val);

@@ -97,6 +97,11 @@ int hash_keyindex(value* hash, value* key)
           return i;
         }
       }
+      if (key->type == AT_STRING && item->type == AT_STRING) {
+        if (strcmp(key->s, item->s) == 0) {
+          return i;
+        }
+      }
       if (key->type == AT_SYMBOL && item->type == AT_SYMBOL) {
         if (strcmp(key->s, item->s) == 0) {
           return i;
