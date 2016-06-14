@@ -14,7 +14,7 @@
   node_string id; // 識別子、変数、ラベル
 }
 
-%type <nd> program func pair list expr atom lit_num lit_str
+%type <nd> program stmts func pair list expr atom lit_num lit_str
 
 %pure-parser
 %parse-param {parser_state* p}
@@ -47,15 +47,11 @@ static void yyerror(parser_state* p, const char *s);
 %token
   func_echo
 %%
-program :           { $$ = NULL; }
-     | program expr { $$ = $2; }
+program : term stmts term { $$ = $2; }
 ;
-/*
-line :
-     | sym_nl      { fprintf(stderr, "> "); $$ = NULL; }
-     | expr sym_nl { fprintf(stderr, "  => %.8g\n> ", $1->data.dval); $$ = $1; }
+stmts : { $$ = NULL; }
+     | stmts expr { $$ = $2; }
 ;
-*/
 expr : pair
      | atom
 ;
@@ -86,6 +82,8 @@ list :           { $$ = new_node(0.0); }
 atom : lit_num
      | lit_str
 ;
+term :
+     | term '\n'
 ;
 %%
 
@@ -96,6 +94,7 @@ main()
 {
   parser_state p;
   p.lineno = 1;
+  p.fname = "stdin";
   yyparse(&p);
   return 0;
 }

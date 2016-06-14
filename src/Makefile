@@ -22,6 +22,9 @@ all : $(TARGET)
 %.o: %.c
 	$(CC) $(CFLAGS) -MMD -MP -c -o $@ $<
 
+test: all
+	./$(TARGET) < ../test/test.lisp
+
 .PHONY : test
 
 y.tab.c y.tab.h : parse.y lex.yy.c
