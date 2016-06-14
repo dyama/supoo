@@ -62,5 +62,27 @@ lex_return(parser_state* p, int c)
   LEX_RETURN(lit_str);
 };
 
+[ \t\n] ;
+
 "echo" LEX_RETURN(func_echo);
+
+[a-zA-Z_][a-zA-Z_0-9]* {
+  lval->id = node_id_new(yytext, yyleng);
+  LEX_RETURN(sym_id);
+}
+
+. {
+  char c = yytext[0];
+  fprintf(stderr, "%s:%d:lexical error", p->fname, yylineno);
+  if ((c & 0x80) || !isprint(c)) {
+    fprintf(stderr, "('\\%03o').\n", c);
+  }
+  else if (c == '\\') {
+    fprintf(stderr, "('\\\\').\n");
+  }
+  else {
+    fprintf(stderr, "('%c').\n", c);
+  }
+  exit(1);
+};
 %%

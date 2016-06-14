@@ -16,7 +16,7 @@ typedef struct {
 
 typedef struct node_string {
   int len;
-  char buf[0];
+  char* buf;
 }* node_string;
 
 typedef struct node {
@@ -45,6 +45,16 @@ node_str_new(const char* val, int size)
   res->type = 1;
   res->val.s = (char*)malloc(sizeof(char*) * size);
   strncpy(res->val.s, val, size);
+  return res;
+}
+
+node_string
+node_id_new(const char* val, int size)
+{
+  node_string res = (node_string)malloc(sizeof(node_string));
+  res->len = size;
+  res->buf = (char*)malloc(sizeof(char*) * size);
+  strncpy(res->buf, val, size);
   return res;
 }
 

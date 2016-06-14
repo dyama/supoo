@@ -15,6 +15,7 @@
 }
 
 %type <nd> program stmts func pair list expr atom lit_num lit_str
+%type <id> sym_id
 
 %pure-parser
 %parse-param {parser_state* p}
@@ -33,6 +34,7 @@ static void yyerror(parser_state* p, const char *s);
 %token
   sym_begin
   sym_end
+  sym_id
 
 %token
   op_plus
@@ -48,6 +50,7 @@ static void yyerror(parser_state* p, const char *s);
   func_echo
 %%
 program : term stmts term { $$ = $2; }
+        | sym_begin program sym_end { $$ = $2; }
 ;
 stmts : { $$ = NULL; }
      | stmts expr { $$ = $2; }
@@ -81,6 +84,7 @@ list :           { $$ = new_node(0.0); }
 ;
 atom : lit_num
      | lit_str
+     | sym_id    { $$ = NULL; }
 ;
 term :
      | term '\n'
