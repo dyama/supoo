@@ -30,7 +30,7 @@ typedef struct node {
 } node;
 
 node*
-new_node(double val)
+node_new(double val)
 {
   node* res = (node*)malloc(sizeof(node));
   res->type = 0;

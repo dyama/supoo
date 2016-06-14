@@ -61,10 +61,10 @@ expr : pair
 pair : sym_begin func sym_end  { $$ = $2; }
 ;
 func : list
-     | op_plus  expr expr { $$ = new_node($2->val.d + $3->val.d); }
-     | op_minus expr expr { $$ = new_node($2->val.d - $3->val.d); }
-     | op_mult  expr expr { $$ = new_node($2->val.d * $3->val.d); }
-     | op_div   expr expr { $$ = new_node($2->val.d / $3->val.d); }
+     | op_plus  expr expr { $$ = node_new($2->val.d + $3->val.d); }
+     | op_minus expr expr { $$ = node_new($2->val.d - $3->val.d); }
+     | op_mult  expr expr { $$ = node_new($2->val.d * $3->val.d); }
+     | op_div   expr expr { $$ = node_new($2->val.d / $3->val.d); }
      | func_echo expr     {
         if ($2->type == 0) {
           fprintf(stdout, "%lf\n", $2->val.d);
@@ -79,8 +79,8 @@ func : list
         $$ = NULL;
       }
 ;
-list :           { $$ = new_node(0.0); }
-     | list expr { $$ = new_node(0.0); }
+list :           { $$ = node_new(0.0); }
+     | list expr { $$ = node_new(0.0); }
 ;
 atom : lit_num
      | lit_str
