@@ -32,33 +32,33 @@ lex_return(parser_state* p, int c)
 ";"[^\n]*"\n" LEX_RETURN('\n');
 
 (([1-9][0-9]*)|0) {
-  lval->nd = node_new(atol(yytext));
+  lval->se = node_new(atol(yytext));
   LEX_RETURN(lit_num);
 };
 
 (([1-9][0-9]*)|0)(\.[0-9][0-9]*)? {
   double temp;
   sscanf(yytext, "%lf", &temp);
-  lval->nd = node_new(temp);
+  lval->se = node_new(temp);
   LEX_RETURN(lit_num);
 };
 
 0x[0-9a-fA-F]+ {
   unsigned long temp;
   sscanf(yytext+2, "%lx", &temp);
-  lval->nd = node_new(temp);
+  lval->se = node_new(temp);
   LEX_RETURN(lit_num);
 };
 
 0o[0-7]+ {
   unsigned long temp;
   sscanf(yytext+2, "%lo", &temp);
-  lval->nd = node_new(temp);
+  lval->se = node_new(temp);
   LEX_RETURN(lit_num);
 };
 
 \"([^\\\"]|\\.)*\" {
-  lval->nd = node_str_new(yytext+1, yyleng-2);
+  lval->se = node_str_new(yytext+1, yyleng-2);
   LEX_RETURN(lit_str);
 };
 

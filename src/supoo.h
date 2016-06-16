@@ -20,7 +20,6 @@ typedef struct node_string {
 }* node_string;
 
 typedef struct symexp symexp;
-typedef symexp node;
 
 struct symexp {
   int type;
@@ -31,21 +30,21 @@ struct symexp {
     char* s;
   } val;
   symexp** subs;
-} node;
+};
 
-node*
+symexp*
 node_new(double val)
 {
-  node* res = (node*)malloc(sizeof(node));
+  symexp* res = (symexp*)malloc(sizeof(symexp));
   res->type = 0;
   res->val.d = val;
   return res;
 }
 
-node*
+symexp*
 node_str_new(const char* val, int size)
 {
-  node* res = (node*)malloc(sizeof(node));
+  symexp* res = (symexp*)malloc(sizeof(symexp));
   res->type = 1;
   res->val.s = (char*)malloc(sizeof(char*) * size);
   strncpy(res->val.s, val, size);
@@ -62,10 +61,10 @@ node_id_new(const char* val, int size)
   return res;
 }
 
-node*
-func_op_plus(parser_state* p, node** args)
+symexp*
+func_op_plus(parser_state* p, symexp** args)
 {
-
+  return NULL;
 }
 
 #endif

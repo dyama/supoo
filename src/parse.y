@@ -10,11 +10,11 @@
 %}
 
 %union {
-  node* nd;       // ノード
+  symexp* se;     // S式
   node_string id; // 識別子、変数、ラベル
 }
 
-%type <nd> program stmts func pair list expr atom lit_num lit_str
+%type <se> program stmts func pair list expr atom lit_num lit_str
 %type <id> sym_id
 
 %pure-parser
