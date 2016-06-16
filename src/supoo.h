@@ -19,7 +19,10 @@ typedef struct node_string {
   char* buf;
 }* node_string;
 
-typedef struct node {
+typedef struct symexp symexp;
+typedef symexp node;
+
+struct symexp {
   int type;
   union {
     int    i;
@@ -27,6 +30,7 @@ typedef struct node {
     void*  f;
     char* s;
   } val;
+  symexp** subs;
 } node;
 
 node*
@@ -56,6 +60,12 @@ node_id_new(const char* val, int size)
   res->buf = (char*)malloc(sizeof(char*) * size);
   strncpy(res->buf, val, size);
   return res;
+}
+
+node*
+func_op_plus(parser_state* p, node** args)
+{
+
 }
 
 #endif

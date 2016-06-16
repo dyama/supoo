@@ -64,8 +64,6 @@ lex_return(parser_state* p, int c)
 
 [ \t\n] ;
 
-"echo" LEX_RETURN(func_echo);
-
 [a-zA-Z_][a-zA-Z_0-9]* {
   lval->id = node_id_new(yytext, yyleng);
   LEX_RETURN(sym_id);

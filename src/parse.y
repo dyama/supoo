@@ -46,37 +46,37 @@ static void yyerror(parser_state* p, const char *s);
   lit_num
   lit_str
 
-%token
-  func_echo
 %%
-program : term stmts term { $$ = $2; }
+program : term stmts term           { $$ = $2; }
         | sym_begin program sym_end { $$ = $2; }
 ;
-stmts : { $$ = NULL; }
+stmts :           { $$ = NULL; }
      | stmts expr { $$ = $2; }
 ;
 expr : pair
      | atom
 ;
 pair : sym_begin func sym_end  { $$ = $2; }
+     | sym_begin list sym_end  { $$ = $2; }
 ;
-func : list
-     | op_plus  expr expr { $$ = node_new($2->val.d + $3->val.d); }
+func : op_plus  expr expr { $$ = node_new($2->val.d + $3->val.d); }
      | op_minus expr expr { $$ = node_new($2->val.d - $3->val.d); }
      | op_mult  expr expr { $$ = node_new($2->val.d * $3->val.d); }
      | op_div   expr expr { $$ = node_new($2->val.d / $3->val.d); }
-     | func_echo expr     {
-        if ($2->type == 0) {
-          fprintf(stdout, "%lf\n", $2->val.d);
-        }
-        else if ($2->type == 1 ) {
-          fprintf(stdout, "%s\n", $2->val.s);
-        }
-        else {
-          fprintf(stdout, "nil\n");
+     | sym_id   stmts     {
+        $$ = NULL;
+        if (strcmp($1->buf, "echo") == 0) {
+          if ($2->type == 0) {
+            fprintf(stdout, "%lf\n", $2->val.d);
+          }
+          else if ($2->type == 1 ) {
+            fprintf(stdout, "%s\n", $2->val.s);
+          }
+          else {
+            fprintf(stdout, "nil\n");
+          }
         }
         // fflush(stdout);
-        $$ = NULL;
       }
 ;
 list :           { $$ = node_new(0.0); }

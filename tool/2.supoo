@@ -1,0 +1,28 @@
+
+; ookiihou wo kaesu max kansuu
+defun ooki (x y)
+  if (> x y)
+    x
+    y
+
+; fibonacchi suu wo kaesu
+defun fib (n)
+  if (< n 2)
+    n
+    + (fib (- n 1)) (fib (- n 2))
+
+dotimes (i 5)
+  princ (fib i)
+  format t " "
+
+setq hoge
+  cons 1 'a
+
+print hoge
+
+format t "~%--- TEST ---~%"
+
+setq list '(1 2 3 4 5)
+dolist (j list)
+  princ j
+  format t " "
